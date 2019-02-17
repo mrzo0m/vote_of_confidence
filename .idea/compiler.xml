@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="authorization" />
+        <module name="communications" />
+        <module name="history" />
+        <module name="notifications" />
+        <module name="payments" />
+        <module name="reporting" />
+        <module name="scheduling" />
+        <module name="tracker" />
+        <module name="voc" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="authorization" options="-parameters" />
+      <module name="communications" options="-parameters" />
+      <module name="history" options="-parameters" />
+      <module name="notifications" options="-parameters" />
+      <module name="payments" options="-parameters" />
+      <module name="reporting" options="-parameters" />
+      <module name="scheduling" options="-parameters" />
+      <module name="tracker" options="-parameters" />
+      <module name="vote_of_confidence" options="-parameters" />
+    </option>
+  </component>
+</project>
