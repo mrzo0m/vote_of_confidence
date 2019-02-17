@@ -132,6 +132,66 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M2</version>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<bannedPlugins>
+									<!-- will only display a warning but does not fail the build. -->
+									<level>WARN</level>
+									<excludes>
+										<exclude>org.apache.maven.plugins:maven-verifier-plugin</exclude>
+									</excludes>
+									<message>Please consider using the maven-invoker-plugin (http://maven.apache.org/plugins/maven-invoker-plugin/)!</message>
+								</bannedPlugins>
+								<requireMavenVersion>
+									<version>3.3.5</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>1.8</version>
+								</requireJavaVersion>
+								<requireOS>
+									<family>unix</family>
+								</requireOS>
+							</rules>
+						</configuration>
+					</execution>
+					<execution>
+						<id>no-duplicate-declared-dependencies</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<banDuplicatePomDependencyVersions/>
+							</rules>
+						</configuration>
+					</execution>
+					<execution>
+						<id>enforce-no-snapshots</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<reactorModuleConvergence>
+									<message>The reactor is not valid</message>
+									<ignoreModuleDependencies>true</ignoreModuleDependencies>
+								</reactorModuleConvergence>
+							</rules>
+							<fail>true</fail>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
