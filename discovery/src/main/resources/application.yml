@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: native
+  application:
+    name: discovery
+  cloud:
+    config:
+      uri: http://localhost:8888
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
