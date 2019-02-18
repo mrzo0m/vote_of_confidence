@@ -18,6 +18,9 @@
 	<modules>
 		<module>authorization</module>
 		<module>communications</module>
+		<module>configuration</module>
+		<module>discovery</module>
+		<module>gateway</module>
 		<module>history</module>
 		<module>notifications</module>
 		<module>payments</module>
