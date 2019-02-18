@@ -8,6 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="authorization" />
         <module name="communications" />
+        <module name="configuration" />
+        <module name="discovery" />
+        <module name="gateway" />
         <module name="history" />
         <module name="notifications" />
         <module name="payments" />
@@ -22,6 +25,9 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="authorization" options="-parameters" />
       <module name="communications" options="-parameters" />
+      <module name="configuration" options="-parameters" />
+      <module name="discovery" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="history" options="-parameters" />
       <module name="notifications" options="-parameters" />
       <module name="payments" options="-parameters" />
