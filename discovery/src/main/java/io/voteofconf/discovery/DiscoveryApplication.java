@@ -5,11 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @EnableEurekaServer
-@SpringBootApplication
+@SpringBootApplication(exclude = {
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+        org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
+)
 public class DiscoveryApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DiscoveryApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DiscoveryApplication.class, args);
+    }
 
 }

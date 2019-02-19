@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: communications
+  profiles:
+    active: native
+
+logging:
+  level:
+    com:
+      netflix:
+        eureka: trace
+        discovery: trace
