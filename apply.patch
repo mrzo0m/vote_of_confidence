@@ -1,0 +1,236 @@
+Index: gateway/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gateway/pom.xml	(revision 5dbde658a6bfe329000f159135bdea32526e1640)
++++ gateway/pom.xml	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
+@@ -21,6 +21,10 @@
+ 	<dependencies>
+ 		<dependency>
+ 			<groupId>org.springframework.boot</groupId>
++			<artifactId>spring-boot-starter-web</artifactId>
++		</dependency>
++		<dependency>
++			<groupId>org.springframework.boot</groupId>
+ 			<artifactId>spring-boot-starter-security</artifactId>
+ 		</dependency>
+ 		<dependency>
+@@ -64,6 +68,30 @@
+ 			<artifactId>spring-security-test</artifactId>
+ 			<scope>test</scope>
+ 		</dependency>
++
++		<dependency>
++			<groupId>com.okta.spring</groupId>
++			<artifactId>okta-spring-boot-starter</artifactId>
++			<version>1.1.0</version>
++		</dependency>
++		<dependency>
++			<groupId>org.springframework.security.oauth.boot</groupId>
++			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
++			<version>2.1.2.RELEASE</version>
++		</dependency>
++		<dependency>
++			<groupId>org.springframework.boot</groupId>
++			<artifactId>spring-boot-starter-logging</artifactId>
++		</dependency>
++		<dependency>
++			<groupId>org.springframework.boot</groupId>
++			<artifactId>spring-boot-starter-thymeleaf</artifactId>
++		</dependency>
++		<dependency>
++			<groupId>org.thymeleaf.extras</groupId>
++			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
++			<version>3.0.4.RELEASE</version>
++		</dependency>
+ 	</dependencies>
+ 
+ 	<dependencyManagement>
+@@ -78,14 +106,6 @@
+ 		</dependencies>
+ 	</dependencyManagement>
+ 
+-	<build>
+-		<plugins>
+-			<plugin>
+-				<groupId>org.springframework.boot</groupId>
+-				<artifactId>spring-boot-maven-plugin</artifactId>
+-			</plugin>
+-		</plugins>
+-	</build>
+ 	<profiles>
+ 		<profile>
+ 			<id>containerizing</id>
+@@ -112,6 +132,15 @@
+ 			</build>
+ 		</profile>
+ 	</profiles>
++	<build>
++		<plugins>
++			<plugin>
++				<groupId>org.springframework.boot</groupId>
++				<artifactId>spring-boot-maven-plugin</artifactId>
++			</plugin>
++		</plugins>
++	</build>
++
+ 	<repositories>
+ 		<repository>
+ 			<id>spring-milestones</id>
+Index: gateway/src/main/java/io/voteofconf/gateway/config/SpringSecurityWebAppConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gateway/src/main/java/io/voteofconf/gateway/config/SpringSecurityWebAppConfig.java	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
++++ gateway/src/main/java/io/voteofconf/gateway/config/SpringSecurityWebAppConfig.java	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
+@@ -0,0 +1,18 @@
++package io.voteofconf.gateway.config;
++
++import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
++import org.springframework.context.annotation.Configuration;
++import org.springframework.security.config.annotation.web.builders.HttpSecurity;
++import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
++
++@EnableOAuth2Sso
++@Configuration
++public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
++
++    @Override
++    protected void configure(HttpSecurity http) throws Exception {
++        http.authorizeRequests()
++                .antMatchers("/").permitAll() // allow all at home page
++                .anyRequest().authenticated();  // authenticate everything else!
++    }
++}
+Index: gateway/src/main/java/io/voteofconf/gateway/controller/ExampleController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gateway/src/main/java/io/voteofconf/gateway/controller/ExampleController.java	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
++++ gateway/src/main/java/io/voteofconf/gateway/controller/ExampleController.java	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
+@@ -0,0 +1,18 @@
++package io.voteofconf.gateway.controller;
++
++import org.springframework.stereotype.Controller;
++import org.springframework.web.bind.annotation.RequestMapping;
++
++@Controller
++public class ExampleController {
++
++    @RequestMapping("/")
++    String home() {
++        return "index";
++    }
++
++    @RequestMapping("/login")
++    String restricted() {
++        return "restricted";
++    }
++}
+Index: gateway/src/main/resources/application.properties
+===================================================================
+--- gateway/src/main/resources/application.properties	(revision 5dbde658a6bfe329000f159135bdea32526e1640)
++++ gateway/src/main/resources/application.properties	(revision 5dbde658a6bfe329000f159135bdea32526e1640)
+@@ -1,1 +0,0 @@
+-
+Index: gateway/src/main/resources/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gateway/src/main/resources/application.yml	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
++++ gateway/src/main/resources/application.yml	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
+@@ -0,0 +1,16 @@
++server:
++  port: 8080
++
++#spring:
++#  resources: static-locations: "classpath:/static/"
++
++okta:
++  oauth2:
++    issuer: https://dev-388275.oktapreview.com/oauth2/default
++    clientId: 0oajfcjaxs1OKu2kC0h7
++    clientSecret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
++    rolesClaim: groups
++
++spring:
++  main:
++    allow-bean-definition-overriding: true
+\ No newline at end of file
+Index: gateway/src/main/resources/templates/fragments/head.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gateway/src/main/resources/templates/fragments/head.html	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
++++ gateway/src/main/resources/templates/fragments/head.html	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
+@@ -0,0 +1,28 @@
++<!--/*
++~ Copyright 2015 Stormpath, Inc.
++~
++~ Licensed under the Apache License, Version 2.0 (the "License");
++~ you may not use this file except in compliance with the License.
++~ You may obtain a copy of the License at
++~
++~     http://www.apache.org/licenses/LICENSE-2.0
++~
++~ Unless required by applicable law or agreed to in writing, software
++~ distributed under the License is distributed on an "AS IS" BASIS,
++~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++~ See the License for the specific language governing permissions and
++~ limitations under the License.
++*/-->
++
++<!DOCTYPE html>
++<html xmlns:th="http://www.thymeleaf.org">
++<head th:fragment="head">
++    <meta charset="utf-8"/>
++    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
++    <meta name="viewport" content="width=device-width, initial-scale=1"/>
++    <meta name="viewport" content="width=device-width"/>
++</head>
++<body>
++<p>Nothing to see here, move along.</p>
++</body>
++</html>
+\ No newline at end of file
+Index: gateway/src/main/resources/templates/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gateway/src/main/resources/templates/index.html	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
++++ gateway/src/main/resources/templates/index.html	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
+@@ -0,0 +1,10 @@
++<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
++<head>
++    <!--/*/ <th:block th:include="fragments/head :: head"/> /*/-->
++</head>
++<body>
++<div style="text-align: center; margin-top: 200px;">
++    <a href="/login">LOGIN</a>
++</div>
++</body>
++</html>
+\ No newline at end of file
+Index: gateway/src/main/resources/templates/restricted.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gateway/src/main/resources/templates/restricted.html	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
++++ gateway/src/main/resources/templates/restricted.html	(revision b4aefe93aba49ee0749c57bf98f157b6ffee1fc1)
+@@ -0,0 +1,8 @@
++<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
++<head>
++    <!--/*/ <th:block th:include="fragments/head :: head"/> /*/-->
++</head>
++<body>
++<a href="/" class="btn btn-primary">Go Home</a>
++</body>
++</html>
+\ No newline at end of file
