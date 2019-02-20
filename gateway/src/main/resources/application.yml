@@ -11,3 +11,7 @@ okta:
     clientSecret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
     rolesClaim: groups
 
+spring:
+  main:
+    allow-bean-definition-overriding: true
+

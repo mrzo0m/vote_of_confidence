@@ -3,7 +3,10 @@ spring:
     name: communications
   profiles:
     active: native
-
+  cloud:
+    config:
+      discovery:
+        enabled: true
 logging:
   level:
     com:

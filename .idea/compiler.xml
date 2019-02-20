@@ -20,7 +20,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="authorization" target="1.8" />
       <module name="communications" target="1.8" />
       <module name="configuration" target="1.8" />
       <module name="discovery" target="1.8" />
@@ -36,7 +35,6 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="authorization" options="-parameters" />
       <module name="communications" options="-parameters" />
       <module name="configuration" options="-parameters" />
       <module name="discovery" options="-parameters" />
