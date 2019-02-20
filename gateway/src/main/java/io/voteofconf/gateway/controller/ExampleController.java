@@ -11,7 +11,7 @@ public class ExampleController {
         return "index";
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/restricted")
     String restricted() {
         return "restricted";
     }
