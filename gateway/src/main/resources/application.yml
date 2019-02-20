@@ -1,14 +1,13 @@
-spring:
-  application:
-    name: gateway
-  profiles:
-    active: native
-
 server:
-  port: 0
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-  instance:
-    preferIpAddress: true
+  port: 8080
+
+#spring:
+#  resources: static-locations: "classpath:/static/"
+
+okta:
+  oauth2:
+    issuer: https://dev-388275.oktapreview.com/oauth2/default
+    clientId: 0oajfcjaxs1OKu2kC0h7
+    clientSecret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
+    rolesClaim: groups
+
