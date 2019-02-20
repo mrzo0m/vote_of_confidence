@@ -19,6 +19,7 @@
 		<module>communications</module>
 		<module>configuration</module>
 		<module>discovery</module>
+		<module>frontend</module>
 		<module>gateway</module>
 		<module>history</module>
 		<module>notifications</module>

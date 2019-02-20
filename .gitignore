@@ -252,3 +252,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,maven,macos,linux,extjs,ansible,windows
+
+
+#Custom ignore
+/frontend/workspace/ext
+/frontend/src/main/resources/static
