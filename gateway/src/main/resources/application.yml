@@ -16,14 +16,32 @@ server:
 
 eureka:
   client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    registerWithEureka: false
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    fetch-registry: true
   instance:
     preferIpAddress: true
 
 endpoints:
-  restart:
+  routes:
+    sensitive: false
+
+ribbon:
+  eureka:
     enabled: true
+
+zuul:
+  ignored-services: '*'
+  ssl-hostname-validation-enabled: false
+  sensitive-headers: Cookie,Set-Cookie
+  routes:
+    frontend:
+      serviceId: frontend
+      path: /frontend/**
+      strip-prefix: false
 
 okta:
   oauth2:
@@ -31,3 +49,9 @@ okta:
     clientId: 0oajfcjaxs1OKu2kC0h7
     clientSecret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
     rolesClaim: groups
+
+logging:
+  level:
+    ROOT: trace
+    org.springframework.web: trace
+    com.netflix.zuul: trace

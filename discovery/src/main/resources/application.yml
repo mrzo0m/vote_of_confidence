@@ -1,9 +1,12 @@
 spring:
   application:
-    name: discovery-server
+    name: discovery
 server:
-  port: 8761
+  port: ${PORT:8761}
 eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
+  server:
+    enableSelfPreservation: false
+    waitTimeInMsWhenSyncEmpty: 0
