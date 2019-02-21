@@ -52,6 +52,6 @@ okta:
 
 logging:
   level:
-    ROOT: trace
-    org.springframework.web: trace
-    com.netflix.zuul: trace
+    ROOT: info
+    org.springframework.web: info
+    com.netflix.zuul: info

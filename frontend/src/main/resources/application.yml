@@ -4,8 +4,12 @@ spring:
   profiles:
     active: native
 
+
 server:
   port: 0
+  servlet:
+    contextPath: /frontend
+
 eureka:
   client:
     region: default
