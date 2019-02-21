@@ -1,15 +1,40 @@
+oidc:
+  issuer-uri: https://dev-388275.oktapreview.com/oauth2/default
+  client-id: 0oajfcjaxs1OKu2kC0h7
+  client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
+
 spring:
   application:
     name: gateway
   profiles:
     active: native
-  main:
-    allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      client:
+        provider:
+          okta:
+            issuer-uri: ${oidc.issuer-uri}
+        registration:
+          okta:
+            client-id: ${oidc.client-id}
+            client-secret: ${oidc.client-secret}
+            scope: openid, email, profile
+      resourceserver:
+        jwt:
+          issuer-uri: ${oidc.issuer-uri}
   cloud:
-    config:
-      server:
-        native:
-          searchLocations: classpath:config/
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: frontend
+          uri: lb://frontend
+          predicates:
+            - Path=/frontend/**
+#          filters:
+#            - RewritePath=/frontend/(?<path>.*), /$\{path}
+
 
 server:
   port: 8080
@@ -25,33 +50,16 @@ eureka:
   instance:
     preferIpAddress: true
 
-endpoints:
-  routes:
-    sensitive: false
-
-ribbon:
-  eureka:
-    enabled: true
-
-zuul:
-  ignored-services: '*'
-  ssl-hostname-validation-enabled: false
-  sensitive-headers: Cookie,Set-Cookie
-  routes:
-    frontend:
-      serviceId: frontend
-      path: /frontend/**
-      strip-prefix: false
-
-okta:
-  oauth2:
-    issuer: https://dev-388275.oktapreview.com/oauth2/default
-    clientId: 0oajfcjaxs1OKu2kC0h7
-    clientSecret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
-    rolesClaim: groups
+#okta:
+#  oauth2:
+#    issuer: https://dev-388275.oktapreview.com/oauth2/default
+#    clientId: 0oajfcjaxs1OKu2kC0h7
+#    clientSecret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
+#    rolesClaim: groups
 
 logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    ROOT: info
-    org.springframework.web: info
-    com.netflix.zuul: info
+    ROOT: DEBUG
+    org.springframework.web: DEBUG
