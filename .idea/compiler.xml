@@ -16,6 +16,7 @@
         <module name="payments" />
         <module name="reporting" />
         <module name="scheduling" />
+        <module name="trace" />
         <module name="tracker" />
         <module name="voc" />
       </profile>
@@ -31,6 +32,7 @@
       <module name="payments" target="1.8" />
       <module name="reporting" target="1.8" />
       <module name="scheduling" target="1.8" />
+      <module name="trace" target="1.8" />
       <module name="tracker" target="1.8" />
       <module name="vote_of_confidence" target="1.8" />
     </bytecodeTargetLevel>
@@ -47,6 +49,7 @@
       <module name="payments" options="-parameters" />
       <module name="reporting" options="-parameters" />
       <module name="scheduling" options="-parameters" />
+      <module name="trace" options="-parameters" />
       <module name="tracker" options="-parameters" />
       <module name="vote_of_confidence" options="-parameters" />
     </option>

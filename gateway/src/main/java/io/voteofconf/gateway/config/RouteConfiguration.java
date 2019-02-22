@@ -12,7 +12,18 @@ public class RouteConfiguration {
         return builder.routes()
                 .route("frontend", r -> r
                         .path("/**")
+                        .filters(f -> f
+                                .hystrix(config ->
+                                        config
+                                                .setName("frontend")
+                                                .setFallbackUri("forward:/fallback/frontend")
+                                )
+                        )
                         .uri("lb://frontend"))
+                .route("trace", r -> r
+                        .path("/trace/**")
+                        .uri("lb://trace")
+                )
                 .build();
     }
 }
