@@ -22,22 +22,10 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${oidc.issuer-uri}
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: frontend
-          uri: lb://frontend
-          predicates:
-            - Path=/frontend/**
-#          filters:
-#            - RewritePath=/frontend/(?<path>.*), /$\{path}
-
 
 server:
   port: 8080
+
 
 eureka:
   client:
@@ -49,13 +37,6 @@ eureka:
     fetch-registry: true
   instance:
     preferIpAddress: true
-
-#okta:
-#  oauth2:
-#    issuer: https://dev-388275.oktapreview.com/oauth2/default
-#    clientId: 0oajfcjaxs1OKu2kC0h7
-#    clientSecret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
-#    rolesClaim: groups
 
 logging:
   pattern:
