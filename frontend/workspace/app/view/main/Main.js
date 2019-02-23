@@ -21,7 +21,7 @@ Ext.define('VocApp.view.main.Main', {
         }
     },
 
-    tabBarPosition: 'bottom',
+    tabBarPosition: 'top',
 
     items: [
         // TODO - Replace the content of this view to suit the needs of your application.
