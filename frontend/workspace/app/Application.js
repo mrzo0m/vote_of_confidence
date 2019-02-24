@@ -9,6 +9,7 @@ Ext.define('VocApp.Application', {
     name: 'VocApp',
 
     quickTips: false,
+    defaultToken : 'home',
     platformConfig: {
         desktop: {
             quickTips: true

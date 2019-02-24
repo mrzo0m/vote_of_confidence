@@ -9,6 +9,7 @@ Ext.define('VocApp.view.main.Main', {
 
     requires: [
         'Ext.MessageBox',
+        'VocApp.view.widgets.Widgets',
         'Ext.layout.Fit'
     ],
 
@@ -31,14 +32,16 @@ Ext.define('VocApp.view.main.Main', {
             layout: 'fit',
             // The following grid shares a store with the classic version's grid as well!
             items: [{
-                xtype: 'mainlist'
+                xtype: 'widgets'
             }]
         },{
             title: 'Users',
             iconCls: 'x-fa fa-user',
-            bind: {
-                html: '{loremIpsum}'
-            }
+            layout: 'fit',
+            // The following grid shares a store with the classic version's grid as well!
+            items: [{
+                xtype: 'mainlist'
+            }]
         },{
             title: 'Groups',
             iconCls: 'x-fa fa-users',
