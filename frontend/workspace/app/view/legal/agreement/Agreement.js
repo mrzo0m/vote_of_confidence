@@ -11,6 +11,9 @@ Ext.define('VocApp.view.legal.agreement.Agreement', {
 
     xtype: 'agreement',
     itemId: 'agreement',
+    cls: 'agreement',
+
+    scrollable: 'y',
 
     viewModel: {
         type: 'agreement'
@@ -21,10 +24,15 @@ Ext.define('VocApp.view.legal.agreement.Agreement', {
     items: [
         {
             xtype: 'component',
+            cls: 'legal',
             bind: {
                 html: '{legal}'
-            },
-            margin: '10%'
+            }
+        },
+        {
+            xtype: 'toolbar',
+            title: 'Соглашение об оказании услуг по содействию в трудоустройстве',
+            docked: 'top'
         }
     ]
 });

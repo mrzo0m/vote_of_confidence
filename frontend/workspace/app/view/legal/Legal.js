@@ -10,6 +10,7 @@ Ext.define('VocApp.view.legal.Legal', {
     ],
 
     xtype: 'legal',
+    itemId: 'legal',
     viewModel: {
         type: 'legal'
     },
@@ -33,17 +34,6 @@ Ext.define('VocApp.view.legal.Legal', {
                 margin: '0 0 10 0'
             },
             items: [
-            //     {
-            //     xtype: 'component',
-            //     html: 'It\'s been awhile.  Please enter your password to resume',
-            //     margin: '0 0 20 0'
-            // },
-
-            //     {
-            //     xtype: 'passwordfield',
-            //     placeholder: 'Password'
-            // },
-
                 {
                 xtype: 'button',
                 text: 'Зарегистрироваться',
@@ -60,12 +50,6 @@ Ext.define('VocApp.view.legal.Legal', {
                     ' и принимаете условия <a href="#agreement">«Соглашения об оказании услуг по содействию в трудоустройстве (оферта)»</a>'
             }]
         }
-        // {
-        //     title: 'Settings',
-        //     iconCls: 'x-fa fa-cog',
-        //     bind: {
-        //         html: '{legal}'
-        //     }
-        // }
+
     ]
 });

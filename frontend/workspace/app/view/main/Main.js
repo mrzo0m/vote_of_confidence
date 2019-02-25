@@ -16,16 +16,10 @@ Ext.define('VocApp.view.main.Main', {
     controller: 'main',
     viewModel: 'main',
 
-    defaults: {
-        tab: {
-            iconAlign: 'top'
-        }
-    },
+    fullscreen: true,
 
-    tabBarPosition: 'top',
-
+    itemId: 'home',
     items: [
-        // TODO - Replace the content of this view to suit the needs of your application.
         {
             title: 'Home',
             iconCls: 'x-fa fa-home',
@@ -34,7 +28,7 @@ Ext.define('VocApp.view.main.Main', {
             items: [{
                 xtype: 'widgets'
             }]
-        },{
+        }, {
             title: 'Users',
             iconCls: 'x-fa fa-user',
             layout: 'fit',
@@ -42,13 +36,13 @@ Ext.define('VocApp.view.main.Main', {
             items: [{
                 xtype: 'mainlist'
             }]
-        },{
+        }, {
             title: 'Groups',
             iconCls: 'x-fa fa-users',
             bind: {
                 html: '{loremIpsum}'
             }
-        },{
+        }, {
             title: 'Settings',
             iconCls: 'x-fa fa-cog',
             bind: {
