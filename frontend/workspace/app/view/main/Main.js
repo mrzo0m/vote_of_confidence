@@ -21,30 +21,21 @@ Ext.define('VocApp.view.main.Main', {
     itemId: 'home',
     items: [
         {
-            title: 'Home',
-            iconCls: 'x-fa fa-home',
+            title: 'Работодатель',
             layout: 'fit',
             // The following grid shares a store with the classic version's grid as well!
             items: [{
                 xtype: 'widgets'
             }]
         }, {
-            title: 'Users',
-            iconCls: 'x-fa fa-user',
+            title: 'Соискатель',
             layout: 'fit',
             // The following grid shares a store with the classic version's grid as well!
             items: [{
                 xtype: 'mainlist'
             }]
         }, {
-            title: 'Groups',
-            iconCls: 'x-fa fa-users',
-            bind: {
-                html: '{loremIpsum}'
-            }
-        }, {
-            title: 'Settings',
-            iconCls: 'x-fa fa-cog',
+            title: 'Эксперт',
             bind: {
                 html: '{loremIpsum}'
             }
