@@ -6,19 +6,24 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="communications" />
-        <module name="configuration" />
-        <module name="discovery" />
         <module name="frontend" />
-        <module name="gateway" />
         <module name="history" />
-        <module name="notifications" />
         <module name="payments" />
         <module name="reporting" />
-        <module name="scheduling" />
         <module name="trace" />
         <module name="tracker" />
         <module name="voc" />
+      </profile>
+      <profile name="Annotation profile for voc" enabled="true">
+        <sourceOutputDir name="../target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="communications" />
+        <module name="configuration" />
+        <module name="discovery" />
+        <module name="gateway" />
+        <module name="notifications" />
+        <module name="scheduling" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
