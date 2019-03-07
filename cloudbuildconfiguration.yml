@@ -2,5 +2,27 @@ steps:
   - name: 'gcr.io/cloud-builders/git'
     args: ['clone', 'https://github.com/mrzo0m/vote_of_confidence']
     env: ['PROJECT_ROOT=voc']
+  # This step builds the container image.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Build
+    args:
+      - 'build'
+      - '--file=frontend/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest'
+      - '-t'
+      - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest'
+      - '.'
+
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Push
+    args:
+      - 'push'
+      - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:$SHORT_SHA'
   - name: 'gcr.io/cloud-builders/mvn'
     args: ['install']
