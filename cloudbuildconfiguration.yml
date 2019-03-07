@@ -1,7 +1,4 @@
 steps:
-  - name: 'gcr.io/cloud-builders/git'
-    args: ['clone', 'https://github.com/mrzo0m/vote_of_confidence']
-    env: ['PROJECT_ROOT=voc']
   # This step builds the container image.
   - name: 'gcr.io/cloud-builders/docker'
     id: Build
@@ -24,5 +21,4 @@ steps:
     args:
       - 'push'
       - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:$SHORT_SHA'
-  - name: 'gcr.io/cloud-builders/mvn'
-    args: ['install']
+    wait_for: ['Build']
