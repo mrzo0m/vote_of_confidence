@@ -1,0 +1,6 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/mrzo0m/vote_of_confidence']
+    env: ['PROJECT_ROOT=voc']
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['install']
