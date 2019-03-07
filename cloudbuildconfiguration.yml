@@ -22,3 +22,12 @@ steps:
       - 'push'
       - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:$SHORT_SHA'
     wait_for: ['Build']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: PushLatest
+    args:
+      - 'push'
+      - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest'
+    wait_for: ['Build']
+images:
+  - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest'
+timeout: '1800s'

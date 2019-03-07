@@ -17,7 +17,7 @@ FROM maven:3.5.2-jdk-8-alpine AS maven
 COPY --from=clone /app/vote_of_confidence/ /tmp/
 COPY --from=senchacmd /code/build/production/VocApp/ /tmp/frontend/src/main/resources/static/
 WORKDIR /tmp/
-RUN mvn package -pl frontend -am
+RUN mvn package -DskipTests=true -q -pl frontend -am
 RUN find /tmp/frontend/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
 ENTRYPOINT /tmp
 
