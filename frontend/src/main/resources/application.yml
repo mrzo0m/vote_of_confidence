@@ -9,10 +9,3 @@ server:
   port: 0
 #  servlet:
 #    contextPath: /frontend
-
-eureka:
-  client:
-    region: default
-    registryFetchIntervalSeconds: 5
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}

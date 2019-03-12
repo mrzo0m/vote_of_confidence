@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: history
-  profiles:
-    active: native

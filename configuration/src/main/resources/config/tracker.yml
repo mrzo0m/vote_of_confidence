@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: tracker
-  profiles:
-    active: native

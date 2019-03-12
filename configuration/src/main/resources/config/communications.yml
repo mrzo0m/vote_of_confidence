@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: communications
-  profiles:
-    active: native

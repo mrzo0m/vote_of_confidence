@@ -17,8 +17,6 @@
 
 	<modules>
 		<module>communications</module>
-		<module>configuration</module>
-		<module>discovery</module>
 		<module>frontend</module>
 		<module>gateway</module>
 		<module>history</module>
@@ -34,12 +32,18 @@
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
 		<jib.maven.plugin.version>1.0.2</jib.maven.plugin.version>
+		<spring.cloud.starter.kubernetes.version>1.0.1.RELEASE</spring.cloud.starter.kubernetes.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-kubernetes</artifactId>
+			<version>${spring.cloud.starter.kubernetes.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

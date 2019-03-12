@@ -7,8 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="communications" />
-        <module name="configuration" />
-        <module name="discovery" />
         <module name="frontend" />
         <module name="gateway" />
         <module name="history" />
