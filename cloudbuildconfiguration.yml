@@ -28,6 +28,11 @@ steps:
       - 'push'
       - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest'
     wait_for: ['Build']
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/mrzo0m/vote_of_confidence']
+    env: ['PROJECT_ROOT=voc']
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['package -P containerizing-gcr']
 images:
   - 'eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest'
 timeout: '1800s'
