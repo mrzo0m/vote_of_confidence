@@ -14,14 +14,9 @@
         <module name="payments" />
         <module name="reporting" />
         <module name="scheduling" />
+        <module name="trace" />
         <module name="tracker" />
         <module name="voc" />
-      </profile>
-      <profile name="Annotation profile for voc" enabled="true">
-        <sourceOutputDir name="../target/generated-sources/annotations" />
-        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="trace" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
