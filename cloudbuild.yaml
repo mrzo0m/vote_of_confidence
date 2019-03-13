@@ -1,0 +1,307 @@
+steps:
+  # This step builds the container image.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-frontend
+    args:
+      - 'build'
+      - '--file=frontend/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-frontend:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-frontend:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-frontend:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-frontend
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-frontend:$SHORT_SHA'
+    wait_for: ['build-frontend']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-frontend-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-frontend:latest'
+    wait_for: ['build-frontend']
+#############################################
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-communications
+    args:
+      - 'build'
+      - '--file=communications/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-communications:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-communications:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-communications:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-communications
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-communications:$SHORT_SHA'
+    wait_for: ['build-communications']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-communications-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-communications:latest'
+    wait_for: ['build-communications']    
+  #############################################
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-gateway
+    args:
+      - 'build'
+      - '--file=gateway/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-gateway
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
+    wait_for: ['build-gateway']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-gateway-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+    wait_for: ['build-gateway']
+  
+  #############################################    
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-history
+    args:
+      - 'build'
+      - '--file=history/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-history
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:$SHORT_SHA'
+    wait_for: ['build-history']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-history-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+    wait_for: ['build-history']
+  #############################################    
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-notifications
+    args:
+      - 'build'
+      - '--file=notifications/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-notifications:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-notifications:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-notifications:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-notifications
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-notifications:$SHORT_SHA'
+    wait_for: ['build-notifications']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-notifications-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-notifications:latest'
+    wait_for: ['build-notifications']
+ #############################################    
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-payments
+    args:
+      - 'build'
+      - '--file=payments/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-payments:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-payments:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-payments:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-payments
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-payments:$SHORT_SHA'
+    wait_for: ['build-payments']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-payments-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-payments:latest'
+    wait_for: ['build-payments']
+ #############################################    
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-reporting
+    args:
+      - 'build'
+      - '--file=reporting/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-reporting:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-reporting:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-reporting:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-reporting
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-reporting:$SHORT_SHA'
+    wait_for: ['build-reporting']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-reporting-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-reporting:latest'
+    wait_for: ['build-reporting']
+  #############################################    
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-scheduling
+    args:
+      - 'build'
+      - '--file=scheduling/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-scheduling:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-scheduling:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-scheduling:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-scheduling
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-scheduling:$SHORT_SHA'
+    wait_for: ['build-scheduling']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-scheduling-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-scheduling:latest'
+    wait_for: ['build-scheduling']
+
+  #############################################    
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-trace
+    args:
+      - 'build'
+      - '--file=trace/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-trace:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-trace:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-trace:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-trace
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-trace:$SHORT_SHA'
+    wait_for: ['build-trace']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-trace-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-trace:latest'
+    wait_for: ['build-trace']
+#############################################    
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-tracker
+    args:
+      - 'build'
+      - '--file=tracker/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-tracker:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-tracker:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-tracker:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-tracker
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-tracker:$SHORT_SHA'
+    wait_for: ['build-tracker']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-tracker-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-tracker:latest'
+    wait_for: ['build-tracker']
+ 
+images:
+  - 'eu.gcr.io/$PROJECT_ID/voc-frontend:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-communications:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-notifications:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-payments:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-reporting:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-scheduling:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-trace:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-tracker:latest'
+timeout: '1800s'
