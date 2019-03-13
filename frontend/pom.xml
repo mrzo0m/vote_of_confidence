@@ -139,6 +139,7 @@
                         <configuration>
                             <to>
                                 <image>registry.hub.docker.com/mrzoom/voc-frontend</image>
+                                <credHelper>gcr</credHelper>
                             </to>
                         </configuration>
                         <executions>

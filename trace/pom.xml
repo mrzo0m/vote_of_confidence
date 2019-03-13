@@ -64,6 +64,7 @@
                             </from>
                             <to>
                                 <image>eu.gcr.io/vote-of-confidence-233210/voc-trace</image>
+                                <credHelper>gcr</credHelper>
                             </to>
                         </configuration>
                         <executions>

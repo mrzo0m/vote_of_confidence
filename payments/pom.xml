@@ -118,6 +118,7 @@
 							</from>
 							<to>
 								<image>eu.gcr.io/vote-of-confidence-233210/voc-payments</image>
+								<credHelper>gcr</credHelper>
 							</to>
 						</configuration>
 						<executions>
