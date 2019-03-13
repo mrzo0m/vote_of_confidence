@@ -6,7 +6,7 @@ FROM maven:3.5.2-jdk-8-alpine AS maven
 COPY --from=clone /app/vote_of_confidence/ /tmp/
 WORKDIR /tmp/
 RUN mvn package -DskipTests=true -q -pl scheduling -am
-RUN find /tmp/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
+RUN find /tmp/reporting/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
 ENTRYPOINT /tmp
 
 FROM openjdk:8-jdk-alpine
