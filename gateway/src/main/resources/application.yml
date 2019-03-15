@@ -6,6 +6,12 @@ oidc:
 spring:
   application:
     name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          url-expression: "'http://'+serviceId"
   profiles:
     active: native
   security:
@@ -29,11 +35,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: hystrix.stream, info, health
+        include: '*'
 
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    ROOT: info
-    org.springframework.web: info
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.loadbalancer: TRACE
