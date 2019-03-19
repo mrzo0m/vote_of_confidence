@@ -73,7 +73,7 @@ steps:
     args:
       - 'set'
       - 'image'
-      - 'deployment/deployment-gateway'
+      - 'deployment/gateway-deployment'
       - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
