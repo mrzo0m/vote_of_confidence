@@ -74,7 +74,7 @@ steps:
       - 'set'
       - 'image'
       - 'deployment/gateway-deployment'
-      - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
+      - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster'
@@ -85,5 +85,5 @@ steps:
             '--webhook', 'https://hooks.slack.com/services/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' ]
  
 images:
-  - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
+  - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
 timeout: '1800s'
