@@ -79,7 +79,10 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster'
     wait_for: ['push-gateway']
-
+  - name: 'gcr.io/$PROJECT_ID/slackbot'
+    id: chatops
+    args: [ '--build', '$BUILD_ID',
+            '--webhook', 'https://hooks.slack.com/services/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' ]
  
 images:
   - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
