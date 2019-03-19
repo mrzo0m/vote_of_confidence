@@ -74,7 +74,7 @@ steps:
       - 'set'
       - 'image'
       - 'deployment/gateway-deployment'
-      - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+      - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster'
@@ -82,5 +82,5 @@ steps:
 
  
 images:
-  - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
 timeout: '1800s'
