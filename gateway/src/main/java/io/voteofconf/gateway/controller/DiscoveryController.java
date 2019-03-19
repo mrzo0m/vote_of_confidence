@@ -22,6 +22,11 @@ public class DiscoveryController {
         return Flux.fromIterable(discoveryClient.getServices()).collectList();
     }
 
+    @GetMapping("hi")
+    public Mono<String> getHi() {
+        return Mono.just("hi");
+    }
+
     @GetMapping("getInfo")
     public Mono<String> getInfo() {
         return Mono.just(discoveryClient.description());
