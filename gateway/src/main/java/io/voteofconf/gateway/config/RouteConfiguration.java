@@ -10,6 +10,10 @@ public class RouteConfiguration {
     @Bean
     public RouteLocator gatewayRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
+                .route("trace", r -> r
+                        .path("/trace/**")
+                        .uri("http://trace")
+                )
                 .route("frontend-microservice", r -> r
                         .path("/**")
                         .filters(f -> f
@@ -19,11 +23,8 @@ public class RouteConfiguration {
                                                 .setFallbackUri("forward:/fallback/frontend")
                                 )
                         )
-                        .uri("lb://frontend-microservice"))
-                .route("trace", r -> r
-                        .path("/trace/**")
-                        .uri("lb://trace")
-                )
+                        .uri("http://frontend-microservice"))
+
                 .build();
     }
 }
