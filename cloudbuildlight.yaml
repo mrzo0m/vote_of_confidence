@@ -74,7 +74,7 @@ steps:
       - 'set'
       - 'image'
       - 'deployment/gateway-deployment'
-      - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+      - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster'
@@ -83,6 +83,7 @@ steps:
     id: chatops
     args: [ '--build', '$BUILD_ID',
             '--webhook', 'https://hooks.slack.com/services/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' ]
+    wait_for: ['deploy-gateway-latest']
  
 images:
   - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'

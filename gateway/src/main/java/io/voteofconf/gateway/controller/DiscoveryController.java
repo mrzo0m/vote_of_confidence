@@ -24,7 +24,7 @@ public class DiscoveryController {
 
     @GetMapping("hi")
     public Mono<String> getHi() {
-        return Mono.just("hi");
+        return Mono.just("hi for everyone");
     }
 
     @GetMapping("getInfo")
