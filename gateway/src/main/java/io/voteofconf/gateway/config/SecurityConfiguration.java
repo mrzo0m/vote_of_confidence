@@ -16,11 +16,18 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange()
-                .anyExchange().authenticated()
-                .and()
-                .oauth2Login()
-                .and()
-                .oauth2ResourceServer()
-                .jwt().and().and().build();
+                .anyExchange().permitAll().and().build();
     }
+
+//    @Bean
+//    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+//        return http
+//                .authorizeExchange()
+//                .anyExchange().authenticated()
+//                .and()
+//                .oauth2Login()
+//                .and()
+//                .oauth2ResourceServer()
+//                .jwt().and().and().build();
+//    }
 }
