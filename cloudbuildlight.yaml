@@ -73,7 +73,6 @@ steps:
     args:
       - 'set'
       - 'image'
-      - 'deployment'
       - 'deployment/deployment-gateway'
       - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
     env:
