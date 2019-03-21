@@ -14,13 +14,27 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http
-                .authorizeExchange()
+//        return http
+//                .authorizeExchange()
+//                .anyExchange().authenticated()
+//                .and()
+//                .oauth2Login()
+//                .and()
+//                .oauth2ResourceServer()
+//                .jwt().and().and().build();
+
+        return http.authorizeExchange()
+                // allow antonymous access to the root page
+                .pathMatchers("/").permitAll()
+                // all other requests
                 .anyExchange().authenticated()
-                .and()
-                .oauth2Login()
-                .and()
-                .oauth2ResourceServer()
-                .jwt().and().and().build();
+
+                // set logout URL
+                .and().logout().logoutUrl("/")
+
+                // enable OAuth2/OIDC
+                .and().oauth2Client()
+                .and().oauth2Login()
+                .and().build();
     }
 }
