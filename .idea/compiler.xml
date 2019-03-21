@@ -20,19 +20,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="communications" target="1.8" />
       <module name="configuration" target="1.8" />
       <module name="discovery" target="1.8" />
-      <module name="frontend" target="1.8" />
-      <module name="gateway" target="1.8" />
-      <module name="history" target="1.8" />
-      <module name="notifications" target="1.8" />
-      <module name="payments" target="1.8" />
-      <module name="reporting" target="1.8" />
-      <module name="scheduling" target="1.8" />
-      <module name="trace" target="1.8" />
-      <module name="tracker" target="1.8" />
-      <module name="vote_of_confidence" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
