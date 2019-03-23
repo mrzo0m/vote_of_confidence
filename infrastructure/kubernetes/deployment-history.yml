@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: history-deployment
+  labels:
+    app: history-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: history-microservice
+  template:
+    metadata:
+      labels:
+        app: history-microservice
+    spec:
+      containers:
+        - name: history-microservice
+          image: eu.gcr.io/vote-of-confidence-233210/voc-history:latest
+          ports:
+            - containerPort: 8000
