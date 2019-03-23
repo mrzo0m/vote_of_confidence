@@ -79,12 +79,61 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster'
     wait_for: ['push-gateway']
+
+  #############################################
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-history
+    args:
+      - 'build'
+      - '--file=history/Dockerfile'
+      - '--cache-from'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-history
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:$SHORT_SHA'
+    wait_for: ['build-history']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-history-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+    wait_for: ['build-history']
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: deploy-history-latest
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/history-deployment'
+      - 'history-microservice=eu.gcr.io/$PROJECT_ID/voc-history:$SHORT_SHA'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster'
+    wait_for: ['push-history']
+
+
+  ##########################################
+
+
   - name: 'gcr.io/$PROJECT_ID/slackbot'
     id: chatops
     args: [ '--build', '$BUILD_ID',
             '--webhook', 'https://hooks.slack.com/services/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' ]
-    wait_for: ['deploy-gateway-latest']
- 
+    wait_for: ['deploy-gateway-latest', 'deploy-history-latest']
+
+
 images:
   - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
 timeout: '1800s'

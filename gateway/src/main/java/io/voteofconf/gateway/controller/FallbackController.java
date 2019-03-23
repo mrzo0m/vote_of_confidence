@@ -9,9 +9,14 @@ import reactor.core.publisher.Mono;
 @RequestMapping("fallback")
 public class FallbackController {
 
+    @GetMapping("history")
+    public Mono<String> getHistoryFallback() {
+        return Mono.just("history service is temporarily unavailable. Please try again later!");
+    }
+
     @GetMapping("frontend")
     public Mono<String> getFrontendFallback() {
-        return Mono.just("Frontend temporarily unavailable. Please try again later!");
+        return Mono.just("Frontend service is temporarily unavailable. Please try again later!");
     }
 
 }

@@ -10,10 +10,16 @@ public class RouteConfiguration {
     @Bean
     public RouteLocator gatewayRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("trace", r -> r
-                        .path("/trace/**")
-                        .uri("http://trace")
-                )
+                .route("history-microservice", r -> r
+                        .path("/history-microservice")
+                        .filters(f -> f
+                                .hystrix(config ->
+                                        config
+                                                .setName("history-microservice")
+                                                .setFallbackUri("forward:/fallback/history")
+                                )
+                        )
+                        .uri("http://history-microservice"))
                 .route("frontend-microservice", r -> r
                         .path("/**")
                         .filters(f -> f

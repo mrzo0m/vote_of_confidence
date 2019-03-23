@@ -3,7 +3,7 @@ package io.voteofconf.history.config;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractReactiveCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
@@ -16,28 +16,22 @@ import org.springframework.data.cassandra.repository.config.EnableReactiveCassan
 @EnableReactiveCassandraRepositories
 public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
 
-    @Value("${cassandra.contactpoints}")
-    private String contactPoints;
-    @Value("${cassandra.port}")
-    private int port;
-    @Value("${cassandra.keyspace}")
-    private String keyspace;
-    @Value("${cassandra.basepackages}")
-    private String basePackages;
+    @Autowired
+    private CassandraKubeConfig cassandraKubeConfig;
 
     @Override
     protected String getKeyspaceName() {
-        return keyspace;
+        return cassandraKubeConfig.getKeyspace();
     }
 
     @Override
     protected String getContactPoints() {
-        return contactPoints;
+        return cassandraKubeConfig.getContactpoints();
     }
 
     @Override
     protected int getPort() {
-        return port;
+        return cassandraKubeConfig.getPort();
     }
 
     @Override
@@ -48,14 +42,14 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
     @Override
     public String[] getEntityBasePackages() {
         return new String[]{
-                basePackages
+                cassandraKubeConfig.getBasepackages()
         };
     }
 
     @Override
     protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
         final CreateKeyspaceSpecification specification =
-                CreateKeyspaceSpecification.createKeyspace(keyspace)
+                CreateKeyspaceSpecification.createKeyspace(cassandraKubeConfig.getKeyspace())
                         .ifNotExists()
                         .with(KeyspaceOption.DURABLE_WRITES, true)
                         .withSimpleReplication();
@@ -64,6 +58,6 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
 
     @Override
     protected List<DropKeyspaceSpecification> getKeyspaceDrops() {
-        return Arrays.asList(DropKeyspaceSpecification.dropKeyspace(keyspace));
+        return Arrays.asList(DropKeyspaceSpecification.dropKeyspace(cassandraKubeConfig.getKeyspace()));
     }
 }
