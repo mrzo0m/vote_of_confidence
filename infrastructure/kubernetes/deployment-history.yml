@@ -19,3 +19,6 @@ spec:
           image: eu.gcr.io/vote-of-confidence-233210/voc-history:latest
           ports:
             - containerPort: 8000
+          resources:
+            requests:
+              cpu: 300m

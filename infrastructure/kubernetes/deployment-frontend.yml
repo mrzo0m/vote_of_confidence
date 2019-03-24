@@ -19,3 +19,6 @@ spec:
           image: eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m

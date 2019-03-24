@@ -11,7 +11,7 @@ public class RouteConfiguration {
     public RouteLocator gatewayRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("history-microservice", r -> r
-                        .path("/history-microservice")
+                        .path("/history-microservice/**")
                         .filters(f -> f
                                 .hystrix(config ->
                                         config

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: history-microservice
+data:
+  application.yaml: |-
+    cassandra:
+      host: cassandra
+      contactpoints: cassandra
+      keyspace: voc_keyspace
+      basepackages: io.voteofconf.history
+      port: 9042
+

@@ -12,13 +12,13 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ConfigurationProperties(prefix = "cassandra-config")
+@ConfigurationProperties(prefix = "cassandra")
 public class CassandraKubeConfig implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String contactpoints;
+    private String contactPoints;
     private int port;
     private String keyspace;
-    private String basepackages;
+    private String basePackages;
 
 }
