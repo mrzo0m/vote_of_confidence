@@ -13,6 +13,7 @@ public class RouteConfiguration {
                 .route("history-microservice", r -> r
                         .path("/history-microservice/**")
                         .filters(f -> f
+                                .rewritePath("/history-microservice/(?<path>.*)", "/$\\{path}")
                                 .hystrix(config ->
                                         config
                                                 .setName("history-microservice")
