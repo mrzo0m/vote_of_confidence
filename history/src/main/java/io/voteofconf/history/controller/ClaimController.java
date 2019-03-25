@@ -1,12 +1,12 @@
 package io.voteofconf.history.controller;
 
+import io.swagger.annotations.ApiOperation;
 import io.voteofconf.history.dao.Claim;
-import io.voteofconf.history.dao.ClaimKey;
 import io.voteofconf.history.dao.ClaimRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -15,18 +15,31 @@ import java.util.UUID;
 @RequestMapping("claim")
 public class ClaimController {
 
-    private static final String TO_THE_STARS = "ToTheStars";
-
-    @Autowired
     private ClaimRepository claimRepository;
 
-    @GetMapping("demo")
-    public Mono<Claim> getHi() {
-        final Claim toTheStarsClaim =
-                new Claim(new ClaimKey(TO_THE_STARS, UUID.randomUUID()), "This is info");
-        claimRepository.insert(toTheStarsClaim).subscribe();
-
-        return claimRepository.findOneByKeyCompanyName(TO_THE_STARS);
+    @Autowired
+    public ClaimController(ClaimRepository claimRepository) {
+        this.claimRepository = claimRepository;
     }
+
+    @GetMapping("/company/{name}")
+    public Mono<Claim> getClaimByCompany(@PathVariable(value = "name") String companyName) {
+        return claimRepository.findOneByKeyCompanyName(companyName);
+    }
+
+
+    @GetMapping("/{id}")
+    public Mono<Claim> get(@PathVariable(value = "id") UUID id) {
+        return claimRepository.findOneByKeyId(id);
+    }
+
+
+    @ApiOperation(value = "Post to save claim")
+    @PostMapping
+    public Mono<ResponseEntity<Claim>> save(@RequestBody Claim claim) {
+        return this.claimRepository.save(claim)
+                .map(savedClaim -> new ResponseEntity<>(savedClaim, HttpStatus.CREATED));
+    }
+
 
 }
