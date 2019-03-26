@@ -1,4 +1,4 @@
-apiVersion: "apps/v1" # for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: cassandra
@@ -6,7 +6,7 @@ metadata:
     app: cassandra
 spec:
   serviceName: cassandra
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: cassandra
@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 1800
       containers:
         - name: cassandra
-          image: cassandra:3.11.4
+          image: gcr.io/google-samples/cassandra:v13
           imagePullPolicy: Always
           ports:
             - containerPort: 7000
@@ -31,10 +31,10 @@ spec:
               name: cql
           resources:
             limits:
-              cpu: 300m
+              cpu: "500m"
               memory: 1Gi
             requests:
-              cpu: 300m
+              cpu: "500m"
               memory: 1Gi
           securityContext:
             capabilities:
@@ -52,12 +52,14 @@ spec:
               value: 512M
             - name: HEAP_NEWSIZE
               value: 100M
+            - name: CASSANDRA_SEEDS
+              value: "cassandra-0.cassandra.default.svc.cluster.local"
             - name: CASSANDRA_CLUSTER_NAME
-              value: "VOC-CASSANDRA"
+              value: "K8Demo"
             - name: CASSANDRA_DC
-              value: "DC1-VOC-CASSANDRA"
+              value: "DC1-K8Demo"
             - name: CASSANDRA_RACK
-              value: "Rack1-VOC-CASSANDRA"
+              value: "Rack1-K8Demo"
             - name: POD_IP
               valueFrom:
                 fieldRef:
@@ -75,19 +77,8 @@ spec:
           # the stateful pod volumes.
           volumeMounts:
             - name: cassandra-data
-              mountPath: /var/lib/cassandra
-  # These are converted to volume claims by the controller
-  # and mounted at the paths mentioned above.
-  # do not use these in production until ssd GCEPersistentDisk or other ssd pd
-  volumeClaimTemplates:
-    - metadata:
-        name: cassandra-data
-        annotations:
-          volume.beta.kubernetes.io/storage-class: voc-storageclass
-        labels:
-          app: cassandra
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 5Gi
+              mountPath: /cassandra_data
+      volumes:
+        - name: cassandra-data
+          persistentVolumeClaim:
+            claimName: cassandra-pvc-ssd
