@@ -12,16 +12,19 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @EnableEurekaClient
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = {
-		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+//		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
 		org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
 )
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -61,8 +64,14 @@ class ServiceInstanceRestController {
 
 	@RequestMapping("/returnme")
 	@PreAuthorize("hasAuthority('SCOPE_profile')")
-	public String returnMe(
-			@PathVariable String applicationName) {
+	public String returnMe() {
 		return "It's me!";
 	}
+
+	@GetMapping("/api/userProfile")
+	@PreAuthorize("hasAuthority('SCOPE_profile')")
+	public Map<String, Object> getUserDetails(JwtAuthenticationToken authentication) {
+		return authentication.getTokenAttributes();
+	}
+
 }

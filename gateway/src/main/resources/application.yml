@@ -14,6 +14,10 @@ spring:
         provider:
           okta:
             issuer-uri: ${oidc.issuer-uri}
+#            authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
+#            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
+#            user-info-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/userinfo
+#            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
         registration:
           okta:
             client-id: ${oidc.client-id}
@@ -22,6 +26,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${oidc.issuer-uri}
+          jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
 
 server:
   port: 8080
@@ -46,5 +51,5 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    ROOT: info
-    org.springframework.web: info
+    ROOT: trace
+    org.springframework.web: trace
