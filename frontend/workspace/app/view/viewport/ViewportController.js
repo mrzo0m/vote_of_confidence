@@ -12,6 +12,7 @@ Ext.define('VocApp.view.viewport.ViewportController', {
 
     routes: {
         'home': 'handleHomeRoute',
+        'faq': 'handleFaqRoute',
         'agreement': 'handleAgreementRoute'
     },
 
@@ -36,6 +37,10 @@ Ext.define('VocApp.view.viewport.ViewportController', {
 
     handleHomeRoute: function () {
         this.showView('home');
+    },
+
+    handleFaqRoute: function () {
+        this.showView('faq');
     },
     handleAgreementRoute: function () {
         this.showView('agreement');

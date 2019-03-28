@@ -25,7 +25,7 @@ Ext.define('VocApp.Application', {
     launch: function(profile) {
         // The viewport controller requires xtype defined by profiles, so let's perform extra
         // initialization when the application and its dependencies are fully accessible.
-        Ext.Viewport.getController().onLaunch();
+        // Ext.Viewport.getController().onLaunch();
         Ext.History.init();
         Ext.getBody().removeCls('launching');
         this.callParent([profile]);

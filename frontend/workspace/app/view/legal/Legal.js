@@ -41,7 +41,7 @@ Ext.define('VocApp.view.legal.Legal', {
                 iconCls: 'x-fa fa-angle-right',
                 width: '100%',
                 ui: 'gray-button',
-                handler: 'goToDashboard'
+                handler: ''
             }, {
                 xtype: 'component',
                 margin: 0,

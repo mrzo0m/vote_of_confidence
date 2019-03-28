@@ -4,41 +4,34 @@
  * added to the Viewport container.
  */
 Ext.define('VocApp.view.main.Main', {
-    extend: 'Ext.tab.Panel',
-    xtype: 'app-main',
+    extend: 'Ext.navigation.View',
 
     requires: [
+        'Ext.Button',
+        'Ext.list.Tree',
         'Ext.MessageBox',
         'VocApp.view.widgets.Widgets',
-        'Ext.layout.Fit'
+        'Ext.layout.Fit',
+        'Ext.navigation.View'
     ],
+
+    xtype: 'home',
 
     controller: 'main',
     viewModel: 'main',
 
-    fullscreen: true,
+    navigationBar: false,
 
     itemId: 'home',
     items: [
         {
-            title: 'Работодатель',
-            layout: 'fit',
-            // The following grid shares a store with the classic version's grid as well!
-            items: [{
-                xtype: 'widgets'
-            }]
-        }, {
-            title: 'Соискатель',
-            layout: 'fit',
-            // The following grid shares a store with the classic version's grid as well!
-            items: [{
-                xtype: 'mainlist'
-            }]
-        }, {
-            title: 'Эксперт',
-            bind: {
-                html: '{loremIpsum}'
-            }
+            xtype: 'maintoolbar',
+            docked: 'top',
+            // userCls: 'main-toolbar',
+            shadow: true
+        }
+        , {
+            xtype: 'widgets'
         }
     ]
 });
