@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.voteofconf.history.dao.Claim;
 import io.voteofconf.history.dao.ClaimKey;
 import io.voteofconf.history.dao.ClaimRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.UUID;
  *   /crops
  *   /crops/{crop_id}
  */
+@Log
 @RestController
 @RequestMapping("claims")
 public class ClaimController {
@@ -37,23 +39,22 @@ public class ClaimController {
 
     @GetMapping
     public Flux<Claim> getAll() {
+        log.info("Getting all claims");
         return claimRepository.findAll();
     }
 
-    @GetMapping("/{company}")
-    public Mono<Claim> getClaimByCompany(@PathVariable(value = "company") String companyName) {
-        return claimRepository.findOneByKeyCompanyName(companyName);
-    }
 
 
     @GetMapping("/{id}")
     public Mono<Claim> get(@PathVariable(value = "id") UUID id) {
+        log.info("Getting claim " + id.toString());
         return claimRepository.findOneByKeyId(id);
     }
 
 
     @PutMapping
     public Mono<Void> put() {
+        log.info("Generate stub for claims");
         claimRepository.saveAll(Arrays.asList(
                 new Claim(new ClaimKey("Company"+UUID.randomUUID(), UUID.randomUUID()), "info: " + System.nanoTime()),
                 new Claim(new ClaimKey("Company"+UUID.randomUUID(), UUID.randomUUID()), "info: " + System.nanoTime()),
@@ -68,6 +69,7 @@ public class ClaimController {
     @ApiOperation(value = "Post to save claim")
     @PostMapping
     public Mono<ResponseEntity<Claim>> save(@RequestBody Claim claim) {
+        log.info("Saving some claim");
         return this.claimRepository.save(claim)
                 .map(savedClaim -> new ResponseEntity<>(savedClaim, HttpStatus.CREATED));
     }
