@@ -29,9 +29,26 @@ Ext.define('VocApp.view.main.Main', {
             docked: 'top',
             // userCls: 'main-toolbar',
             shadow: true
-        }
-        , {
-            xtype: 'widgets'
+        },
+        {
+            xtype: 'container',
+            docked: 'top',
+            userCls: 'main-nav-container',
+            reference: 'navigation',
+            layout: 'fit',
+            items: [{
+                xtype: 'treelist',
+                reference: 'navigationTree',
+                scrollable: true,
+                ui: 'nav',
+                store: 'NavigationTree',
+                expanderFirst: false,
+                expanderOnly: false,
+                listeners: {
+                    itemclick: 'onNavigationItemClick',
+                    selectionchange: 'onNavigationTreeSelectionChange'
+                }
+            }]
         }
     ]
 });

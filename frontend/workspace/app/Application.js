@@ -16,11 +16,12 @@ Ext.define('VocApp.Application', {
 
     quickTips: false,
     defaultToken : 'home',
+    mainView: 'VocApp.view.main.Main',
 
-    viewport: {
-        controller: 'viewport',
-        viewModel: 'viewport'
-    },
+    // viewport: {
+    //     controller: 'viewport',
+    //     viewModel: 'viewport'
+    // },
 
     launch: function(profile) {
         // The viewport controller requires xtype defined by profiles, so let's perform extra
@@ -32,12 +33,16 @@ Ext.define('VocApp.Application', {
     },
 
     onAppUpdate: function () {
-        Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
+        Ext.Msg.confirm('Доступно обновление', 'Поступило обновление приложения, обновить?',
             function (choice) {
                 if (choice === 'yes') {
                     window.location.reload();
                 }
             }
         );
-    }
+    },
+
+    stores: [
+        'NavigationTree'
+    ]
 });

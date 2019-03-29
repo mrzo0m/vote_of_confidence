@@ -19,11 +19,14 @@ Ext.define('VocApp.view.faq.Faq', {
 
     items: [
         {
-            xtype: 'maintoolbar',
-            docked: 'top',
-            // userCls: 'main-toolbar',
-            shadow: true
+            xtype: 'statustile',
+            height: 170,
+            userCls: 'big-33 small-50 dashboard-item',
+            shadow: true,
+            color: '#153b56',
+            quantity: 611,
+            description: 'Messages' ,
+            iconCls: 'x-fa fa-envelope'
         }
-
     ]
 });

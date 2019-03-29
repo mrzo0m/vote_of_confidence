@@ -11,28 +11,68 @@ Ext.define('VocApp.view.main.Toolbar', {
         'Ext.SegmentedButton'
     ],
 
-    controller: 'toolbar',
-
     items: [
         {
+            ui: 'header',
+            iconCls: 'x-fa fa-bars',
+            margin: '0 0 0 10',
+            handler: 'onMenuBarClick'
+        },
+        '->',
+        {
             // This component is moved to the floating nav container by the phone profile
-            xtype: 'component',
+            xtype: 'button',
+            // userCls: 'main-logo',
             plugins: {
                 responsive: true
             },
             responsiveConfig: {
                 'width < 768': {
-                    hidden: true
+                    margin: '0'
                 },
                 'width >= 768': {
                     hidden: false,
-                    html: 'Sencha'
+                    margin: '0 0 0 10',
                 }
             },
-            reference: 'logo',
-            // userCls: 'main-logo',
-
+            html: 'Заказчик'
         },
+        {
+            // This component is moved to the floating nav container by the phone profile
+            xtype: 'button',
+            // userCls: 'main-logo',
+            plugins: {
+                responsive: true
+            },
+            responsiveConfig: {
+                'width < 768': {
+                    margin: '0'
+                },
+                'width >= 768': {
+                    hidden: false,
+                    margin: '0 0 0 10',
+                }
+            },
+            html: 'Эксперт'
+        },
+        {
+            // This component is moved to the floating nav container by the phone profile
+            xtype: 'button',
+            // userCls: 'main-logo',
+            plugins: {
+                responsive: true
+            },
+            responsiveConfig: {
+                'width < 768': {
+                    margin: '0'
+                },
+                'width >= 768': {
+                    margin: '0 0 0 10',
+                }
+            },
+            html: 'Соискатель'
+        },
+        '->',
         {
             ui: 'header',
             iconCls: 'x-fa fa-search',
@@ -118,66 +158,6 @@ Ext.define('VocApp.view.main.Toolbar', {
                 }
             },
             userCls: 'main-user-name'
-        },
-        '->',
-        {
-            // This component is moved to the floating nav container by the phone profile
-            xtype: 'button',
-            // userCls: 'main-logo',
-            plugins: {
-                responsive: true
-            },
-            responsiveConfig: {
-                'width < 768': {
-                    margin: '0'
-                },
-                'width >= 768': {
-                    hidden: false,
-                    margin: '0 0 0 10',
-                }
-            },
-            html: 'Заказчик'
-        },
-        {
-            // This component is moved to the floating nav container by the phone profile
-            xtype: 'button',
-            // userCls: 'main-logo',
-            plugins: {
-                responsive: true
-            },
-            responsiveConfig: {
-                'width < 768': {
-                    margin: '0'
-                },
-                'width >= 768': {
-                    hidden: false,
-                    margin: '0 0 0 10',
-                }
-            },
-            html: 'Эксперт'
-        },
-        {
-            // This component is moved to the floating nav container by the phone profile
-            xtype: 'button',
-            // userCls: 'main-logo',
-            plugins: {
-                responsive: true
-            },
-            responsiveConfig: {
-                'width < 768': {
-                    margin: '0'
-                },
-                'width >= 768': {
-                    margin: '0 0 0 10',
-                }
-            },
-            html: 'Соискатель'
-        },
-        '->',
-        {
-            ui: 'header',
-            iconCls: 'x-fa fa-bars',
-            margin: '0 0 0 10',
-        },
+        }
     ]
 });
