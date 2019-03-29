@@ -54,7 +54,7 @@ Ext.define('VocApp.view.main.MainController', {
             };
         } else if (!item && !node && hashTag) {
             item = {
-                routeId: hashTag
+                routeId: 'home'
             };
         }
 
