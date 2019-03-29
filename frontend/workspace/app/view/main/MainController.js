@@ -53,9 +53,8 @@ Ext.define('VocApp.view.main.MainController', {
                 routeId: hashTag
             };
         } else if (!item && !node && hashTag) {
-            item = {
-                routeId: 'home'
-            };
+            this.redirectTo('home');
+            return;
         }
 
         view.setActiveItem(item);
@@ -78,9 +77,14 @@ Ext.define('VocApp.view.main.MainController', {
             navigationTree.show();
         }
         this.onToggleNavigationSize();
-        debugger;
-    }
+    },
 
+    toolbarButtonClick: function (btn) {
+        var href = btn.config.href;
+
+        this.redirectTo(href);
+        this.onMenuBarClick();
+    }
 
 
 });

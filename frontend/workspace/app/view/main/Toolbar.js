@@ -57,7 +57,7 @@ Ext.define('VocApp.view.main.Toolbar', {
         },
         {
             // This component is moved to the floating nav container by the phone profile
-            xtype: 'button',
+            ui: 'header',
             // userCls: 'main-logo',
             plugins: {
                 responsive: true
@@ -70,7 +70,9 @@ Ext.define('VocApp.view.main.Toolbar', {
                     margin: '0 0 0 10',
                 }
             },
-            html: 'Соискатель'
+            href: '#candidate',
+            handler: 'toolbarButtonClick',
+            text: 'Соискатель'
         },
         '->',
         {
