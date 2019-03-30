@@ -39,7 +39,6 @@ Ext.define('VocApp.view.main.MainController', {
 
     setCurrentView: function (hashTag) {
         hashTag = (hashTag || '').toLowerCase();
-        debugger;
         let view = this.getView(),
             navigationTree = this.lookup('navigationTree'),
             store = navigationTree.getStore(),
@@ -83,7 +82,6 @@ Ext.define('VocApp.view.main.MainController', {
         var href = btn.config.href;
 
         this.redirectTo(href);
-        this.onMenuBarClick();
     }
 
 

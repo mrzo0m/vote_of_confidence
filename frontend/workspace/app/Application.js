@@ -15,7 +15,7 @@ Ext.define('VocApp.Application', {
 
 
     quickTips: false,
-    defaultToken : 'home',
+    defaultToken : 'widgets',
     mainView: 'VocApp.view.main.Main',
 
     // viewport: {
