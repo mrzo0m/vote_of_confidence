@@ -17,12 +17,11 @@ Ext.define('VocApp.view.main.Main', {
 
     xtype: 'home',
 
-    controller: 'main',
-    viewModel: 'main',
-
+    // controller: 'main',
+    //viewModel: 'main',
+    //
     navigationBar: false,
 
-    itemId: 'home',
     items: [
         {
             xtype: 'maintoolbar',
@@ -33,7 +32,7 @@ Ext.define('VocApp.view.main.Main', {
         {
             xtype: 'container',
             docked: 'top',
-            userCls: 'main-nav-container',
+            // userCls: 'main-nav-container',
             reference: 'navigation',
             layout: 'fit',
             items: [{
@@ -41,7 +40,10 @@ Ext.define('VocApp.view.main.Main', {
                 reference: 'navigationTree',
                 scrollable: true,
                 ui: 'nav',
-                store: 'NavigationTree',
+                store: {},
+                bind: {
+                    store: '{navigationtree}'
+                },
                 expanderFirst: false,
                 expanderOnly: false,
                 listeners: {

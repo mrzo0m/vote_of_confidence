@@ -30,7 +30,7 @@ Ext.define('VocApp.view.main.MainController', {
     },
 
     onNavigationTreeSelectionChange: function (tree, node) {
-        let to = node && (node.get('routeId') || node.get('viewType'));
+        var to = node && (node.get('routeId') || node.get('viewType'));
 
         if (to) {
             this.redirectTo(to);
@@ -39,7 +39,7 @@ Ext.define('VocApp.view.main.MainController', {
 
     setCurrentView: function (hashTag) {
         hashTag = (hashTag || '').toLowerCase();
-        let view = this.getView(),
+        var view = this.getView(),
             navigationTree = this.lookup('navigationTree'),
             store = navigationTree.getStore(),
             node = store.findNode('routeId', hashTag) ||
@@ -68,7 +68,7 @@ Ext.define('VocApp.view.main.MainController', {
 
 
     onMenuBarClick: function () {
-        let view = this.getView(),
+        var view = this.getView(),
             navigationTree = this.lookup('navigationTree');
         if (!this.getShowNavigation()) {
             navigationTree.hide()

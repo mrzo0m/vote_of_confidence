@@ -10,6 +10,7 @@ Ext.define('VocApp.Application', {
 
     requires: [
         'VocApp.*',
+        'Ext.data.identifier.Uuid',
         'Ext.History'
     ],
 
@@ -18,10 +19,6 @@ Ext.define('VocApp.Application', {
     defaultToken : 'widgets',
     mainView: 'VocApp.view.main.Main',
 
-    // viewport: {
-    //     controller: 'viewport',
-    //     viewModel: 'viewport'
-    // },
 
     launch: function(profile) {
         // The viewport controller requires xtype defined by profiles, so let's perform extra
@@ -35,14 +32,16 @@ Ext.define('VocApp.Application', {
     onAppUpdate: function () {
         Ext.Msg.confirm('Доступно обновление', 'Поступило обновление приложения, обновить?',
             function (choice) {
-                if (choice === 'yes') {
+                if (choice === 'Да') {
                     window.location.reload();
                 }
             }
         );
-    },
+    }
+
+    ,
 
     stores: [
-        'NavigationTree'
+        'VocApp.store.NavigationTree'
     ]
 });
