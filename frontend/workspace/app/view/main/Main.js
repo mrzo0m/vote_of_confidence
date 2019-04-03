@@ -30,10 +30,10 @@ Ext.define('VocApp.view.main.Main', {
         },
         iconCls: 'exec-header-icon',
         title: {
-            text: 'Вотум доверия',
+            text: 'Вотум',
             textAlign: 'center',
             flex: 0,
-            minWidth: 160
+            minWidth: 60
         },
         tools: [{
             type: 'gear',
@@ -44,10 +44,10 @@ Ext.define('VocApp.view.main.Main', {
             margin: '0 0 0 0',
             handler: 'onSwitchTool',
             responsiveConfig: {
-                'width < 768 && tall': {
+                'width < 415 && tall': {
                     visible: true
                 },
-                'width >= 768': {
+                'width >= 415': {
                     visible: false
                 }
             }
@@ -91,10 +91,10 @@ Ext.define('VocApp.view.main.Main', {
                     textAlign: 'center',
                     flex: 1
                 },
-                'width < 768 && tall': {
+                'width < 415 && tall': {
                     visible: false
                 },
-                'width >= 768': {
+                'width >= 415': {
                     visible: true
                 }
             }
