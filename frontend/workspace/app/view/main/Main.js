@@ -1,44 +1,154 @@
 /**
  * This class is the main view for the application. It is specified in app.js as the
- * "mainView" property. That setting causes an instance of this class to be created and
- * added to the Viewport container.
+ * "autoCreateViewport" property. That setting automatically applies the "viewport"
+ * plugin to promote that instance of this class to the body element.
  */
 Ext.define('VocApp.view.main.Main', {
     extend: 'Ext.tab.Panel',
     xtype: 'app-main',
 
     requires: [
-        'Ext.MessageBox',
-        'VocApp.view.widgets.Widgets',
-        'Ext.layout.Fit'
+        'VocApp.view.*'
     ],
 
     controller: 'main',
-    viewModel: 'main',
 
-    fullscreen: true,
+    viewModel: {
+        type: 'main'
+    },
 
-    itemId: 'home',
-    items: [
-        {
-            title: 'Работодатель',
-            layout: 'fit',
-            // The following grid shares a store with the classic version's grid as well!
-            items: [{
-                xtype: 'widgets'
-            }]
-        }, {
-            title: 'Соискатель',
-            layout: 'fit',
-            // The following grid shares a store with the classic version's grid as well!
-            items: [{
-                xtype: 'mainlist'
-            }]
-        }, {
-            title: 'Эксперт',
-            bind: {
-                html: '{loremIpsum}'
+    ui: 'navigation',
+    cls: 'exec-menu-navigation',
+
+    tabBarHeaderPosition: 1,
+    titleRotation: 0,
+    tabRotation: 0,
+
+    header: {
+        layout: {
+            align: 'stretchmax'
+        },
+        iconCls: 'exec-header-icon',
+        title: {
+            text: 'Вотум доверия',
+            textAlign: 'center',
+            flex: 0,
+            minWidth: 160
+        },
+        tools: [{
+            type: 'gear',
+            plugins: {
+                responsive: true
+            },
+            width: 120,
+            margin: '0 0 0 0',
+            handler: 'onSwitchTool',
+            responsiveConfig: {
+                'width < 768 && tall': {
+                    visible: true
+                },
+                'width >= 768': {
+                    visible: false
+                }
+            }
+        }]
+    },
+
+    tabBar: {
+        flex: 1,
+        layout: {
+            align: 'stretch',
+            overflowHandler: 'none'
+        }
+    },
+
+    responsiveConfig: {
+        tall: {
+            headerPosition: 'top'
+        },
+        wide: {
+            headerPosition: 'left'
+        }
+    },
+
+    listeners: {
+        tabchange: 'onTabChange'
+    },
+
+    defaults: {
+        tabConfig: {
+            plugins: {
+                responsive: true
+            },
+            responsiveConfig: {
+                wide: {
+                    iconAlign: 'left',
+                    textAlign: 'left',
+                    flex: 0
+                },
+                tall: {
+                    iconAlign: 'top',
+                    textAlign: 'center',
+                    flex: 1
+                },
+                'width < 768 && tall': {
+                    visible: false
+                },
+                'width >= 768': {
+                    visible: true
+                }
             }
         }
-    ]
+    },
+
+    items: [{
+        // This page has a hidden tab so we can only get here during initialization. This
+        // allows us to avoid rendering an initial activeTab only to change it immediately
+        // by routing
+        xtype: 'component',
+        tabConfig: {
+            hidden: true
+        }
+    },{
+        xtype: 'kpi',
+        title: 'KPI Overview',
+        iconCls: 'exec-kpi-icon'
+    },{
+        xtype: 'quarterly',
+        title: 'Performance',
+        iconCls: 'exec-quarterly-icon'
+    },{
+        xtype: 'profitloss',
+        title: 'Profit & Loss',
+        iconCls: 'exec-pl-icon'
+    },{
+        xtype: 'news',
+        title: 'Company News',
+        iconCls: 'exec-news-icon'
+    }],
+
+    // This object is a config for the popup menu we present on very small form factors.
+    // It is used by our controller (MainController).
+    assistiveMenu: {
+        items: [{
+            text: 'KPI Overview',
+            height: 50,
+            iconCls: 'exec-kpi-icon'
+        },{
+            text: 'Performance',
+            height: 50,
+            iconCls: 'exec-quarterly-icon'
+        },{
+            text: 'Profit & Loss',
+            height: 50,
+            iconCls: 'exec-pl-icon'
+        },{
+            text: 'Company News',
+            height: 50,
+            iconCls: 'exec-news-icon'
+        }],
+        listeners: {
+            click: 'onMenuClick'
+        }
+    }
 });

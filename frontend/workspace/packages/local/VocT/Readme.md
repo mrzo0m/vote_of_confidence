@@ -1,2 +1,0 @@
-# VocT - Read Me
-

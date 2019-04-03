@@ -1,18 +1,22 @@
 /*
- * This file launches the application by asking Ext JS to create
- * and launch() the Application class.
+ * This file is generated and updated by Sencha Cmd. You can edit this file as
+ * needed for your application, but these edits will have to be merged by
+ * Sencha Cmd when upgrading.
  */
 Ext.application({
-    extend: 'VocApp.Application',
-
     name: 'VocApp',
 
-    requires: [
-        // This will automatically load all classes in the VocApp namespace
-        // so that application classes do not need to require each other.
-        'VocApp.*'
-    ],
+    extend: 'VocApp.Application',
 
-    // The name of the initial view to create.
-    mainView: 'VocApp.view.main.Main'
+    autoCreateViewport: 'VocApp.view.main.Main',
+
+    //-------------------------------------------------------------------------
+    // Most customizations should be made to VocApp.Application. If you need to
+    // customize this file, doing so below this section reduces the likelihood
+    // of merge conflicts when upgrading to new versions of Sencha Cmd.
+    //-------------------------------------------------------------------------
+
+    requires: [
+        'VocApp.*'
+    ]
 });
