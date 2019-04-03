@@ -28,12 +28,12 @@ Ext.define('VocApp.view.main.Main', {
         layout: {
             align: 'stretchmax'
         },
-        iconCls: 'exec-header-icon',
+        // iconCls: 'exec-header-icon',
         title: {
-            text: 'Вотум',
+            text: 'ВотумДоверия.рф',
             textAlign: 'center',
             flex: 0,
-            minWidth: 60
+            minWidth: 80
         },
         tools: [{
             type: 'gear',
@@ -44,10 +44,10 @@ Ext.define('VocApp.view.main.Main', {
             margin: '0 0 0 0',
             handler: 'onSwitchTool',
             responsiveConfig: {
-                'width < 415 && tall': {
+                'width < 768 && tall': {
                     visible: true
                 },
-                'width >= 415': {
+                'width >= 768': {
                     visible: false
                 }
             }
@@ -91,10 +91,10 @@ Ext.define('VocApp.view.main.Main', {
                     textAlign: 'center',
                     flex: 1
                 },
-                'width < 415 && tall': {
+                'width < 768 && tall': {
                     visible: false
                 },
-                'width >= 415': {
+                'width >= 768': {
                     visible: true
                 }
             }
@@ -111,19 +111,19 @@ Ext.define('VocApp.view.main.Main', {
         }
     },{
         xtype: 'kpi',
-        title: 'KPI Overview',
+        title: 'Знакомство',
         iconCls: 'exec-kpi-icon'
     },{
         xtype: 'quarterly',
-        title: 'Performance',
+        title: 'Заказчик\\Работодатель',
         iconCls: 'exec-quarterly-icon'
     },{
         xtype: 'profitloss',
-        title: 'Profit & Loss',
+        title: 'Соискатель',
         iconCls: 'exec-pl-icon'
     },{
         xtype: 'news',
-        title: 'Company News',
+        title: 'Эксперт',
         iconCls: 'exec-news-icon'
     }],
 

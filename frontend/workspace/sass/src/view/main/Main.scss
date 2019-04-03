@@ -47,7 +47,7 @@
     $ui-header-icon-height: 32px,
     $ui-header-icon-width: 32px,
     $ui-header-icon-spacing: 16px,
-    $ui-header-background-color: #f1495b,
+    $ui-header-background-color: #E1B16A,
     $ui-header-padding: 0,
     $ui-header-text-margin: 26px 36px,
     $ui-header-noborder-adjust: false
@@ -93,11 +93,11 @@
 }
 
 .exec-header-icon {
-    background-image: url(icons/mybiz.png);
-
-    .x-ie8 & {
-        background-image: url(icons/mybiz-small.png);
-    }
+    //background-image: url(images/voc_logo.jpg);
+    //
+    //.x-ie8 & {
+    //    background-image: url(icons/mybiz-small.png);
+    //}
 }
 
 .exec-kpi-icon {
