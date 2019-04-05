@@ -21,7 +21,7 @@ RUN mvn -T 1C clean package -DskipTests=true -q -pl frontend -am
 RUN find /tmp/frontend/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
 ENTRYPOINT /tmp
 
-FROM openjdk:8-jdk-alpine
+FROM oracle/graalvm-ce:1.0.0-rc14
 VOLUME /tmp
 COPY --from=maven /tmp/app.jar app.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
