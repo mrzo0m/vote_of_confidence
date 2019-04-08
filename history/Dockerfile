@@ -9,7 +9,7 @@ RUN mvn -T 1C clean package -DskipTests=true -q -pl history -am
 RUN find /tmp/history/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
 ENTRYPOINT /tmp
 
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11-slim
 VOLUME /tmp
 COPY --from=maven /tmp/app.jar app.jar
 ENTRYPOINT ["java","-XX:+UnlockExperimentalVMOptions", "-XX:+UseJVMCICompiler","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
