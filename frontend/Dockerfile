@@ -11,6 +11,7 @@ FROM poum/senchacmd as senchacmd
 WORKDIR /code
 COPY --from=clone /app/src /code
 COPY --from=source /app/src /code
+RUN /opt/Sencha/sencha app clean
 RUN /opt/Sencha/sencha app build production
 
 FROM maven:3.5.2-jdk-8-alpine AS maven
