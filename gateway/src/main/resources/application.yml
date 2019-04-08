@@ -3,21 +3,28 @@ oidc:
   client-id: 0oajfcjaxs1OKu2kC0h7
   client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
 
+okta:
+  client:
+    orgUrl: https://dev-388275.oktapreview.com
+    token: voc-token
+
 spring:
   application:
     name: gateway
   profiles:
-    active: native
+    active: spring.profiles.active
   security:
     oauth2:
       client:
         provider:
           okta:
             issuer-uri: ${oidc.issuer-uri}
-#            authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
-#            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
-#            user-info-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/userinfo
-#            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
+            access-token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
+            user-authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
+        #            authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
+        #            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
+        #            user-info-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/userinfo
+        #            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
         registration:
           okta:
             client-id: ${oidc.client-id}
@@ -51,5 +58,6 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    ROOT: trace
-    org.springframework.web: trace
+    ROOT: info
+    org.springframework.web: info
+    reactor.core.publisher: trace

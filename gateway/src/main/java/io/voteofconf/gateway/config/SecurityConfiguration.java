@@ -2,18 +2,26 @@ package io.voteofconf.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.header.HttpHeaderWriterWebFilter;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
 
-//@Configuration
-//@EnableWebFluxSecurity
-//@EnableReactiveMethodSecurity
+@Configuration
+@EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
     @Bean
+//    @Primary
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 //        return http
 //                .authorizeExchange()
@@ -35,7 +43,7 @@ public class SecurityConfiguration {
 
                 // enable OAuth2/OIDC
                 .and().oauth2Client()
-                .and().oauth2Login()
+//                .and().oauth2Login()
                 .and().build();
     }
 }

@@ -6,7 +6,10 @@ import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDa
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.reactive.ReactiveOAuth2ResourceServerAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import reactor.core.publisher.Hooks;
 
 
 @EnableDiscoveryClient
@@ -18,6 +21,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class GatewayApplication {
 
     public static void main(String[] args) {
+        Hooks.onOperatorDebug();
         SpringApplication.run(GatewayApplication.class, args);
     }
 
