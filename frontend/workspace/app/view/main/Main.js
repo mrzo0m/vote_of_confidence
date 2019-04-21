@@ -12,8 +12,7 @@ Ext.define('VocApp.view.main.Main', {
     requires: [
         'Ext.MessageBox',
         'Ext.Toolbar',
-        'VocApp.view.widgets.Widgets',
-        'Ext.layout.Fit'
+        'VocApp.view.widgets.Widgets'
     ],
 
     controller: 'main',
