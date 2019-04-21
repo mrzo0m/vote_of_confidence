@@ -8,6 +8,7 @@ Ext.define('VocApp.view.main.Main', {
     xtype: 'app-main',
 
     fullscreen: true,
+    scrollable: 'y',
 
     requires: [
         'Ext.MessageBox',
@@ -23,6 +24,7 @@ Ext.define('VocApp.view.main.Main', {
     items: [
         {
             xtype: 'toolbar',
+            docked: 'top',
             items: [
                 {
                     ui: 'header',

@@ -3,6 +3,15 @@
  */
 Ext.define('VocApp.view.legal.agreement.AgreementController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.agreement'
+    alias: 'controller.agreement',
+
+    routes : {
+        'agreement' : 'onAgreement'
+    },
+
+
+    onAgreement: function () {
+        this.redirectTo('agreement');
+    }
 
 });

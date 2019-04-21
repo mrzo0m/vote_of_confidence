@@ -38,6 +38,9 @@ Ext.define('VocApp.view.main.MainController', {
     },
 
     setCurrentView: function (hashTag) {
+        //TODO: This is stub for routing pages - fix ASAP
+        var routesMap = new Ext.util.HashMap();
+        routesMap.add('agreement', 'agreement');
         hashTag = (hashTag || '').toLowerCase();
         var view = this.getView(),
             navigationTree = this.lookup('navigationTree'),
@@ -52,6 +55,10 @@ Ext.define('VocApp.view.main.MainController', {
                 routeId: hashTag
             };
         } else if (!item && !node && hashTag) {
+            if (routesMap.contains(hashTag)) {
+                this.redirectTo(routesMap.get(hashTag));
+                return;
+            }
             this.redirectTo('home');
             return;
         }
