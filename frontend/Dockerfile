@@ -3,7 +3,7 @@ WORKDIR /app
 
 FROM alpine/git as clone
 WORKDIR /app
-RUN git clone https://github.com/mrzo0m/vote_of_confidence.git
+RUN head -c 5 /dev/random > random_bytes && git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
 RUN mkdir -p src
 RUN cp -R /app/vote_of_confidence/frontend/workspace/* /app/src
 
