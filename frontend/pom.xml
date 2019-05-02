@@ -7,7 +7,6 @@
         <artifactId>voc</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>io.voteofconf</groupId>
     <artifactId>frontend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>frontend</name>
@@ -136,13 +135,17 @@
                         <groupId>com.google.cloud.tools</groupId>
                         <artifactId>jib-maven-plugin</artifactId>
                         <configuration>
+                            <from>
+                                <image>openjdk:8-jdk-alpine</image>
+                            </from>
                             <to>
-                                <image>registry.hub.docker.com/mrzoom/voc-frontend</image>
+                                <image>eu.gcr.io/vote-of-confidence-233210/voc-frontend</image>
+                                <credHelper>gcr</credHelper>
                             </to>
                         </configuration>
                         <executions>
                             <execution>
-                                <phase>deploy</phase>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>build</goal>
                                 </goals>

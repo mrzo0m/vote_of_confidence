@@ -1,11 +1,29 @@
 spring:
   application:
-    name: frontend
-  profiles:
-    active: native
-
+    name: frontend-microservice
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          url-expression: "'http://'+serviceId"
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 5000
 
 server:
-  port: 0
-#  servlet:
-#    contextPath: /frontend
+  port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      enabled: true
+    restart:
+      enabled: true
+    info:
+      enabled: true

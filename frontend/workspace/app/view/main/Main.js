@@ -4,41 +4,145 @@
  * added to the Viewport container.
  */
 Ext.define('VocApp.view.main.Main', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.Container',
     xtype: 'app-main',
+
+    fullscreen: true,
+    scrollable: 'y',
 
     requires: [
         'Ext.MessageBox',
-        'VocApp.view.widgets.Widgets',
-        'Ext.layout.Fit'
+        'Ext.Toolbar',
+        'VocApp.view.widgets.Widgets'
     ],
 
     controller: 'main',
     viewModel: 'main',
 
-    fullscreen: true,
-
     itemId: 'home',
+
     items: [
         {
-            title: 'Работодатель',
+            xtype: 'toolbar',
+            docked: 'top',
+            items: [
+                {
+                    ui: 'header',
+                    iconCls: 'x-fa fa-bars',
+                    margin: '0 0 0 10',
+                    handler: 'onMenuBarClick'
+                },
+                '->',
+                {
+                    ui: 'header',
+                    iconCls: 'x-fa fa-search',
+                    href: '#searchresults',
+                    plugins: {
+                        responsive: true
+                    },
+                    responsiveConfig: {
+                        'width < 768': {
+                            hidden: true
+                        },
+                        'width >= 768': {
+                            hidden: false,
+                            margin: '0 7 0 0'
+                        }
+                    },
+
+                    handler: 'toolbarButtonClick'
+                }, {
+                    ui: 'header',
+                    iconCls: 'x-fa fa-envelope',
+                    href: '#email',
+                    plugins: {
+                        responsive: true
+                    },
+                    responsiveConfig: {
+                        'width < 768': {
+                            hidden: true
+                        },
+                        'width >= 768': {
+                            hidden: false,
+                            margin: '0 7 0 0'
+                        }
+                    },
+                    handler: 'toolbarButtonClick'
+                }, {
+                    ui: 'header',
+                    iconCls: 'x-fa fa-question',
+                    href: '#faq',
+                    plugins: {
+                        responsive: true
+                    },
+                    responsiveConfig: {
+                        'width < 768': {
+                            hidden: true
+                        },
+                        'width >= 768': {
+                            hidden: false,
+                            margin: '0 7 0 0'
+                        }
+                    },
+                    handler: 'toolbarButtonClick'
+                }, {
+                    ui: 'header',
+                    iconCls: 'x-fa fa-th-large',
+                    href: '#dashboard',
+                    plugins: {
+                        responsive: true
+                    },
+                    responsiveConfig: {
+                        'width < 768': {
+                            hidden: true
+                        },
+                        'width >= 768': {
+                            hidden: false,
+                            margin: '0 7 0 0'
+                        }
+                    },
+                    handler: 'toolbarButtonClick'
+                }, {
+                    xtype: 'component',
+                    plugins: {
+                        responsive: true
+                    },
+                    responsiveConfig: {
+                        'width < 768': {
+                            hidden: true
+                        },
+                        'width >= 768': {
+                            hidden: false,
+                            html: 'Маркел Андрошин',
+                            margin: '0 12 0 4',
+                        }
+                    },
+                    userCls: 'main-user-name'
+                }
+            ]
+        },
+        {
+            xtype: 'container',
+            docked: 'top',
+            // userCls: 'main-nav-container',
+            reference: 'navigation',
             layout: 'fit',
-            // The following grid shares a store with the classic version's grid as well!
             items: [{
-                xtype: 'widgets'
+                xtype: 'treelist',
+                reference: 'navigationTree',
+                scrollable: true,
+                ui: 'nav',
+                store: {},
+                bind: {
+                    store: '{navigationtree}'
+                },
+                expanderFirst: false,
+                expanderOnly: false,
+                listeners: {
+                    itemclick: 'onNavigationItemClick',
+                    selectionchange: 'onNavigationTreeSelectionChange'
+                }
             }]
-        }, {
-            title: 'Соискатель',
-            layout: 'fit',
-            // The following grid shares a store with the classic version's grid as well!
-            items: [{
-                xtype: 'mainlist'
-            }]
-        }, {
-            title: 'Эксперт',
-            bind: {
-                html: '{loremIpsum}'
-            }
         }
     ]
 });

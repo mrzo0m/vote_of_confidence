@@ -1,27 +1,39 @@
-oidc:
-  issuer-uri: https://dev-388275.oktapreview.com/oauth2/default
-  client-id: 0oajfcjaxs1OKu2kC0h7
-  client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
+#oidc:
+#  issuer-uri: https://dev-388275.oktapreview.com/oauth2/default
+#  client-id: 0oajfcjaxs1OKu2kC0h7
+#  client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
 
 spring:
   application:
-    name: gateway
-  profiles:
-    active: native
-  security:
-    oauth2:
-      client:
-        provider:
-          okta:
-            issuer-uri: ${oidc.issuer-uri}
-        registration:
-          okta:
-            client-id: ${oidc.client-id}
-            client-secret: ${oidc.client-secret}
-            scope: openid, email, profile
-      resourceserver:
-        jwt:
-          issuer-uri: ${oidc.issuer-uri}
+    name: gateway-microservice
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          url-expression: "'http://'+serviceId"
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 5000
+
+#  profiles:
+#    active: native
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          okta:
+#            issuer-uri: ${oidc.issuer-uri}
+#        registration:
+#          okta:
+#            client-id: ${oidc.client-id}
+#            client-secret: ${oidc.client-secret}
+#            scope: openid, email, profile
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${oidc.issuer-uri}
 
 server:
   port: 8080
@@ -29,11 +41,18 @@ management:
   endpoints:
     web:
       exposure:
-        include: hystrix.stream, info, health
+        include: '*'
+  endpoint:
+    health:
+      enabled: true
+    restart:
+      enabled: true
+    info:
+      enabled: true
 
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    ROOT: info
-    org.springframework.web: info
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.loadbalancer: TRACE

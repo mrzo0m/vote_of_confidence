@@ -12,24 +12,20 @@ Ext.define('VocApp.view.main.List', {
     title: 'Personnel',
 
     store: {
-        type: 'personnel'
+        type: 'claim'
     },
 
     columns: [{ 
-        text: 'Name',
-        dataIndex: 'name',
+        text: 'companyName',
+        dataIndex: 'companyName',
         width: 100,
         cell: {
             userCls: 'bold'
         }
     }, {
-        text: 'Email',
-        dataIndex: 'email',
+        text: 'claimInfo',
+        dataIndex: 'claimInfo',
         width: 230 
-    }, { 
-        text: 'Phone',
-        dataIndex: 'phone',
-        width: 150 
     }],
 
     listeners: {

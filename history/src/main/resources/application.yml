@@ -1,8 +1,42 @@
 spring:
   application:
-    name: history
-  profiles:
-    active: native
+    name: history-microservice
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          url-expression: "'http://'+serviceId"
+    kubernetes:
+      config:
+        name: default
+        namespace: default
+        sources:
+          # Spring Cloud Kubernetes will lookup a ConfigMap named c1 in namespace default-namespace
+          - name: cassandra-map
+      reload:
+        enabled: true
+        mode: polling
+        period: 5000
 
 server:
-  port: 0
+  port: 8000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      enabled: true
+    restart:
+      enabled: true
+    info:
+      enabled: true
+
+
+#cassandra:
+#  contactpoints: 127.0.0.1
+#  port: 9042
+#  keyspace: voc_keyspace
+#  basepackages: io.voteofconf.history
