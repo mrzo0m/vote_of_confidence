@@ -1,3 +1,18 @@
+# okta properties
+#oidc:
+#  issuer-uri: https://dev-388275.oktapreview.com/oauth2/default
+#  jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
+#  client-id: 0oajfcjaxs1OKu2kC0h7
+#  client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
+#
+#okta:
+#  oauth2:
+#    issuer: ${oidc.issuer-uri}
+#    audience: api://default
+#    client-id: ${oidc.client-id}
+#    client-secret: ${oidc.client-secret}
+#    scope: openid, email, profile
+
 spring:
   application:
     name: communications
