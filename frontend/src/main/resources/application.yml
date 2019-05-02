@@ -4,32 +4,18 @@ oidc:
   client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
 
 okta:
-  client:
-    orgUrl: https://dev-388275.oktapreview.com
-    token: voc-token
+  oauth2:
+    audience: frontend-api
+    issuer: https://dev-388275.oktapreview.com/oauth2/default
+    client-id: ${oidc.client-id}
+    client-secret: ${oidc.client-secret}
+    scope: openid, email, profile
 
 spring:
   application:
     name: frontend
   profiles:
     active: spring.profiles.active
-  security:
-    oauth2:
-      client:
-        provider:
-          okta:
-            issuer-uri: ${oidc.issuer-uri}
-            access-token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
-            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
-        registration:
-          okta:
-            client-id: ${oidc.client-id}
-            client-secret: ${oidc.client-secret}
-            scope: openid, email, profile
-      resourceserver:
-        jwt:
-          issuer-uri: ${oidc.issuer-uri}
-          jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
 
 server:
   port: 0
@@ -42,3 +28,10 @@ eureka:
     registryFetchIntervalSeconds: 5
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+  level:
+    ROOT: info
+    org.springframework.web: trace

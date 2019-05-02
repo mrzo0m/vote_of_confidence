@@ -15,9 +15,9 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-@Configuration
-@EnableWebFluxSecurity
-@EnableReactiveMethodSecurity
+//@Configuration
+//@EnableWebFluxSecurity
+//@EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
     @Bean

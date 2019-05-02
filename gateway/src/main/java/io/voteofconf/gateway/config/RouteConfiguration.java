@@ -45,11 +45,39 @@ public class RouteConfiguration {
         return builder.routes()
                 .route("frontend", r -> r
                         .path("/frontend/**")
+//                        .filters(f -> f
+//                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
+//                                        .map(SecurityContext::getAuthentication)
+//                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
+//                                        .map(oAuth2AuthenticationToken ->
+//                                                clientService
+//                                                        .loadAuthorizedClient(
+//                                                                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
+//                                                                oAuth2AuthenticationToken.getName())
+//                                                        .subscribe(oAuth2AuthorizedClient ->
+//                                                                exchange.getRequest()
+//                                                                        .mutate()
+//                                                                        .header("Authorization", "Bearer " +
+//                                                                                oAuth2AuthorizedClient
+//                                                                                        .getAccessToken()
+//                                                                                        .getTokenValue())
+//                                                                        .build()))
+//                                        .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
+//                                        .then(chain.filter(exchange)))
+//                                .hystrix(config ->
+//                                        config
+//                                                .setName("frontend")
+//                                                .setFallbackUri("forward:/fallback/frontend")
+//                                )
+//                        )
+                        .uri("lb://frontend"))
+                .route("payments", r -> r
+                        .path("/payments/**")
                         .filters(f -> f
                                 .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
                                         .map(SecurityContext::getAuthentication)
                                         .map(authentication -> (OAuth2AuthenticationToken)authentication)
-                                        .doOnNext(oAuth2AuthenticationToken ->
+                                        .map(oAuth2AuthenticationToken ->
                                                 clientService
                                                         .loadAuthorizedClient(
                                                                 oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
@@ -70,30 +98,7 @@ public class RouteConfiguration {
                                                 .setFallbackUri("forward:/fallback/frontend")
                                 )
                         )
-                        .uri("lb://frontend"))
-                .route("trace", r -> r
-                        .path("/trace/**")
-                        .filters(f -> f
-                                .filter((exchange, chain) -> {
-                                    Authentication authentication =
-                                            SecurityContextHolder
-                                                    .getContext()
-                                                    .getAuthentication();
-
-                                    OAuth2AuthenticationToken oauthToken =
-                                            (OAuth2AuthenticationToken) authentication;
-                                    OAuth2AuthorizedClient client =
-                                            clientService.loadAuthorizedClient(
-                                                    oauthToken.getAuthorizedClientRegistrationId(),
-                                                    oauthToken.getName()).block();
-
-                                    String accessToken = client.getAccessToken().getTokenValue();
-                                    exchange.getResponse()
-                                            .getHeaders()
-                                            .add("", "");
-                                    return chain.filter(exchange);
-                                }))
-                        .uri("lb://trace")
+                        .uri("lb://payments")
                 )
                 .build();
     }

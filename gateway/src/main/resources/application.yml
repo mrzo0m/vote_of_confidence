@@ -1,18 +1,22 @@
 oidc:
   issuer-uri: https://dev-388275.oktapreview.com/oauth2/default
+  jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
   client-id: 0oajfcjaxs1OKu2kC0h7
   client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
 
 okta:
-  client:
-    orgUrl: https://dev-388275.oktapreview.com
-    token: voc-token
+  oauth2:
+    issuer: ${oidc.issuer-uri}
+    audience: frontend-api
+    client-id: ${oidc.client-id}
+    client-secret: ${oidc.client-secret}
+    scope: openid, profile
 
 spring:
   application:
     name: gateway
   profiles:
-    active: spring.profiles.active
+    active: native
   security:
     oauth2:
       client:
@@ -29,11 +33,11 @@ spring:
           okta:
             client-id: ${oidc.client-id}
             client-secret: ${oidc.client-secret}
-            scope: openid, email, profile
+            scope: openid, profile
       resourceserver:
         jwt:
           issuer-uri: ${oidc.issuer-uri}
-          jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
+          jwk-set-uri: ${oidc.jwk-set-uri}
 
 server:
   port: 8080
@@ -59,5 +63,5 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
     ROOT: info
-    org.springframework.web: info
+    org.springframework.web: trace
     reactor.core.publisher: trace
