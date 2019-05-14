@@ -17,7 +17,7 @@ COPY --from=clone /app/vote_of_confidence/ /tmp/
 COPY --from=senchacmd /code/build/production/VocApp/ /tmp/invoke_static/
 RUN rm -rf /tmp/frontend/src/main/resources/static/
 RUN mkdir /tmp/frontend/src/main/resources/static
-RUN cp /tmp/invoke_static/* /tmp/frontend/src/main/resources/static/
+RUN cp -rf /tmp/invoke_static/* /tmp/frontend/src/main/resources/static/
 RUN mvn -T 1C clean package -DskipTests=true -q -pl frontend -am
 RUN find /tmp/frontend/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
 ENTRYPOINT /tmp
