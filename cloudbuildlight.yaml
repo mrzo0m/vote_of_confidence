@@ -6,6 +6,7 @@ steps:
     id: build-frontend
     args:
       - 'build'
+      - '--no-cache'
       - '--file=frontend/Dockerfile'
       - '-t'
       - 'eu.gcr.io/$PROJECT_ID/voc-frontend:$SHORT_SHA'
@@ -49,6 +50,7 @@ steps:
     id: build-gateway
     args:
       - 'build'
+      - '--no-cache'
       - '--file=gateway/Dockerfile'
       - '-t'
       - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
@@ -89,6 +91,7 @@ steps:
     id: build-history
     args:
       - 'build'
+      - '--no-cache'
       - '--file=history/Dockerfile'
       - '-t'
       - 'eu.gcr.io/$PROJECT_ID/voc-history:$SHORT_SHA'

@@ -4,14 +4,11 @@ WORKDIR /app
 FROM alpine/git as clone
 WORKDIR /app
 RUN head -c 5 /dev/random > random_bytes && git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
-RUN mkdir -p src
-RUN cp -R /app/vote_of_confidence/frontend/workspace/* /app/src
 
 FROM poum/senchacmd as senchacmd
 WORKDIR /code
-COPY --from=clone /app/src /code
+COPY --from=clone /app/vote_of_confidence/frontend/workspace/ /code
 COPY --from=source /app/src /code
-RUN /opt/Sencha/sencha app clean
 RUN /opt/Sencha/sencha app build production
 
 FROM maven:3.5.2-jdk-8-alpine AS maven
