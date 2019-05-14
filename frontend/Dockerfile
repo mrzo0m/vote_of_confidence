@@ -3,7 +3,7 @@ WORKDIR /app
 
 FROM alpine/git as clone
 WORKDIR /app
-RUN head -c 5 /dev/random > random_bytes && git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
+RUN git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
 
 FROM poum/senchacmd as senchacmd
 WORKDIR /code
@@ -12,9 +12,11 @@ COPY --from=source /app/src /code
 RUN /opt/Sencha/sencha app build production
 
 FROM maven:3.5.2-jdk-8-alpine AS maven
-COPY --from=clone /app/vote_of_confidence/ /tmp/
-COPY --from=senchacmd /code/build/production/VocApp/ /tmp/frontend/src/main/resources/static/
 WORKDIR /tmp/
+COPY --from=clone /app/vote_of_confidence/ /tmp/
+COPY --from=senchacmd /code/build/production/VocApp/ /tmp/invoke_static/
+RUN rm -rf /tmp/frontend/src/main/resources/static/*
+RUN cp -r /tmp/invoke_static/* /tmp/frontend/src/main/resources/static/
 RUN mvn -T 1C clean package -DskipTests=true -q -pl frontend -am
 RUN find /tmp/frontend/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
 ENTRYPOINT /tmp
