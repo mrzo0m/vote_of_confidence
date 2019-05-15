@@ -8,7 +8,7 @@ RUN git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
 FROM poum/senchacmd as senchacmd
 WORKDIR /code
 COPY --from=clone /app/vote_of_confidence/frontend/workspace/ /code
-COPY --from=source /app/src/ext /code
+COPY --from=source /app/src/ext /code/ext
 RUN /opt/Sencha/sencha app build production
 
 FROM maven:3.5.2-jdk-8-alpine AS maven
