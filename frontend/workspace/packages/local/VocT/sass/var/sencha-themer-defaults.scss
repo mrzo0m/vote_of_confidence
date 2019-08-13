@@ -1,7 +1,7 @@
 $enable-font-icons: true;
 
 // links
-$link_color: dynamic($button-color);
+$link_color: dynamic(none);
 $link_text_decoration: dynamic(none);
 
 $link_visited_color: dynamic($link_color);

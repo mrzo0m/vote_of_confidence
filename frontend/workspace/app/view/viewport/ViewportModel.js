@@ -3,6 +3,7 @@ Ext.define('VocApp.view.viewport.ViewportModel', {
     alias: 'viewmodel.viewport',
 
     data: {
+        showNavigation: false,
         user: null
     }
 });

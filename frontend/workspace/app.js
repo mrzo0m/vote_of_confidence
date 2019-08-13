@@ -5,14 +5,11 @@
 Ext.application({
     extend: 'VocApp.Application',
 
-    name: 'VocApp',
+    name: 'VocApp'
 
-    requires: [
-        // This will automatically load all classes in the VocApp namespace
-        // so that application classes do not need to require each other.
-        'VocApp.*'
-    ],
-
-    // The name of the initial view to create.
-    mainView: 'VocApp.view.main.Main'
+    //-------------------------------------------------------------------------
+    // Most customizations should be made to App.Application. If you need to
+    // customize this file, doing so below this section reduces the likelihood
+    // of merge conflicts when upgrading to new versions of Sencha Cmd.
+    //-------------------------------------------------------------------------
 });

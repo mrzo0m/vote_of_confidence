@@ -26,13 +26,15 @@ Ext.define('VocApp.view.legal.agreement.Agreement', {
             xtype: 'component',
             cls: 'legal',
             bind: {
-                html: '{legal}'
+                html: '<h2>Соглашение об оказании услуг по содействию в трудоустройстве</h2>'
             }
         },
         {
-            xtype: 'toolbar',
-            title: 'Соглашение об оказании услуг по содействию в трудоустройстве',
-            docked: 'top'
+            xtype: 'component',
+            cls: 'legal',
+            bind: {
+                html: '{legal}'
+            }
         }
     ]
 });

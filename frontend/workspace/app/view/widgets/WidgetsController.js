@@ -8,7 +8,4 @@ Ext.define('VocApp.view.widgets.WidgetsController', {
     /**
      * Called when the view is created
      */
-    init: function() {
-
-    }
 });

@@ -10,13 +10,27 @@ Ext.define('VocApp.Application', {
 
     requires: [
         'VocApp.*',
+        'Ext.History',
         'Ext.plugin.Responsive',
-        'Ext.History'
+        'Ext.MessageBox'
     ],
 
+    mainView: 'VocApp.view.main.Main',
 
-    quickTips: false,
-    defaultToken : 'about',
+    // defaultToken: 'main',
+
+    controllers: [
+        // 'Action'    // creates one global instance of the Action controller
+    ],
+
+    stores: [
+        'NavigationTree'
+    ],
+
+    // profiles: [
+    //     'Phone',
+    //     'Tablet'
+    // ],
 
     viewport: {
         controller: 'viewport',
@@ -26,10 +40,11 @@ Ext.define('VocApp.Application', {
     launch: function(profile) {
         // The viewport controller requires xtype defined by profiles, so let's perform extra
         // initialization when the application and its dependencies are fully accessible.
-        // Ext.Viewport.getController().onLaunch();
         Ext.History.init();
+        Ext.Viewport.getController().onLaunch();
         Ext.getBody().removeCls('launching');
-        this.callParent([profile]);
+        // this.callParent([profile]);
+        this.callParent();
     },
 
     onAppUpdate: function () {

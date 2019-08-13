@@ -12,7 +12,7 @@ Ext.define('VocApp.store.NavigationTree', {
         expanded: true,
         children: [
             {
-                text: 'widgets',
+                text: 'Общая информация',
                 iconCls: 'x-fa fa-desktop',
                 rowCls: 'nav-tree-badge nav-tree-badge-new',
                 viewType: 'widgets',
@@ -20,13 +20,31 @@ Ext.define('VocApp.store.NavigationTree', {
                 leaf: true
             },
             {
-                text: 'faq',
+                text: 'соглашение',
                 iconCls: 'x-fa fa-cog',
                 rowCls: 'nav-tree-badge nav-tree-badge-new',
-                viewType: 'faq',
-                routeId: 'faq', // routeId defaults to viewType
+                viewType: 'agreement',
+                routeId: 'agreement', // routeId defaults to viewType
                 leaf: true
-            }
+            },
+
+            {
+                text: 'Список',
+                iconCls: 'x-fa fa-leanpub',
+                expanded: false,
+                selectable: false,
+                routeId: 'pages-parent',
+                id: 'pages-parent',
+
+                children: [
+                    {
+                        text: 'опять соглашение',
+                        iconCls: 'x-fa fa-file-o',
+                        viewType: 'legal',
+                        leaf: true
+                    }
+                ]
+            },
 
             // ,
             // {
