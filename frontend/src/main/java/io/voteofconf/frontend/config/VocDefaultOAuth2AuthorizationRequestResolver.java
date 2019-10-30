@@ -128,6 +128,7 @@ public class VocDefaultOAuth2AuthorizationRequestResolver implements OAuth2Autho
             baseUrl = "http://xn--b1aaffpuncuol5m.xn--p1ai";
         }
 
+        log.warn("baseUrl = " + baseUrl);
         uriVariables.put("baseUrl", baseUrl);
         if (action != null) {
             uriVariables.put("action", action);

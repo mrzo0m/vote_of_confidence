@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,8 +15,11 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationCodeGrantFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -30,15 +34,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private ClientRegistrationRepository clientRegistrationRepository;
 
-    public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository) {
+    private OAuth2AuthorizedClientRepository clientRepository;
+
+    private AuthenticationManager authenticationManager;
+
+    public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository, OAuth2AuthorizedClientRepository clientRepository, AuthenticationManager authenticationManager) {
         super();
         this.clientRegistrationRepository = clientRegistrationRepository;
+        this.clientRepository = clientRepository;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
     @Order(Ordered.HIGHEST_PRECEDENCE)
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterAt(new VocOAuth2AuthorizationCodeGrantFilter(
+                        clientRegistrationRepository,
+                        clientRepository,
+                        authenticationManager), OAuth2AuthorizationCodeGrantFilter.class)
                 .addFilterAt(new OAuth2AuthorizationRequestRedirectFilter(
                         new VocDefaultOAuth2AuthorizationRequestResolver(
                                 clientRegistrationRepository,
