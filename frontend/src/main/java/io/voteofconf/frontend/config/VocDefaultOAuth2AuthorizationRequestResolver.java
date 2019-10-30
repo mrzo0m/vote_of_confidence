@@ -1,5 +1,6 @@
 package io.voteofconf.frontend.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -20,6 +21,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class VocDefaultOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
     private static final String REGISTRATION_ID_URI_VARIABLE_NAME = "registrationId";
@@ -126,7 +128,8 @@ public class VocDefaultOAuth2AuthorizationRequestResolver implements OAuth2Autho
         // override baseUri
 //        if (request.getHeader("BASE_REDIRECT_URI") != null) {
 //            baseUrl = request.getHeader("BASE_REDIRECT_URI");
-            baseUrl = "http://XN--B1AAFFPUNCUOL5M.XN--P1AI";
+            baseUrl = "http://XN--B1AAFFPUNCUOL5M.XN--P1AI/frontend-microservice";
+            log.warn(baseUrl);
 //        }
 
         uriVariables.put("baseUrl", baseUrl);
