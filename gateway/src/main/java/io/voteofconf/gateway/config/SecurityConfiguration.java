@@ -16,8 +16,8 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange()
-                .pathMatchers("/frontend-microservice/**")
-                .authenticated()
+                .pathMatchers("/frontend-microservice/api/**")
+                .permitAll()
 //                      .and()
 //                .oauth2Login()
                 .and()
@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                 .jwt().and().and()
                 .authorizeExchange()
                 .anyExchange()
-                .permitAll()
+                .authenticated()
                 .and()
                 .build();
     }
