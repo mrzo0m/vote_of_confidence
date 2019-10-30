@@ -45,8 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI)), OAuth2AuthorizationRequestRedirectFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
-                .anyRequest().authenticated();
-//                    .and().oauth2ResourceServer().jwt();
+                .anyRequest().authenticated()
+                .and().oauth2ResourceServer().jwt();
     }
 
     private ClientRegistration oktaClientCredentialsRegistration() {

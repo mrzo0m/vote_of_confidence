@@ -124,6 +124,9 @@ public class VocDefaultOAuth2AuthorizationRequestResolver implements OAuth2Autho
         if (request.getHeader("BASE_REDIRECT_URI") != null) {
             baseUrl = request.getHeader("BASE_REDIRECT_URI");
         }
+        else {
+            baseUrl = "http://xn--b1aaffpuncuol5m.xn--p1ai";
+        }
 
         uriVariables.put("baseUrl", baseUrl);
         if (action != null) {
