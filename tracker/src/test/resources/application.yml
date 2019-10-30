@@ -18,6 +18,18 @@ spring:
     name: tracker
   profiles:
     active: native
+  datasource:
+    url: "jdbc:h2:mem:testdb;db_close_on_exit=false"
+    driverClassName: org.h2.Driver
+    username: "sa"
+    password: ""
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+  h2:
+    console:
+      path: /h2-console
+      trace: false
+      settings.web-allow-others: true
 
 server:
   port: 8000
