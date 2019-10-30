@@ -39,10 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilterAt(new OAuth2AuthorizationRequestRedirectFilter(
-                        new VocDefaultOAuth2AuthorizationRequestResolver(
-                                clientRegistrationRepository,
-                                OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI)), OAuth2AuthorizationRequestRedirectFilter.class)
+//                .addFilterAt(new OAuthut2AuthorizationRequestRedirectFilter(
+////                        new VocDefaultOAuth2AuthorizationRequestResolver(
+////                                clientRegistrationRepository,
+////                                OAuth2AhorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI)), OAuth2AuthorizationRequestRedirectFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated();
