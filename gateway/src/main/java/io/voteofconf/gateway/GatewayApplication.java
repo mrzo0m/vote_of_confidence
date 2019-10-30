@@ -14,7 +14,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
         ElasticsearchDataAutoConfiguration.class,
         DataSourceAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class
+        DataSourceTransactionManagerAutoConfiguration.class,
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
         })
 public class GatewayApplication {
 

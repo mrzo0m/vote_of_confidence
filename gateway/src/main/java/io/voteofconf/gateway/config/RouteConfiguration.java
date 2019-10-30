@@ -16,20 +16,11 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class RouteConfiguration {
 
-    private ReactiveOAuth2AuthorizedClientService clientService;
-
-    private ApplicationContext applicationContext;
-
-    private ServerOAuth2AuthorizedClientRepository clientRepository;
-
-    private InMemoryReactiveClientRegistrationRepository registrationRepository;
-
-    public RouteConfiguration(ReactiveOAuth2AuthorizedClientService clientService, ApplicationContext applicationContext, ServerOAuth2AuthorizedClientRepository clientRepository, InMemoryReactiveClientRegistrationRepository registrationRepository) {
-        this.clientService = clientService;
-        this.applicationContext = applicationContext;
-        this.clientRepository = clientRepository;
-        this.registrationRepository = registrationRepository;
-    }
+//    private ReactiveOAuth2AuthorizedClientService clientService;
+//
+//    public RouteConfiguration(ReactiveOAuth2AuthorizedClientService clientService, ApplicationContext applicationContext, ServerOAuth2AuthorizedClientRepository clientRepository, InMemoryReactiveClientRegistrationRepository registrationRepository) {
+//        this.clientService = clientService;
+//    }
 
     @Bean
     public RouteLocator gatewayRouteLocator(RouteLocatorBuilder builder) {
@@ -49,24 +40,24 @@ public class RouteConfiguration {
                         .path("/**")
                         .filters(f -> f
                                 .addRequestHeader("BASE_REDIRECT_URI", "http://localhost:8080")
-                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
-                                        .map(SecurityContext::getAuthentication)
-                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
-                                        .map(oAuth2AuthenticationToken ->
-                                                clientService
-                                                        .loadAuthorizedClient(
-                                                                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
-                                                                oAuth2AuthenticationToken.getName())
-                                                        .subscribe(oAuth2AuthorizedClient ->
-                                                                exchange.getRequest()
-                                                                        .mutate()
-                                                                        .header("Authorization", "Bearer " +
-                                                                                oAuth2AuthorizedClient
-                                                                                        .getAccessToken()
-                                                                                        .getTokenValue())
-                                                                        .build()))
-                                        .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
-                                        .then(chain.filter(exchange)))
+//                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
+//                                        .map(SecurityContext::getAuthentication)
+//                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
+//                                        .map(oAuth2AuthenticationToken ->
+//                                                clientService
+//                                                        .loadAuthorizedClient(
+//                                                                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
+//                                                                oAuth2AuthenticationToken.getName())
+//                                                        .subscribe(oAuth2AuthorizedClient ->
+//                                                                exchange.getRequest()
+//                                                                        .mutate()
+//                                                                        .header("Authorization", "Bearer " +
+//                                                                                oAuth2AuthorizedClient
+//                                                                                        .getAccessToken()
+//                                                                                        .getTokenValue())
+//                                                                        .build()))
+//                                        .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
+//                                        .then(chain.filter(exchange)))
                                 .hystrix(config ->
                                         config
                                                 .setName("frontend-microservice")
