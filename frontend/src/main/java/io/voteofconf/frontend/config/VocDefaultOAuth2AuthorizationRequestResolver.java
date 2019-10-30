@@ -128,7 +128,7 @@ public class VocDefaultOAuth2AuthorizationRequestResolver implements OAuth2Autho
         // override baseUri
 //        if (request.getHeader("BASE_REDIRECT_URI") != null) {
 //            baseUrl = request.getHeader("BASE_REDIRECT_URI");
-            baseUrl = "http://http://localhost:8080/frontend-microservice";
+            baseUrl = "http://localhost:8080/frontend-microservice";
             log.warn(baseUrl);
 //        }
 

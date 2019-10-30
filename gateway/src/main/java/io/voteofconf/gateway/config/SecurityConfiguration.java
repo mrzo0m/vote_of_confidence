@@ -15,17 +15,17 @@ public class SecurityConfiguration {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
-                .authorizeExchange()
-                .pathMatchers("/**")
-                .permitAll()
-//                      .and()
-//                .oauth2Login()
-                .and()
+//                .authorizeExchange()
+//                .pathMatchers("/**")
+//                .permitAll()
+////                      .and()
+////                .oauth2Login()
+//                .and()
                 .oauth2ResourceServer()
                 .jwt().and().and()
                 .authorizeExchange()
                 .anyExchange()
-                .permitAll()
+                .authenticated()
                 .and()
                 .build();
     }
