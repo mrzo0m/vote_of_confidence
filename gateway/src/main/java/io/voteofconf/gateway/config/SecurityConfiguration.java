@@ -16,7 +16,7 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange()
-                .pathMatchers("/frontend/**")
+                .pathMatchers("/frontend-microservice/**")
                 .authenticated()
 //                      .and()
 //                .oauth2Login()
