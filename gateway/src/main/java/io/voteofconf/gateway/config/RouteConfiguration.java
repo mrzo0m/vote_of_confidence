@@ -48,6 +48,7 @@ public class RouteConfiguration {
                 .route("frontend-microservice", r -> r
                         .path("/**")
                         .filters(f -> f
+                                .addRequestHeader("BASE_REDIRECT_URI", "http://localhost:8080")
                                 .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
                                         .map(SecurityContext::getAuthentication)
                                         .map(authentication -> (OAuth2AuthenticationToken)authentication)

@@ -7,12 +7,12 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
-@Configuration
-@EnableWebFluxSecurity
-@EnableReactiveMethodSecurity
+//@Configuration
+//@EnableWebFluxSecurity
+//@EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
-    @Bean
+//    @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
 //                .authorizeExchange()
