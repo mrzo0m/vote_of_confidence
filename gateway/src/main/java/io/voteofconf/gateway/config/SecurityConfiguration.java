@@ -13,22 +13,22 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfiguration {
 
 //    @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http
+//    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+//        return http
+////                .authorizeExchange()
+////                .pathMatchers("/**")
+////                .permitAll()
+//////                      .and()
+//////                .oauth2Login()
+////                .and()
+//                .oauth2ResourceServer()
+//                .jwt().and().and()
 //                .authorizeExchange()
-//                .pathMatchers("/**")
-//                .permitAll()
-////                      .and()
-////                .oauth2Login()
+//                .anyExchange()
+//                .authenticated()
 //                .and()
-                .oauth2ResourceServer()
-                .jwt().and().and()
-                .authorizeExchange()
-                .anyExchange()
-                .authenticated()
-                .and()
-                .build();
-    }
+//                .build();
+//    }
 
 //    @Bean
 //    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
