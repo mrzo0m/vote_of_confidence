@@ -87,14 +87,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and().oauth2ResourceServer()
-                .authenticationEntryPoint(new VocLoginUrlAuthenticationEntryPoint("/login"))
+                .authenticationEntryPoint(new VocLoginUrlAuthenticationEntryPoint("/oauth2/authorization/okta"))
                 .jwt()
                 .and()
                 .and()
                 .exceptionHandling()
                 .defaultAuthenticationEntryPointFor(
                         new VocLoginUrlAuthenticationEntryPoint("/login"),
-                        new AntPathRequestMatcher("*"));
+                        new AntPathRequestMatcher("**"));
     }
 
     private ClientRegistration oktaClientCredentialsRegistration() {
