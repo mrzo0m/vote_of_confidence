@@ -32,6 +32,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
@@ -87,7 +88,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().oauth2ResourceServer()
                 .authenticationEntryPoint(new VocLoginUrlAuthenticationEntryPoint("/login"))
-                .jwt();
+                .jwt()
+                .and()
+                .and()
+                .exceptionHandling()
+                .defaultAuthenticationEntryPointFor(
+                        new VocLoginUrlAuthenticationEntryPoint("/login"),
+                        new AntPathRequestMatcher("**"));
     }
 
     private ClientRegistration oktaClientCredentialsRegistration() {
