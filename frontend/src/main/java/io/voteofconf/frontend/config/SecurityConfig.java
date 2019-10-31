@@ -68,14 +68,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManager.setTokenServices(tokenServices());
         authenticationManager.setResourceId("frontend");
         http
-                .addFilterAt(new VocOAuth2AuthorizationCodeGrantFilter(
-                        clientRegistrationRepository,
-                        clientRepository,
-                        authenticationManager), OAuth2AuthorizationCodeGrantFilter.class)
                 .addFilterAt(new OAuth2AuthorizationRequestRedirectFilter(
                         new VocDefaultOAuth2AuthorizationRequestResolver(
                                 clientRegistrationRepository,
                                 OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI)), OAuth2AuthorizationRequestRedirectFilter.class)
+                .addFilterAt(new VocOAuth2AuthorizationCodeGrantFilter(
+                        clientRegistrationRepository,
+                        clientRepository,
+                        authenticationManager), OAuth2AuthorizationCodeGrantFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()

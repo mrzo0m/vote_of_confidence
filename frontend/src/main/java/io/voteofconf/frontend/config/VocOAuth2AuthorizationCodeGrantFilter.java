@@ -175,7 +175,7 @@ public class VocOAuth2AuthorizationCodeGrantFilter extends OncePerRequestFilter 
             redirectUri = request.getHeader("BASE_REDIRECT_URI");
         }
         else {
-            redirectUri = "http://xn--b1aaffpuncuol5m.xn--p1ai";
+            redirectUri = "http://localhost:8080";
         }
 
         log.warn("redirectUri = " + redirectUri);
