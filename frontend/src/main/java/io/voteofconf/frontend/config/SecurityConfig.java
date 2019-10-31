@@ -94,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .defaultAuthenticationEntryPointFor(
                         new VocLoginUrlAuthenticationEntryPoint("/login"),
-                        new AntPathRequestMatcher("**"));
+                        new AntPathRequestMatcher("*"));
     }
 
     private ClientRegistration oktaClientCredentialsRegistration() {

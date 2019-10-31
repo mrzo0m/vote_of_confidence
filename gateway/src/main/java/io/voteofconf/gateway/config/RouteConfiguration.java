@@ -43,7 +43,7 @@ public class RouteConfiguration {
                                             URI uri = exchange.getRequest().getURI();
                                             String headerValue = uri.toString()
                                                     .replace(uri.getPath(), "")
-                                                    .replace(":", "://");
+                                                    .replace("http:", "");
 
                                             log.info("SERVER_URI = " + headerValue);
                                             exchange.mutate().request(request

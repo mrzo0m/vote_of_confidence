@@ -52,13 +52,7 @@ public class VocLoginUrlAuthenticationEntryPoint extends LoginUrlAuthenticationE
     protected String buildRedirectUrlToLoginPage(HttpServletRequest request,
                                                  HttpServletResponse response, AuthenticationException authException) {
 
-        StringBuilder url = new StringBuilder(request.getHeader("SERVER_URI"));
-
-        url.append(request.getRequestURI());
-        if (request.getQueryString() != null) {
-            url.append("?").append(request.getQueryString());
-        }
-
-        return url.toString();
+        return super.buildRedirectUrlToLoginPage(request, response, authException)
+                .replace("frontend-microservice", request.getHeader("SERVER_URI"));
     }
 }
