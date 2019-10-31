@@ -6,8 +6,11 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.web.util.UrlUtils;
+import org.springframework.util.MultiValueMap;
 
 import java.net.URI;
+import java.util.Arrays;
 
 @Configuration
 @Slf4j
@@ -38,19 +41,27 @@ public class RouteConfiguration {
                         .filters(f -> f
                                         .addRequestHeader("BASE_REDIRECT_URI", "http://localhost:8080")
                                         .filter((exchange, chain) ->{
-                                            ServerHttpRequest request = exchange.getRequest();
+                                                ServerHttpRequest request = exchange.getRequest();
 
-                                            URI uri = exchange.getRequest().getURI();
-                                            String headerValue = uri.toString()
-                                                    .replace(uri.getPath(), "")
-                                                    .replace("http:", "");
+                                                URI uri = exchange.getRequest().getURI();
 
-                                            log.info("SERVER_URI = " + headerValue);
-                                            exchange.mutate().request(request
-                                                    .mutate()
-                                                    .header("SERVER_URI", headerValue)
-                                                    .build()).build();
-                                            return chain.filter(exchange);
+                                                MultiValueMap<String, String> valueMap = exchange.getRequest().getQueryParams();
+                                                String host = valueMap.values().stream()
+                                                        .findFirst().orElse(Arrays.asList((uri.getHost())))
+                                                        .stream()
+                                                        .findFirst().orElse(uri.getHost());
+                                                String headerValue = UrlUtils.buildFullRequestUrl(uri.getScheme(),
+                                                        host,
+                                                        uri.getPort(),
+                                                        uri.getPath(),
+                                                        null);
+
+                                                exchange.mutate().request(request
+                                                        .mutate()
+                                                        .header("SERVER_URI", headerValue)
+                                                        .build()).build();
+
+                                                return chain.filter(exchange);
                                         })
 //                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
 //                                        .map(SecurityContext::getAuthentication)
