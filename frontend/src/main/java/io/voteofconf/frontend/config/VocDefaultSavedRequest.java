@@ -8,35 +8,23 @@ import javax.servlet.http.HttpServletRequest;
 
 public class VocDefaultSavedRequest extends DefaultSavedRequest {
 
-    private final String requestURI;
-    private final String requestURL;
-    private final String serverName;
+    private final String serverUri;
 
     public VocDefaultSavedRequest(HttpServletRequest request, PortResolver portResolver) {
         super(request, portResolver);
-        this.requestURL = super.getRequestURL().replace("frontend-microservice", "xn--b1aaffpuncuol5m.xn--p1ai");
-        this.requestURI = super.getRequestURI().replace("frontend-microservice", "xn--b1aaffpuncuol5m.xn--p1ai");
-        this.serverName = super.getServerName().replace("frontend-microservice", "xn--b1aaffpuncuol5m.xn--p1ai");
+        this.serverUri = request.getHeader("SERVER_URI");
     }
 
-    @Override
-    public String getRequestURL() {
-        return requestURL;
-    }
-
-    @Override
-    public String getRequestURI() {
-        return requestURI;
-    }
-
-    @Override
-    public String getServerName() {
-        return serverName;
-    }
 
     @Override
     public String getRedirectUrl() {
-        return UrlUtils.buildFullRequestUrl(getScheme(), serverName, getServerPort(), requestURI,
-                getQueryString());
+        StringBuilder url = new StringBuilder(serverUri);
+
+        url.append(getRequestURI());
+        if (getQueryString() != null) {
+            url.append("?").append(getQueryString());
+        }
+
+        return url.toString();
     }
 }
