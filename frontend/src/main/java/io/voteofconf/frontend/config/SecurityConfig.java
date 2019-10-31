@@ -28,6 +28,7 @@ import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEn
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.store.jwk.JwkTokenStore;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -70,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManager.setTokenServices(tokenServices());
         authenticationManager.setResourceId("frontend");
         http
-                .addFilterAt(new ExceptionTranslationFilter(new OAuth2AuthenticationEntryPoint(), new NullRequestCache()), ExceptionTranslationFilter.class)
+                .addFilterAt(new ExceptionTranslationFilter(new OAuth2AuthenticationEntryPoint(), new HttpSessionRequestCache()), ExceptionTranslationFilter.class)
                 .addFilterAt(new OAuth2AuthorizationRequestRedirectFilter(
                         new VocDefaultOAuth2AuthorizationRequestResolver(
                                 clientRegistrationRepository,
