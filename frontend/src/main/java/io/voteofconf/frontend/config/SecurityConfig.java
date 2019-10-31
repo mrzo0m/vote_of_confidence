@@ -72,8 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManager.setTokenServices(tokenServices());
         authenticationManager.setResourceId("frontend");
         http
-                .addFilterBefore(new ExceptionTranslationFilter(new OAuth2AuthenticationEntryPoint(), new HttpSessionRequestCache()),
-                        org.springframework.security.web.access.ExceptionTranslationFilter.class)
                 .addFilterAt(new OAuth2AuthorizationRequestRedirectFilter(
                         new VocDefaultOAuth2AuthorizationRequestResolver(
                                 clientRegistrationRepository,
@@ -85,9 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
-                .and().oauth2ResourceServer()
-                .authenticationEntryPoint(new OAuth2AuthenticationEntryPoint())
-                .jwt();
+                .and().oauth2ResourceServer().jwt();
     }
 
     private ClientRegistration oktaClientCredentialsRegistration() {

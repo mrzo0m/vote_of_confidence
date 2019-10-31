@@ -2,8 +2,10 @@ package io.voteofconf.frontend.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
@@ -24,12 +26,17 @@ public class FilterChainPostProcessor implements BeanPostProcessor {
 //            List<Filter> newFilters = ...
 
             List<Filter> newFilters = new ArrayList<>(filters);
-            Filter filterToRemove = filters.stream()
-                    .filter(filter -> filter instanceof org.springframework.security.web.access.ExceptionTranslationFilter)
-                    .findFirst()
-                    .orElse(null);
+            org.springframework.security.web.access.ExceptionTranslationFilter filterToRemove = (org.springframework.security.web.access.ExceptionTranslationFilter)
+                    filters.stream()
+                            .filter(filter -> filter instanceof org.springframework.security.web.access.ExceptionTranslationFilter)
+                            .findFirst()
+                            .orElse(null);
 
-            newFilters.remove(filterToRemove);
+            int position = newFilters.indexOf(filterToRemove);
+            newFilters.set(position,
+                    new ExceptionTranslationFilter(filterToRemove.getAuthenticationEntryPoint() != null ?
+                            filterToRemove.getAuthenticationEntryPoint() : new OAuth2AuthenticationEntryPoint(),
+                            new HttpSessionRequestCache()));
 
             return new FilterChainProxy(new DefaultSecurityFilterChain(fc.getRequestMatcher(), newFilters));
         }
