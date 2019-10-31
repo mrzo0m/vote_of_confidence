@@ -32,6 +32,7 @@ import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.util.ThrowableAnalyzer;
 import org.springframework.security.web.util.ThrowableCauseExtractor;
 import org.springframework.util.Assert;
@@ -216,9 +217,10 @@ public class ExceptionTranslationFilter extends GenericFilterBean {
         // SEC-112: Clear the SecurityContextHolder's Authentication, as the
         // existing Authentication is no longer considered valid
         SecurityContextHolder.getContext().setAuthentication(null);
-        requestCache.saveRequest(request, response);
-        request.getSession().setAttribute( "SPRING_SECURITY_SAVED_REQUEST", new VocDefaultSavedRequest(request,  new PortResolverImpl()));
-        logger.debug("Calling Authentication entry point.");
+//        requestCache.saveRequest(request, response);
+        SavedRequest newSavedRequest = new VocDefaultSavedRequest(request,  new PortResolverImpl());
+        request.getSession().setAttribute( "SPRING_SECURITY_SAVED_REQUEST", newSavedRequest);
+        logger.debug("DefaultSavedRequest added to Session: " + newSavedRequest);
         authenticationEntryPoint.commence(request, response, reason);
     }
 
