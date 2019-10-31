@@ -93,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .defaultAuthenticationEntryPointFor(
-                        new VocLoginUrlAuthenticationEntryPoint("/login"),
+                        new VocLoginUrlAuthenticationEntryPoint("/oauth2/authorization/okta"),
                         new AntPathRequestMatcher("**"));
     }
 
