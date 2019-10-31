@@ -21,6 +21,9 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
@@ -36,18 +39,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private OAuth2AuthorizedClientRepository clientRepository;
 
-    private AuthenticationManager authenticationManager;
+    private ClientDetailsService clientDetailsService;
 
-    public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository, OAuth2AuthorizedClientRepository clientRepository, AuthenticationManager authenticationManager) {
-        super();
+    private ResourceServerTokenServices tokenServices;
+
+    public SecurityConfig(boolean disableDefaults, ClientRegistrationRepository clientRegistrationRepository, OAuth2AuthorizedClientRepository clientRepository, ClientDetailsService clientDetailsService, ResourceServerTokenServices tokenServices) {
+        super(disableDefaults);
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.clientRepository = clientRepository;
-        this.authenticationManager = authenticationManager;
+        this.clientDetailsService = clientDetailsService;
+        this.tokenServices = tokenServices;
     }
 
     @Override
     @Order(Ordered.HIGHEST_PRECEDENCE)
     protected void configure(HttpSecurity http) throws Exception {
+        OAuth2AuthenticationManager authenticationManager = new OAuth2AuthenticationManager();
+        authenticationManager.setClientDetailsService(clientDetailsService);
+        authenticationManager.setTokenServices(tokenServices);
+        authenticationManager.setResourceId("frontend");
         http
                 .addFilterAt(new VocOAuth2AuthorizationCodeGrantFilter(
                         clientRegistrationRepository,
