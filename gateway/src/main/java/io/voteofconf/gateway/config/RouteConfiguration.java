@@ -4,6 +4,9 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+
+import java.net.URI;
 
 @Configuration
 public class RouteConfiguration {
@@ -14,7 +17,19 @@ public class RouteConfiguration {
                 .route("frontend", r -> r
                         .path("/frontend/**")
                         .filters(f -> f
-                                  .addRequestHeader("BASE_REDIRECT_URI", "http://frontend/localhost:8080")
+                                        .addRequestHeader("BASE_REDIRECT_URI", "http://frontend/localhost:8080")
+                                        .filter((exchange, chain) ->{
+                                            ServerHttpRequest request = exchange.getRequest();
+
+                                            URI uri = exchange.getRequest().getURI();
+                                            String headerValue = uri.toString().replace(uri.getPath(), "");
+
+                                            exchange.mutate().request(request
+                                                    .mutate()
+                                                    .header("SERVER_URI", headerValue)
+                                                    .build()).build();
+                                            return chain.filter(exchange);
+                                        })
 //                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
 //                                        .map(SecurityContext::getAuthentication)
 //                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
