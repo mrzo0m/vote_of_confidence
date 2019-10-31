@@ -52,8 +52,8 @@ public class FilterChainPostProcessor implements BeanPostProcessor {
                             .findFirst()
                             .orElse(null);
 
-            position = newFilters.indexOf(requestRedirectFilter);
             newFilters.remove(vocRequestRedirectFilter);
+            position = newFilters.indexOf(requestRedirectFilter);
             newFilters.set(position, vocRequestRedirectFilter);
 
             OAuth2AuthorizationCodeGrantFilter codeGrantFilter = (OAuth2AuthorizationCodeGrantFilter)
@@ -67,8 +67,8 @@ public class FilterChainPostProcessor implements BeanPostProcessor {
                             .findFirst()
                             .orElse(null);
 
-            position = newFilters.indexOf(codeGrantFilter);
             newFilters.remove(vocCodeGrantFilter);
+            position = newFilters.indexOf(codeGrantFilter);
             newFilters.set(position, vocCodeGrantFilter);
 
             return new FilterChainProxy(new DefaultSecurityFilterChain(fc.getRequestMatcher(), newFilters));
