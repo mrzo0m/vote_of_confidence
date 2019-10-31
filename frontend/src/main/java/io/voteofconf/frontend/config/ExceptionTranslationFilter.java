@@ -26,6 +26,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.PortResolverImpl;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
@@ -216,15 +217,7 @@ public class ExceptionTranslationFilter extends GenericFilterBean {
         // existing Authentication is no longer considered valid
         SecurityContextHolder.getContext().setAuthentication(null);
         requestCache.saveRequest(request, response);
-        DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute( "SPRING_SECURITY_SAVED_REQUEST");
-        try {
-            Field field = savedRequest.getClass().getField("serverName");
-            field.set(savedRequest, "xn--b1aaffpuncuol5m.xn--p1ai");
-            field = savedRequest.getClass().getField("requestURL");
-            field.set(savedRequest, "http://xn--b1aaffpuncuol5m.xn--p1ai");
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        request.getSession().setAttribute( "SPRING_SECURITY_SAVED_REQUEST", new VocDefaultSavedRequest(request,  new PortResolverImpl()));
         logger.debug("Calling Authentication entry point.");
         authenticationEntryPoint.commence(request, response, reason);
     }
