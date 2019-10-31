@@ -85,7 +85,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
-                .and().oauth2ResourceServer().jwt();
+                .and().oauth2ResourceServer()
+                .authenticationEntryPoint(new OAuth2AuthenticationEntryPoint())
+                .jwt();
     }
 
     private ClientRegistration oktaClientCredentialsRegistration() {
