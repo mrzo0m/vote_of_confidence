@@ -43,18 +43,22 @@ public class FilterChainPostProcessor implements BeanPostProcessor {
 
             OAuth2AuthorizationRequestRedirectFilter requestRedirectFilter = (OAuth2AuthorizationRequestRedirectFilter)
                     filters.stream()
-                    .filter(filter -> filter instanceof OAuth2AuthorizationRequestRedirectFilter)
-                    .findFirst()
-                    .orElse(null);
+                            .filter(filter -> filter instanceof OAuth2AuthorizationRequestRedirectFilter)
+                            .findFirst()
+                            .orElse(null);
             VocOAuth2AuthorizationRequestRedirectFilter vocRequestRedirectFilter = (VocOAuth2AuthorizationRequestRedirectFilter)
                     filters.stream()
                             .filter(filter -> filter instanceof VocOAuth2AuthorizationRequestRedirectFilter)
                             .findFirst()
                             .orElse(null);
 
-            newFilters.remove(vocRequestRedirectFilter);
             position = newFilters.indexOf(requestRedirectFilter);
-            newFilters.set(position, vocRequestRedirectFilter);
+
+            if (position >= 0) {
+                newFilters.remove(vocRequestRedirectFilter);
+                position = newFilters.indexOf(requestRedirectFilter);
+                newFilters.set(position, vocRequestRedirectFilter);
+            }
 
             OAuth2AuthorizationCodeGrantFilter codeGrantFilter = (OAuth2AuthorizationCodeGrantFilter)
                     filters.stream()
@@ -67,9 +71,13 @@ public class FilterChainPostProcessor implements BeanPostProcessor {
                             .findFirst()
                             .orElse(null);
 
-            newFilters.remove(vocCodeGrantFilter);
             position = newFilters.indexOf(codeGrantFilter);
-            newFilters.set(position, vocCodeGrantFilter);
+
+            if (position >= 0) {
+                newFilters.remove(vocCodeGrantFilter);
+                position = newFilters.indexOf(codeGrantFilter);
+                newFilters.set(position, vocCodeGrantFilter);
+            }
 
             return new FilterChainProxy(new DefaultSecurityFilterChain(fc.getRequestMatcher(), newFilters));
         }
