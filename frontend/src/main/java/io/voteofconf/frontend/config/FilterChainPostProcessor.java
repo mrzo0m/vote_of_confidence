@@ -2,6 +2,8 @@ package io.voteofconf.frontend.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationCodeGrantFilter;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
@@ -37,6 +39,37 @@ public class FilterChainPostProcessor implements BeanPostProcessor {
                     new ExceptionTranslationFilter(filterToRemove.getAuthenticationEntryPoint() != null ?
                             filterToRemove.getAuthenticationEntryPoint() : new OAuth2AuthenticationEntryPoint(),
                             new HttpSessionRequestCache()));
+
+
+            OAuth2AuthorizationRequestRedirectFilter requestRedirectFilter = (OAuth2AuthorizationRequestRedirectFilter)
+                    filters.stream()
+                    .filter(filter -> filter instanceof OAuth2AuthorizationRequestRedirectFilter)
+                    .findFirst()
+                    .orElse(null);
+            VocOAuth2AuthorizationRequestRedirectFilter vocRequestRedirectFilter = (VocOAuth2AuthorizationRequestRedirectFilter)
+                    filters.stream()
+                            .filter(filter -> filter instanceof VocOAuth2AuthorizationRequestRedirectFilter)
+                            .findFirst()
+                            .orElse(null);
+
+            position = newFilters.indexOf(requestRedirectFilter);
+            newFilters.remove(vocRequestRedirectFilter);
+            newFilters.set(position, vocRequestRedirectFilter);
+
+            OAuth2AuthorizationCodeGrantFilter codeGrantFilter = (OAuth2AuthorizationCodeGrantFilter)
+                    filters.stream()
+                            .filter(filter -> filter instanceof OAuth2AuthorizationCodeGrantFilter)
+                            .findFirst()
+                            .orElse(null);
+            VocOAuth2AuthorizationCodeGrantFilter vocCodeGrantFilter = (VocOAuth2AuthorizationCodeGrantFilter)
+                    filters.stream()
+                            .filter(filter -> filter instanceof VocOAuth2AuthorizationCodeGrantFilter)
+                            .findFirst()
+                            .orElse(null);
+
+            position = newFilters.indexOf(codeGrantFilter);
+            newFilters.remove(vocCodeGrantFilter);
+            newFilters.set(position, vocCodeGrantFilter);
 
             return new FilterChainProxy(new DefaultSecurityFilterChain(fc.getRequestMatcher(), newFilters));
         }
