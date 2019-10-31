@@ -55,7 +55,9 @@ public class VocOAuth2AuthorizationRequestRedirectFilter extends OAuth2Authoriza
         this.requestCache = requestCache;
     }
 
-
+    VocOAuth2AuthorizationRequestRedirectFilter(VocDefaultOAuth2AuthorizationRequestResolver vocDefaultOAuth2AuthorizationRequestResolver) {
+        super(vocDefaultOAuth2AuthorizationRequestResolver);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
