@@ -28,6 +28,7 @@ import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEn
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.store.jwk.JwkTokenStore;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -72,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManager.setTokenServices(tokenServices());
         authenticationManager.setResourceId("frontend");
         http
+
                 .addFilterAfter(new VocOAuth2AuthorizationRequestRedirectFilter(
                         new VocDefaultOAuth2AuthorizationRequestResolver(
                                 clientRegistrationRepository,
@@ -83,7 +85,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
-                .and().oauth2ResourceServer().jwt();
+                .and().oauth2ResourceServer()
+                .authenticationEntryPoint(new VocLoginUrlAuthenticationEntryPoint("/login"))
+                .jwt();
     }
 
     private ClientRegistration oktaClientCredentialsRegistration() {
