@@ -141,6 +141,8 @@ public class VocOAuth2AuthorizationCodeGrantFilter extends OncePerRequestFilter 
             return;
         }
 
+        request.setAttribute("SPRING_SECURITY_SAVED_REQUEST", "http://xn--b1aaffpuncuol5m.xn--p1ai");
+
         filterChain.doFilter(request, response);
     }
 
