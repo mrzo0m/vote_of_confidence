@@ -177,7 +177,7 @@ public class ExceptionTranslationFilter extends GenericFilterBean {
             throws IOException, ServletException {
         if (exception instanceof AuthenticationException) {
             logger.debug(
-                    "Authentication exception occurred; redirecting to authentication entry point",
+                    "+Authentication exception occurred; redirecting to authentication entry point",
                     exception);
 
             sendStartAuthentication(request, response, chain,
