@@ -23,7 +23,10 @@ import org.springframework.security.oauth2.client.web.server.ServerOAuth2Authori
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
+import org.springframework.security.oauth2.provider.client.InMemoryClientDetailsService;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.oauth2.provider.token.store.jwk.JwkTokenStore;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
@@ -39,24 +42,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private OAuth2AuthorizedClientRepository clientRepository;
 
-    private ClientDetailsService clientDetailsService;
 
-    private ResourceServerTokenServices tokenServices;
-
-    public SecurityConfig(boolean disableDefaults, ClientRegistrationRepository clientRegistrationRepository, OAuth2AuthorizedClientRepository clientRepository, ClientDetailsService clientDetailsService, ResourceServerTokenServices tokenServices) {
-        super(disableDefaults);
+    public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository, OAuth2AuthorizedClientRepository clientRepository) {
+        super();
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.clientRepository = clientRepository;
-        this.clientDetailsService = clientDetailsService;
-        this.tokenServices = tokenServices;
+    }
+
+    private JwkTokenStore jwkTokenStore() {
+        ClientRegistration okta = clientRegistrationRepository.findByRegistrationId("okta");
+        return new JwkTokenStore(okta.getProviderDetails().getJwkSetUri());
+    }
+
+    private DefaultTokenServices tokenServices() {
+        final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(jwkTokenStore());
+        return defaultTokenServices;
     }
 
     @Override
     @Order(Ordered.HIGHEST_PRECEDENCE)
     protected void configure(HttpSecurity http) throws Exception {
         OAuth2AuthenticationManager authenticationManager = new OAuth2AuthenticationManager();
-        authenticationManager.setClientDetailsService(clientDetailsService);
-        authenticationManager.setTokenServices(tokenServices);
+        authenticationManager.setClientDetailsService(new InMemoryClientDetailsService());
+        authenticationManager.setTokenServices(tokenServices());
         authenticationManager.setResourceId("frontend");
         http
                 .addFilterAt(new VocOAuth2AuthorizationCodeGrantFilter(
