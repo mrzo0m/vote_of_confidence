@@ -1,16 +1,25 @@
+# okta properties
 oidc:
   issuer-uri: https://dev-388275.oktapreview.com/oauth2/default
+  jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
   client-id: 0oajfcjaxs1OKu2kC0h7
   client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
 
 okta:
+  #  client:
+  #    orgUrl: https://dev-388275.oktapreview.com
   oauth2:
-    audience: frontend-api
-    issuer: https://dev-388275.oktapreview.com/oauth2/default
+    audience: frontend
+    issuer: ${oidc.issuer-uri}
     client-id: ${oidc.client-id}
     client-secret: ${oidc.client-secret}
     scope: openid, email, profile
+    scopeClaim: scp
+    rolesClaim: groups
 
+okta-api-token:
+  type: SSWS
+  value: 00HCPpmblTla6BsOeaXcuuVphCg-vZ8xt6fO-6p8jd
 spring:
   application:
     name: frontend
