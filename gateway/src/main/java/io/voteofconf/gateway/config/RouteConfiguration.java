@@ -50,11 +50,7 @@ public class RouteConfiguration {
                                                         .findFirst().orElse(Arrays.asList((uri.getHost())))
                                                         .stream()
                                                         .findFirst().orElse(uri.getHost());
-                                                String headerValue = UrlUtils.buildFullRequestUrl(uri.getScheme(),
-                                                        host,
-                                                        uri.getPort(),
-                                                        uri.getPath(),
-                                                        null);
+                                                String headerValue = host + uri.getPath();
 
                                                 exchange.mutate().request(request
                                                         .mutate()
