@@ -15,10 +15,19 @@ public class SecurityConfiguration {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
-                .csrf().disable()
-                .cors().disable()
+//                .authorizeExchange()
+//                .pathMatchers("/**")
+//                .permitAll()
+////                      .and()
+////                .oauth2Login()
+//                .and()
+                .oauth2ResourceServer()
+                .jwt().and().and()
                 .authorizeExchange()
-                .anyExchange().permitAll().and().build();
+                .anyExchange()
+                .authenticated()
+                .and()
+                .build();
     }
 
 //    @Bean

@@ -15,7 +15,6 @@ import java.util.List;
 
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = {
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
         org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
 )
 public class FrontendApplication {
@@ -24,17 +23,4 @@ public class FrontendApplication {
         SpringApplication.run(FrontendApplication.class, args);
     }
 
-}
-
-@RestController
-class ServiceInstanceRestController {
-
-    @Autowired
-    private DiscoveryClient discoveryClient;
-
-    @RequestMapping("/service-instances/{applicationName}")
-    public List<ServiceInstance> serviceInstancesByApplicationName(
-            @PathVariable String applicationName) {
-        return this.discoveryClient.getInstances(applicationName);
-    }
 }
