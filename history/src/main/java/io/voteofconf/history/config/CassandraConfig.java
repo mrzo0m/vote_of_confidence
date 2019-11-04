@@ -5,12 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractReactiveCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
-import org.springframework.data.cassandra.core.cql.keyspace.DropKeyspaceSpecification;
 import org.springframework.data.cassandra.core.cql.keyspace.KeyspaceOption;
 import org.springframework.data.cassandra.repository.config.EnableReactiveCassandraRepositories;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -65,11 +64,6 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
                         .ifNotExists()
                         .with(KeyspaceOption.DURABLE_WRITES, true)
                         .withSimpleReplication();
-        return Arrays.asList(specification);
-    }
-
-    @Override
-    protected List<DropKeyspaceSpecification> getKeyspaceDrops() {
-        return Arrays.asList(DropKeyspaceSpecification.dropKeyspace(cassandraKubeConfig.getKeyspace()));
+        return Collections.singletonList(specification);
     }
 }
