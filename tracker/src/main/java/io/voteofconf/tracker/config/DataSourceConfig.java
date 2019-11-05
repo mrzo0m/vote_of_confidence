@@ -8,10 +8,12 @@ import kotlin.Unit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 import java.util.concurrent.CompletableFuture;
 
+@Profile("native")
 @Configuration
 @PropertySource("classpath:mysql.yml")
 public class DataSourceConfig {

@@ -26,5 +26,4 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    org.springframework.cloud.gateway: TRACE
-    org.springframework.cloud.loadbalancer: TRACE
+    ROOT: info
