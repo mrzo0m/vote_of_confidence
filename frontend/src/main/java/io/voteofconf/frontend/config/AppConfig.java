@@ -3,11 +3,11 @@ package io.voteofconf.frontend.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class AppConfig {
 
 
-    @Bean
+//    @Bean
     public FilterChainPostProcessor myBeanPostProcessor() {
         return new FilterChainPostProcessor();
     }

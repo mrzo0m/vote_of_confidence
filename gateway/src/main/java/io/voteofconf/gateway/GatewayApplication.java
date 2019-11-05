@@ -15,11 +15,7 @@ import reactor.core.publisher.Hooks;
         ElasticsearchDataAutoConfiguration.class,
         DataSourceAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class,
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-        org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration.class,
-        org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration.class,
-        org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration.class
+        DataSourceTransactionManagerAutoConfiguration.class
         })
 public class GatewayApplication {
 

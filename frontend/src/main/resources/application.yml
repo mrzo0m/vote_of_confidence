@@ -19,7 +19,7 @@ okta:
 
 okta-api-token:
   type: SSWS
-  value: 00HCPpmblTla6BsOeaXcuuVphCg-vZ8xt6fO-6p8jd
+  value: 00zD5hEcy2ZIlMfNVxKE2EMif-VDYjGXjRyrwWz2oY
 spring:
   application:
     name: frontend

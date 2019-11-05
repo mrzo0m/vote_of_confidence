@@ -10,7 +10,7 @@
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>DEBUG</level>
-            <onMatch>DENY</onMatch>
+            <onMatch>ACCEPT</onMatch>
         </filter>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -18,7 +18,7 @@
         </filter>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>TRACE</level>
-            <onMatch>DENY</onMatch>
+            <onMatch>ACCEPT</onMatch>
         </filter>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>

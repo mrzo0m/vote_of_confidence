@@ -15,35 +15,36 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-//@Configuration
-//@EnableWebFluxSecurity
-//@EnableReactiveMethodSecurity
+@Configuration
+@EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
-//    @Bean
-//    @Primary
-//    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-////        return http
-////                .authorizeExchange()
-////                .anyExchange().authenticated()
-////                .and()
-////                .oauth2Login()
-////                .and()
-////                .oauth2ResourceServer()
-////                .jwt().and().and().build();
-//
-//        return http.authorizeExchange()
-//                // allow antonymous access to the root page
-//                .pathMatchers("/").permitAll()
-//                // all other requests
+    @Bean
+    @Primary
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+//        return http
+//                .authorizeExchange()
 //                .anyExchange().authenticated()
-//
-//                // set logout URL
-//                .and().logout().logoutUrl("/")
-//
-//                // enable OAuth2/OIDC
+//                .and()
+//                .oauth2Login()
+//                .and()
+//                .oauth2ResourceServer()
+//                .jwt().and().and().build();
+
+        return http.authorizeExchange()
+                // allow antonymous access to the root page
+                .pathMatchers("/api/**").permitAll()
+                // all other requests
+                .anyExchange().authenticated()
+
+                // set logout URL
+                .and().logout().logoutUrl("/")
+//                .and().formLogin()
+
+                // enable OAuth2/OIDC
 //                .and().oauth2Client()
-////                .and().oauth2Login()
-//                .and().build();
-//    }
+                .and().oauth2Login()
+                .and().build();
+    }
 }
