@@ -1,13 +1,18 @@
 package io.voteofconf.history.controller;
 
 import com.datastax.driver.core.utils.UUIDs;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import io.voteofconf.history.controller.dto.WebhookSubscription;
 import io.voteofconf.history.dao.CalendlyInvitee;
 import io.voteofconf.history.dao.CalendlyInviteeKey;
 import io.voteofconf.history.dao.WebhookRepository;
+import io.voteofconf.history.statemachine.Events;
+import io.voteofconf.history.statemachine.States;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +32,17 @@ public class WebhooksController {
     @Autowired
     WebhookRepository repository;
 
+    @Autowired
+    ObjectMapper mapper;
+
+    @Autowired
+    private StateMachineFactory<States, Events> stateMachineFactory;
+
+
 
     @ApiOperation(value = "Post to invitee_created")
     @PostMapping("/invitee_created")
-    public Mono<CalendlyInvitee> inviteeCreated(@RequestBody WebhookSubscription invitee) {
+    public Mono<CalendlyInvitee> inviteeCreated(@RequestBody WebhookSubscription invitee) throws JsonProcessingException {
         log.info("webhooks event while invitee_created");
         CalendlyInviteeKey key = new CalendlyInviteeKey();
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
@@ -46,7 +58,8 @@ public class WebhooksController {
         key.setTs(UUIDs.timeBased());
         CalendlyInvitee calendlyInvitee = new CalendlyInvitee();
         calendlyInvitee.setCalendlyInviteeKey(key);
-        calendlyInvitee.setPayload("hohohoho");
+        calendlyInvitee.setEvent(invitee.getEvent());
+        calendlyInvitee.setPayload(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(invitee.getPayload()));
         return repository.save(calendlyInvitee);
     }
 

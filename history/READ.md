@@ -12,6 +12,10 @@ cassandra:
   keyspace: voc_keyspace
   basepackages: io.voteofconf.history`
 
+#####UML
+First setup [graphviz](https://graphviz.gitlab.io/download/) 
+Then use idea Plugin [plantuml](https://plugins.jetbrains.com/plugin/7017-plantuml-integration)
+
 John Schulz:   
 >Ideal Cassandra Use Cases
 It turns out that Cassandra is really very good for some applications.

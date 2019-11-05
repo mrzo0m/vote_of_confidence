@@ -66,4 +66,6 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
                         .withSimpleReplication();
         return Collections.singletonList(specification);
     }
+
+
 }

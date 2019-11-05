@@ -50,8 +50,8 @@ management:
       enabled: true
 
 
-#cassandra:
-#  contactpoints: 127.0.0.1
-#  port: 9042
-#  keyspace: voc_keyspace
-#  basepackages: io.voteofconf.history
+cassandra:
+  contactpoints: 127.0.0.1
+  port: 9042
+  keyspace: voc_keyspace
+  basepackages: io.voteofconf.history
