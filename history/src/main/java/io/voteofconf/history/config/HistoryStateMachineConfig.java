@@ -71,7 +71,7 @@ public class HistoryStateMachineConfig {
         }
 
         @Bean
-        public Action<States, Events> storeToHistoryAction() {
+        public Action<States, Events> storeToHistoryAction(){
             return Store::execute;
         }
 

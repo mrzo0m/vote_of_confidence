@@ -41,32 +41,24 @@ public class WebhooksController {
         log.info("webhooks event while invitee_created, palyload is: {}", invitee.toString());
         Message<Events> event = MessageBuilder
                 .withPayload(Events.STORE)
-                .setHeader(Variables.INVITE.toString(), invitee).build();
-        myStateMachine.sendEvent(Mono.just(event))
+                .setHeader(Variables.INVITE.toString(), invitee)
+                .setHeader(Variables.REPOSITORY.toString(), repository)
+                .setHeader(Variables.MAPPER.toString(), mapper)
+                .build();
+        myStateMachine.sendEvent(
+                Mono.just(event))
                 .doOnComplete(() -> {
                     System.out.println("Event handling complete");
+                    Message<Events> addTaskEvent = MessageBuilder
+                            .withPayload(Events.ADD_TASK).build();
+                    myStateMachine
+                            .sendEvent(
+                                    Mono.just(addTaskEvent))
+                            .subscribe();
                 })
                 .doOnError(Throwable::printStackTrace).subscribe();
 
 
-
-//        CalendlyInviteeKey key = new CalendlyInviteeKey();
-//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
-//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd", new Locale("ru"));
-//        LocalDate date = LocalDate.parse(invitee.getTime(), inputFormatter);
-//        String formattedDate = outputFormatter.format(date);
-//        key.setInviteeEmail(invitee.getPayload().getInvitee().getEmail());
-//        key.setDay(formattedDate);
-//        int min = 1; //TODO: Кол-во узлов в кластере кассандры поулчать из конфигмапы куба
-//        int max = 1;
-//        Integer bucket = new Random().ints(min, (max + 1)).limit(1).findFirst().getAsInt();
-//        key.setBucket(bucket);
-//        key.setTs(UUIDs.timeBased());
-//        CalendlyInvitee calendlyInvitee = new CalendlyInvitee();
-//        calendlyInvitee.setCalendlyInviteeKey(key);
-//        calendlyInvitee.setEvent(invitee.getEvent());
-//        calendlyInvitee.setPayload(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(invitee.getPayload()));
-//        return repository.save(calendlyInvitee);
     }
 
     @ApiOperation(value = "Post to invitee_canceled")

@@ -1,5 +1,7 @@
 package io.voteofconf.history.statemachine;
 
 public enum Variables {
-    INVITE
+    INVITE,
+    REPOSITORY,
+    MAPPER
 }
