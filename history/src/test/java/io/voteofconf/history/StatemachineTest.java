@@ -8,12 +8,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.GenericMessage;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.test.StateMachineTestPlan;
 import org.springframework.statemachine.test.StateMachineTestPlanBuilder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @ExtendWith(SpringExtension.class)
@@ -43,11 +50,19 @@ public class StatemachineTest {
 
     @Test
     public void testInitial() throws Exception {
+        Map<String, Object> clients = new HashMap<>();
+        clients.put("client1", "client11");
+        clients.put("client2", "client22");
+        MessageHeaders headers = new MessageHeaders(clients);
+        Message<Events> message = new GenericMessage<>(Events.STORE, headers);
         StateMachineTestPlan<States, Events> plan =
                 StateMachineTestPlanBuilder.<States, Events>builder()
                         .stateMachine(stateMachine)
                         .step()
                         .expectState(States.INVITE)
+                        .and()
+                        .step()
+                        .sendEvent(message)
                         .and()
                         .build();
         plan.test();

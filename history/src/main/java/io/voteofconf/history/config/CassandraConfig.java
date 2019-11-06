@@ -25,21 +25,21 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
     }
 
     @Override
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 500000)
     protected String getKeyspaceName() {
         System.out.println("The keyspace is: " + cassandraKubeConfig.getKeyspace());
         return cassandraKubeConfig.getKeyspace();
     }
 
     @Override
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 500000)
     protected String getContactPoints() {
         System.out.println("The cassandra host is: " + cassandraKubeConfig.getContactPoints());
         return cassandraKubeConfig.getContactPoints();
     }
 
     @Override
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 500000)
     protected int getPort() {
         System.out.println("The cassandra port is: " + cassandraKubeConfig.getPort());
         return cassandraKubeConfig.getPort();
