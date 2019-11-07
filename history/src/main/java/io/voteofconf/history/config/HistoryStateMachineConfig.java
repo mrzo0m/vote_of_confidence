@@ -3,6 +3,7 @@ package io.voteofconf.history.config;
 import io.voteofconf.history.statemachine.Events;
 import io.voteofconf.history.statemachine.StateMachineLogListener;
 import io.voteofconf.history.statemachine.States;
+import io.voteofconf.history.statemachine.action.AddTask;
 import io.voteofconf.history.statemachine.action.Store;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
-import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.EnableWithStateMachine;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
@@ -38,6 +38,9 @@ public class HistoryStateMachineConfig {
         @Autowired
         private Store store;
 
+        @Autowired
+        private AddTask addTask;
+
         private static void execute(StateContext<States, Events> stateContext) {
             log.warn("Бросаем в кассандру {}", stateContext.getMessageHeaders().get("client1"));
         }
@@ -55,7 +58,7 @@ public class HistoryStateMachineConfig {
             states.withStates()
                     .initial(States.INVITE, incomingInvite())
                     .state(States.INVITE_HISTORY, store)
-                    .state(States.BACKLOG, putToBacklogAction())
+                    .state(States.BACKLOG, addTask)
                     .state(States.INPROGRESS, changeStatusToInprogressAction())
                     .state(States.SOLUTION, handleSolution())
                     .end(States.SOLUTION);
@@ -69,12 +72,6 @@ public class HistoryStateMachineConfig {
         @Bean
         public Action<States, Events> incomingInvite() {
             return stateContext -> log.warn("Календли прислал запрос на интервью");
-        }
-
-
-        @Bean
-        public Action<States, Events> putToBacklogAction() {
-            return stateContext -> log.warn("Кладем в общий пул задач экспертов (можно инмеори)");
         }
 
         @Bean

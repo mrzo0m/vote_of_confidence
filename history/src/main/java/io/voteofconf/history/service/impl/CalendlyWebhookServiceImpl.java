@@ -33,7 +33,9 @@ public class CalendlyWebhookServiceImpl implements CalendlyWebhookService {
                                 .doOnComplete(() -> {
                                     System.out.println("Event handling complete");
                                     Message<Events> addTaskEvent = MessageBuilder
-                                            .withPayload(Events.ADD_TASK).build();
+                                            .withPayload(Events.ADD_TASK)
+                                            .setHeader(Variables.INVITE.toString(), invitee)
+                                            .build();
                                     stateMachine
                                             .sendEvent(
                                                     Mono.just(addTaskEvent))

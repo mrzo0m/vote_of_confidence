@@ -22,6 +22,8 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 
+import static io.voteofconf.history.utils.Constants.*;
+
 @Slf4j
 @Component
 public class Store implements Action<States, Events> {
@@ -32,9 +34,6 @@ public class Store implements Action<States, Events> {
     @Autowired
     ObjectMapper mapper;
 
-    private static final String CALENDLY_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    private static final String DAY = "dd";
-    private static final String RU = "ru";
 
     private static Integer getBucket() {
         int min = 1; //TODO: Кол-во узлов в кластере кассандры поулчать из конфигмапы куба
