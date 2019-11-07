@@ -19,8 +19,6 @@ import org.springframework.statemachine.config.builders.StateMachineStateConfigu
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.guard.Guard;
 
-import java.util.EnumSet;
-
 @Slf4j
 @Configuration
 public class HistoryStateMachineConfig {
@@ -32,7 +30,7 @@ public class HistoryStateMachineConfig {
 
     @Configuration
     @EnableWithStateMachine
-    @EnableStateMachine(name = "myStateMachine")
+    @EnableStateMachineFactory
     public static class Config extends EnumStateMachineConfigurerAdapter<States, Events> {
         @Autowired
         private StateMachineLogListener stateMachineLogListener;
@@ -53,7 +51,7 @@ public class HistoryStateMachineConfig {
         public void configure(StateMachineStateConfigurer<States, Events> states) throws Exception {
             states.withStates()
                     .initial(States.INVITE, incomingInvite())
-                    .state(States.INVITE_HISTORY, storeToHistoryAction())
+                    .state(States.INVITE_HISTORY, new Store())
                     .state(States.BACKLOG, putToBacklogAction())
                     .state(States.INPROGRESS, changeStatusToInprogressAction())
                     .state(States.SOLUTION, handleSolution())
@@ -70,10 +68,6 @@ public class HistoryStateMachineConfig {
             return stateContext -> log.warn("Календли прислал запрос на интервью");
         }
 
-        @Bean
-        public Action<States, Events> storeToHistoryAction(){
-            return Store::execute;
-        }
 
         @Bean
         public Action<States, Events> putToBacklogAction() {

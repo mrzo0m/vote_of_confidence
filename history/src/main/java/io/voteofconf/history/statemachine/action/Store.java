@@ -12,6 +12,7 @@ import io.voteofconf.history.statemachine.States;
 import io.voteofconf.history.statemachine.Variables;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.action.Action;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,13 +21,13 @@ import java.util.Objects;
 import java.util.Random;
 
 @Slf4j
-public class Store {
+public class Store implements Action<States, Events> {
 
     private static final String CALENDLY_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final String DAY = "dd";
     private static final String RU = "ru";
 
-    public static void execute(StateContext<States, Events> stateContext) {
+    public void execute(StateContext<States, Events> stateContext) {
         WebhookSubscription invitee = (WebhookSubscription) stateContext.getMessageHeaders().get(Variables.INVITE.toString());
         log.warn("Бросаем в кассандру {}", Objects.requireNonNull(invitee).getEvent());
         WebhookRepository repository = (WebhookRepository) stateContext.getMessageHeaders().get(Variables.REPOSITORY.toString());
