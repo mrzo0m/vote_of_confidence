@@ -1,8 +1,6 @@
 package io.voteofconf.history.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.voteofconf.history.controller.dto.WebhookSubscription;
-import io.voteofconf.history.dao.WebhookRepository;
 import io.voteofconf.history.service.CalendlyWebhookService;
 import io.voteofconf.history.statemachine.Events;
 import io.voteofconf.history.statemachine.States;
@@ -17,11 +15,6 @@ import reactor.core.scheduler.Schedulers;
 
 @Service
 public class CalendlyWebhookServiceImpl implements CalendlyWebhookService {
-    @Autowired
-    WebhookRepository repository;
-
-    @Autowired
-    ObjectMapper mapper;
 
     @Autowired
     StateMachineFactory<States, Events> stateMachineFactory;
@@ -36,8 +29,6 @@ public class CalendlyWebhookServiceImpl implements CalendlyWebhookService {
                                 Mono.just(MessageBuilder
                                         .withPayload(Events.STORE)
                                         .setHeader(Variables.INVITE.toString(), invitee)
-                                        .setHeader(Variables.REPOSITORY.toString(), repository)
-                                        .setHeader(Variables.MAPPER.toString(), mapper)
                                         .build()))
                                 .doOnComplete(() -> {
                                     System.out.println("Event handling complete");

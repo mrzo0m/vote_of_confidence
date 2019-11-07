@@ -22,7 +22,7 @@ public class WebhooksController {
     @ApiOperation(value = "Post to invitee_created")
     @PostMapping("/invitee_created")
     @ResponseStatus(HttpStatus.OK)
-    public void inviteeCreated(@RequestBody WebhookSubscription invitee) throws JsonProcessingException {
+    public void inviteeCreated(@RequestBody WebhookSubscription invitee) {
         log.info("webhooks event while invitee_created, palyload is: {}", invitee.toString());
         service.inviteeCreated(invitee);
     }

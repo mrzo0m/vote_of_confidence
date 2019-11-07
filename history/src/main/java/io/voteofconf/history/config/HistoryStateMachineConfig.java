@@ -35,6 +35,9 @@ public class HistoryStateMachineConfig {
         @Autowired
         private StateMachineLogListener stateMachineLogListener;
 
+        @Autowired
+        private Store store;
+
         private static void execute(StateContext<States, Events> stateContext) {
             log.warn("Бросаем в кассандру {}", stateContext.getMessageHeaders().get("client1"));
         }
@@ -51,7 +54,7 @@ public class HistoryStateMachineConfig {
         public void configure(StateMachineStateConfigurer<States, Events> states) throws Exception {
             states.withStates()
                     .initial(States.INVITE, incomingInvite())
-                    .state(States.INVITE_HISTORY, new Store())
+                    .state(States.INVITE_HISTORY, store)
                     .state(States.BACKLOG, putToBacklogAction())
                     .state(States.INPROGRESS, changeStatusToInprogressAction())
                     .state(States.SOLUTION, handleSolution())
