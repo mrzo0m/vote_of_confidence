@@ -1,0 +1,17 @@
+@startuml
+
+[*] --> INVITE
+
+INVITE --> INVITE_HISTORY: store
+
+INVITE_HISTORY --> BACKLOG: add task
+
+BACKLOG --> INPROGRESS : plan interview
+
+INPROGRESS --> SOLUTION : finish interview
+
+INPROGRESS --> BACKLOG : interviewer reject
+
+SOLUTION --> [*]
+
+@enduml

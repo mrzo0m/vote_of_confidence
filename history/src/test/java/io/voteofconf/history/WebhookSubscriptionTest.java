@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class WebhookSubscriptionTest extends HistoryApplicationTests {
     @Test
     public void myTest() throws Exception {
-        Select cql = QueryBuilder.select().from("claim_by_company");
+        Select cql = QueryBuilder.select().from("calendly_invitee_stream");
         session.execute(cql);
     }
 }

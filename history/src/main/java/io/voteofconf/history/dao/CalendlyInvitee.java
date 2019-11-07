@@ -16,6 +16,9 @@ public class CalendlyInvitee {
     @PrimaryKey
     private CalendlyInviteeKey calendlyInviteeKey;
 
+    @Column("event")
+    private String event;
+
     @Column("payload")
     private String payload;
 

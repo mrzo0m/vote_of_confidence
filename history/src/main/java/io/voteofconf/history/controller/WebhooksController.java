@@ -1,59 +1,43 @@
 package io.voteofconf.history.controller;
 
-import com.datastax.driver.core.utils.UUIDs;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import io.voteofconf.history.controller.dto.WebhookSubscription;
-import io.voteofconf.history.dao.CalendlyInvitee;
-import io.voteofconf.history.dao.CalendlyInviteeKey;
-import io.voteofconf.history.dao.WebhookRepository;
-import lombok.extern.java.Log;
+import io.voteofconf.history.service.CalendlyWebhookService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Random;
-
-@Log
+@Slf4j
 @RestController
 @RequestMapping("webhooks")
 public class WebhooksController {
 
     @Autowired
-    WebhookRepository repository;
-
+    CalendlyWebhookService service;
 
     @ApiOperation(value = "Post to invitee_created")
     @PostMapping("/invitee_created")
-    public Mono<CalendlyInvitee> inviteeCreated(@RequestBody WebhookSubscription invitee) {
-        log.info("webhooks event while invitee_created");
-        CalendlyInviteeKey key = new CalendlyInviteeKey();
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd", new Locale("ru"));
-        LocalDate date = LocalDate.parse(invitee.getTime(), inputFormatter);
-        String formattedDate = outputFormatter.format(date);
-        key.setInviteeEmail(invitee.getPayload().getInvitee().getEmail());
-        key.setDay(formattedDate);
-        int min = 1; //TODO: Кол-во узлов в кластере кассандры поулчать из конфигмапы куба
-        int max = 1;
-        Integer bucket = new Random().ints(min, (max + 1)).limit(1).findFirst().getAsInt();
-        key.setBucket(bucket);
-        key.setTs(UUIDs.timeBased());
-        CalendlyInvitee calendlyInvitee = new CalendlyInvitee();
-        calendlyInvitee.setCalendlyInviteeKey(key);
-        calendlyInvitee.setPayload("hohohoho");
-        return repository.save(calendlyInvitee);
+    @ResponseStatus(HttpStatus.OK)
+    public void inviteeCreated(@RequestBody WebhookSubscription invitee) throws JsonProcessingException {
+        log.info("webhooks event while invitee_created, palyload is: {}", invitee.toString());
+        service.inviteeCreated(invitee);
     }
 
     @ApiOperation(value = "Post to invitee_canceled")
     @PostMapping("/invitee_canceled")
+    @ResponseStatus(HttpStatus.OK)
     public Mono<Void> inviteeCanceled(@RequestBody WebhookSubscription invitee) {
         log.info("webhooks event while invitee_canceled");
         return Mono.empty();
+    }
+
+    @GetMapping("/websession")
+    public Mono<String> getSession(WebSession session) {
+        session.getAttributes().putIfAbsent("note", "Howdy Cosmic Spheroid!");
+        return Mono.just((String) session.getAttributes().get("note"));
     }
 }
