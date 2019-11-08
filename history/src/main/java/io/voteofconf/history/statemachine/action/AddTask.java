@@ -40,13 +40,14 @@ public class AddTask implements Action<States, Events> {
             DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern(MONTH, new Locale(RU));
             DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(YEAR, new Locale(RU));
             Backlog backlog = new Backlog();
-            LocalDate date = LocalDate.parse(Objects.requireNonNull(invitee).getPayload().getEvent().getStartTime(), inputFormatter);
-            key.setInviteDay(dayFormatter.format(date));
-            key.setInviteMonth(monthFormatter.format(date));
-            key.setInviteYear(yearFormatter.format(date));
-            backlog.setKey(key);
 
             if (invitee.getPayload().getEvent() != null) {
+
+                LocalDate date = LocalDate.parse(Objects.requireNonNull(invitee).getPayload().getEvent().getStartTime(), inputFormatter);
+                key.setInviteDay(dayFormatter.format(date));
+                key.setInviteMonth(monthFormatter.format(date));
+                key.setInviteYear(yearFormatter.format(date));
+                backlog.setKey(key);
 
                 backlog.setEventUuid(invitee.getPayload().getEvent().getUuid());
                 backlog.setEventCreatedAt(invitee.getPayload().getEvent().getCreatedAt());
