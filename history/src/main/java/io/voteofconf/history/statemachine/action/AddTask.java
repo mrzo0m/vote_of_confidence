@@ -15,6 +15,7 @@ import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Objects;
@@ -35,7 +36,17 @@ public class AddTask implements Action<States, Events> {
         if (invitee != null && invitee.getPayload() != null) {
             BacklogKey key = new BacklogKey();
             key.setId(UUIDs.timeBased());
-            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(CALENDLY_DATETIME_PATTERN, Locale.ENGLISH);
+            ZoneId zoneId = ZoneId.of("Europe/Moscow");
+            if (invitee.getPayload() != null
+                    && invitee.getPayload().getInvitee() != null
+                    && invitee.getPayload().getInvitee().getTimezone() != null
+            ) {
+                zoneId = ZoneId.of(invitee.getPayload().getInvitee().getTimezone());
+            }
+
+            DateTimeFormatter inputFormatter =
+                    DateTimeFormatter.ofPattern(CALENDLY_DATETIME_PATTERN, Locale.ENGLISH)
+                            .withZone(zoneId);
             DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(DAY, new Locale(RU));
             DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern(MONTH, new Locale(RU));
             DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(YEAR, new Locale(RU));

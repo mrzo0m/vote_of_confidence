@@ -4,6 +4,7 @@ import io.voteofconf.history.statemachine.Events;
 import io.voteofconf.history.statemachine.StateMachineLogListener;
 import io.voteofconf.history.statemachine.States;
 import io.voteofconf.history.statemachine.action.AddTask;
+import io.voteofconf.history.statemachine.action.AddTaskError;
 import io.voteofconf.history.statemachine.action.Store;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class HistoryStateMachineConfig {
         @Autowired
         private AddTask addTask;
 
+        @Autowired
+        private AddTaskError addTaskError;
+
         private static void execute(StateContext<States, Events> stateContext) {
             log.warn("Бросаем в кассандру {}", stateContext.getMessageHeaders().get("client1"));
         }
@@ -58,7 +62,7 @@ public class HistoryStateMachineConfig {
             states.withStates()
                     .initial(States.INVITE, incomingInvite())
                     .state(States.INVITE_HISTORY, store)
-                    .state(States.BACKLOG, addTask)
+                    .state(States.BACKLOG, addTask, addTaskError)
                     .state(States.INPROGRESS, changeStatusToInprogressAction())
                     .state(States.SOLUTION, handleSolution())
                     .end(States.SOLUTION);
