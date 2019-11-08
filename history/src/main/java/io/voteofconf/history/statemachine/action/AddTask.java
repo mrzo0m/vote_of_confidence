@@ -32,32 +32,43 @@ public class AddTask implements Action<States, Events> {
     public void execute(StateContext<States, Events> context) {
         log.warn("Кладем в общий пул задач экспертов (можно инмеори)");
         WebhookSubscription invitee = (WebhookSubscription) context.getMessageHeaders().get(Variables.INVITE.toString());
-        BacklogKey key = new BacklogKey();
-        key.setId(UUIDs.timeBased());
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(CALENDLY_DATETIME_PATTERN, Locale.ENGLISH);
-        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(DAY, new Locale(RU));
-        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern(MONTH, new Locale(RU));
-        DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(YEAR, new Locale(RU));
-        LocalDate date = LocalDate.parse(Objects.requireNonNull(invitee).getPayload().getEvent().getStartTime(), inputFormatter);
-        key.setInviteDay(dayFormatter.format(date));
-        key.setInviteMonth(monthFormatter.format(date));
-        key.setInviteYear(yearFormatter.format(date));
-        Backlog backlog = new Backlog();
-        backlog.setKey(key);
-        backlog.setEventUuid(invitee.getPayload().getEvent().getUuid());
-        backlog.setEventCreatedAt(invitee.getPayload().getEvent().getCreatedAt());
-        backlog.setEventCanceledAt(invitee.getPayload().getEvent().getCanceledAt());
-        backlog.setEventCancelerName(invitee.getPayload().getEvent().getCancelerName());
-        backlog.setEventCancelReason(invitee.getPayload().getEvent().getCancelReason());
-        backlog.setStartTime(invitee.getPayload().getEvent().getStartTime());
-        backlog.setStartTimePretty(invitee.getPayload().getEvent().getStartTimePretty());
-        backlog.setEndTime(invitee.getPayload().getEvent().getEndTime());
-        backlog.setEndTimePretty(invitee.getPayload().getEvent().getEndTimePretty());
-        backlog.setInviteUuid(invitee.getPayload().getInvitee().getUuid());
-        backlog.setInviteEmail(invitee.getPayload().getInvitee().getEmail());
-        backlog.setInviteName(invitee.getPayload().getInvitee().getName());
-        backlog.setInviteTimezone(invitee.getPayload().getInvitee().getTimezone());
-        backlogRebository.save(backlog).subscribe();
+        if (invitee != null && invitee.getPayload() != null) {
+            BacklogKey key = new BacklogKey();
+            key.setId(UUIDs.timeBased());
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(CALENDLY_DATETIME_PATTERN, Locale.ENGLISH);
+            DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(DAY, new Locale(RU));
+            DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern(MONTH, new Locale(RU));
+            DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(YEAR, new Locale(RU));
+            Backlog backlog = new Backlog();
+            LocalDate date = LocalDate.parse(Objects.requireNonNull(invitee).getPayload().getEvent().getStartTime(), inputFormatter);
+            key.setInviteDay(dayFormatter.format(date));
+            key.setInviteMonth(monthFormatter.format(date));
+            key.setInviteYear(yearFormatter.format(date));
+            backlog.setKey(key);
+
+            if (invitee.getPayload().getEvent() != null) {
+
+                backlog.setEventUuid(invitee.getPayload().getEvent().getUuid());
+                backlog.setEventCreatedAt(invitee.getPayload().getEvent().getCreatedAt());
+                backlog.setEventCanceledAt(invitee.getPayload().getEvent().getCanceledAt());
+                backlog.setEventCancelerName(invitee.getPayload().getEvent().getCancelerName());
+                backlog.setEventCancelReason(invitee.getPayload().getEvent().getCancelReason());
+                backlog.setStartTime(invitee.getPayload().getEvent().getStartTime());
+                backlog.setStartTimePretty(invitee.getPayload().getEvent().getStartTimePretty());
+                backlog.setEndTime(invitee.getPayload().getEvent().getEndTime());
+                backlog.setEndTimePretty(invitee.getPayload().getEvent().getEndTimePretty());
+            }
+
+            if (invitee.getPayload().getInvitee() != null) {
+                backlog.setInviteUuid(invitee.getPayload().getInvitee().getUuid());
+                backlog.setInviteEmail(invitee.getPayload().getInvitee().getEmail());
+                backlog.setInviteName(invitee.getPayload().getInvitee().getName());
+                backlog.setInviteTimezone(invitee.getPayload().getInvitee().getTimezone());
+            }
+            backlogRebository.save(backlog).subscribe();
+        }
+
     }
+
 
 }
