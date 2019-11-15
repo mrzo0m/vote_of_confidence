@@ -16,7 +16,7 @@ public interface UserRepository extends ReactiveCrudRepository<User, Long> {
     Flux<User> findByEmailAddr(String emailAddr);
 
     @Query("SELECT u.first_name, u.second_name, u.sur_name, u.email_addr, ct.type as client_type, \n" +
-            "\t\tact.id  as \"account_type_id\", act.name  as \"account_type_name\", act.cost as \"account_type_cost\", act.description  as \"account_type_description\", act.period  as \"account_type_period\"\n" +
+            "\t\tact.id  as \"accountType_id\", act.name  as \"accountType_name\", act.cost as \"accountType_cost\", act.description  as \"accountType_description\", act.period  as \"accountType_period\"\n" +
             "\tFROM user u \n" +
             "\tJOIN client_types ct \n" +
             "\t\tON u.client_type_id = ct.id\n" +

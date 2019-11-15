@@ -2,6 +2,7 @@ package io.voteofconf.tracker.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
@@ -31,8 +32,6 @@ public class User extends Entity {
 
     private ClientType clientType;
 
-//    @Column("account_type_id")
-    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL, prefix = "account_type_")
     private AccountType accountType;
 
     private String firstName;
