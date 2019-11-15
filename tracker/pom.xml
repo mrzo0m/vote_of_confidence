@@ -16,6 +16,9 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+		<r2dbc.version>0.8.0.RC2</r2dbc.version>
+		<jasync.version>1.0.11</jasync.version>
+		<spring.data.r2db.version>1.0.0.RC1</spring.data.r2db.version>
 	</properties>
 
 	<dependencies>
@@ -119,11 +122,34 @@
 			<!--			<version>1.4.200</version>-->
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>io.r2dbc</groupId>
+			<artifactId>r2dbc-spi</artifactId>
+			<version>${r2dbc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.r2dbc</groupId>
+			<artifactId>r2dbc-h2</artifactId>
+			<version>${r2dbc.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.github.jasync-sql</groupId>
-			<artifactId>jasync-mysql</artifactId>
-			<version>1.0.9</version>
+			<artifactId>jasync-r2dbc-mysql</artifactId>
+			<version>${jasync.version}</version>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.github.jasync-sql</groupId>-->
+<!--			<artifactId>jasync-mysql</artifactId>-->
+<!--			<version>1.0.11</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-r2dbc</artifactId>
+			<version>${spring.data.r2db.version}</version>
+		</dependency>
+
 		<!-- kotlin dependencies -->
 		<!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib -->
 		<dependency>
@@ -238,12 +264,22 @@
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
 			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
-		<!-- add jcenter repo: -->
 		<repository>
-			<id>jcenter</id>
-			<url>https://jcenter.bintray.com/</url>
-		</repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>		<repository>
+		<id>jcenter</id>
+		<url>https://jcenter.bintray.com/</url>
+	</repository>
+
 	</repositories>
 
 </project>
