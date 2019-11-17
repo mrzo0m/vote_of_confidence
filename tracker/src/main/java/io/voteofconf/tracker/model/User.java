@@ -2,9 +2,6 @@ package io.voteofconf.tracker.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 
@@ -32,6 +29,8 @@ public class User extends Entity {
 
     private ClientType clientType;
 
+    // TODO write question on StackOverflow how to change default column name prefix at MappingR2dbcConverter:204
+//    @Column("account_type")
     private AccountType accountType;
 
     private String firstName;
