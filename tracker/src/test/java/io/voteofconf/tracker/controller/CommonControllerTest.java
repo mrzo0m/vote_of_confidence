@@ -1,31 +1,14 @@
 package io.voteofconf.tracker.controller;
 
-import com.github.jasync.sql.db.QueryResult;
-import com.github.jasync.sql.db.ResultSet;
-import com.github.jasync.sql.db.general.ArrayRowData;
-import io.voteofconf.tracker.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Stream;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.doReturn;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest(controllers = CommonController.class, excludeAutoConfiguration = { ReactiveSecurityAutoConfiguration.class, ReactiveUserDetailsServiceAutoConfiguration.class }

@@ -6,32 +6,31 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sql.DataSource;
-import javax.transaction.Transactional;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
-//@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
-@Transactional
 @SpringBootTest
 @ActiveProfiles("test")
 @Slf4j
 public class TrackerApplicationTests {
 
+
 	@Autowired
-	private DataSource dataSource;
+	private DatabaseClient databaseClient;
 
 	@Test
 	public void contextLoads() throws SQLException {
-		ResultSet resultSet = dataSource.getConnection().createStatement().executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema ='PUBLIC'");
-		while (resultSet.next()) {
-			log.info(String.format(" table %s created", resultSet.getString(1)));
-		}
-		log.info("finish test");
-		Assert.assertTrue(true);
+		databaseClient.execute("SELECT table_name FROM information_schema.tables")
+				.fetch()
+				.all()
+				.doOnNext(map ->
+						map.forEach(
+								(key, value) -> log.info(String.format(" table %s created", value))))
+				.doOnComplete(() -> log.info("finish test"))
+				.subscribe(map -> Assert.assertTrue(true));
 	}
 }
