@@ -89,7 +89,7 @@ create table expertise(		-- что за эксперт - область, уро�
 
 insert into expertise(name, keywords, description, level) values('Java Core', 'Java,Coding for food', 'Java development', -1);
 
-create table expert_users(  					-- эксперты
+create table user_expertise(  					-- эксперты и кандидаты
 	user_id int REFERENCES user(id),
 	expertise_id int REFERENCES expertise(id),
 	unique(user_id, expertise_id)
