@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -24,7 +24,7 @@ public class Expertise extends Entity {
     private Long id;
 
     private String name;
-    private List<String> keywords;
+    private Set<String> keywords;
     private String description;
     private ExpertiseLevel level;
 }

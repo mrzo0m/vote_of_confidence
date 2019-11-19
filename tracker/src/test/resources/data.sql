@@ -19,8 +19,7 @@ create table account_types(  			-- описание платного аккау�
 insert into account_types(name, description, period, cost) values('For free', 'Try Trial)', 30, 0);
 
 create table user(
-	id serial
-	primary key,
+	id serial primary key,
 	first_name varchar(64) not null,
 	second_name varchar(64) not null,
 	sur_name varchar(64),
@@ -53,7 +52,7 @@ create table company(  					-- компания - обладатель api дл�
 	description varchar(512)
 );
 
-insert into company(name, description) values('Vector-2 Limited', 'Crime entites');
+insert into company(name, description) values('Vector-2 Limited', 'Crime entities');
 
 create table vacancy(
 	user_id int REFERENCES user(id),
@@ -78,6 +77,11 @@ insert into company_users(user_id, company_id) values(
 	(select id from user where email_addr = 'monkey@bangalore.in'),
 	(select id from company where name = 'Vector-2 Limited'));
 
+create table company_users(  					-- пользователи компании
+	user_id int REFERENCES user(id),
+	company_id int REFERENCES company(id),
+	unique(user_id, company_id)
+);
 
 create table expertise(		-- что за эксперт - область, уровень
 	id serial primary key,
@@ -95,7 +99,7 @@ create table user_expertise(  					-- эксперты и кандидаты
 	unique(user_id, expertise_id)
 );
 
-insert into expert_users(user_id, expertise_id) values(
+insert into user_expertise(user_id, expertise_id) values(
 	(select id from user where email_addr = 'monkey@bangalore.in'),
 	(select id from expertise where name = 'Java Core'));
 

@@ -1,15 +1,15 @@
 package io.voteofconf.tracker;
 
-import io.voteofconf.tracker.repository.UserRepository;
+import io.voteofconf.tracker.repository.UserAGCrudRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 //@Component
 public class Initializer {
 
-    private final UserRepository or;
+    private final UserAGCrudRepository or;
 
-    Initializer(UserRepository or) {
+    Initializer(UserAGCrudRepository or) {
         this.or = or;
     }
 

@@ -2,7 +2,7 @@ package io.voteofconf.tracker.configuration;
 
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
-import io.voteofconf.tracker.repository.UserRepository;
+import io.voteofconf.tracker.repository.UserAGCrudRepository;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class DatasourceConfiguration {
     }
 
     @Bean
-    public UserRepository userRepository() {
-        return Mockito.mock(UserRepository.class);
+    public UserAGCrudRepository userRepository() {
+        return Mockito.mock(UserAGCrudRepository.class);
     }
 }

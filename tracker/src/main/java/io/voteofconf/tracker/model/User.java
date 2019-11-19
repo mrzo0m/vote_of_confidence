@@ -2,7 +2,10 @@ package io.voteofconf.tracker.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.util.Set;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -22,6 +25,16 @@ public class User extends Entity {
         ClientType(int id) {
             this.id = id;
         }
+
+        public static ClientType valueOf(Integer val) {
+            if (val == null) return null;
+
+            for (ClientType clientType : values()) {
+                if (val.equals(clientType.id)) return clientType;
+            }
+
+            return null;
+        }
     }
 
     @Id
@@ -37,5 +50,8 @@ public class User extends Entity {
     private String secondName;
     private String surName;
     private String emailAddr;
+
+    @Transient
+    private Set<Expertise> expertises;
 }
 

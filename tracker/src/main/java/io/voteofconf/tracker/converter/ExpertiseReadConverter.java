@@ -6,6 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 
 @ReadingConverter
@@ -14,9 +15,9 @@ public class ExpertiseReadConverter implements Converter<Row, Expertise> {
     public Expertise convert(Row source) {
     Expertise exp = new Expertise(source.get("id", Long.class),
             source.get("name", String.class),
-            Arrays.asList(
+            new HashSet<>(Arrays.asList(
                     Objects.requireNonNull(source.get("keywords", String.class))
-                            .split(",")),
+                            .split(","))),
             source.get("description", String.class),
             Expertise.ExpertiseLevel.LEVEL_0);
 

@@ -6,14 +6,14 @@ import io.r2dbc.spi.ConnectionFactoryOptions;
 import io.voteofconf.tracker.converter.ExpertiseReadConverter;
 import io.voteofconf.tracker.converter.ExpertiseWriteConverter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
+import org.springframework.data.r2dbc.connectionfactory.R2dbcTransactionManager;
 import org.springframework.data.r2dbc.convert.R2dbcCustomConversions;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
+import org.springframework.transaction.ReactiveTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import static io.r2dbc.spi.ConnectionFactoryOptions.*;
 @Profile("native")
 @EnableR2dbcRepositories(basePackages = "io.voteofconf.tracker.repository")
 @Configuration
+@EnableTransactionManagement
 @PropertySource("classpath:mysql.yml")
 public class DataSourceConfig extends AbstractR2dbcConfiguration {
 
@@ -62,6 +63,12 @@ public class DataSourceConfig extends AbstractR2dbcConfiguration {
         converterList.add(new ExpertiseReadConverter());
         converterList.add(new ExpertiseWriteConverter());
         return new R2dbcCustomConversions(getStoreConversions(), converterList);
+    }
+
+    @Bean
+    @DependsOn("connectionFactory")
+    public ReactiveTransactionManager reactiveTransactionManager(ConnectionFactory connectionFactory) {
+        return new R2dbcTransactionManager(connectionFactory);
     }
 }
 
