@@ -3,8 +3,10 @@ package io.voteofconf.tracker.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -51,7 +53,10 @@ public class User extends Entity {
     private String surName;
     private String emailAddr;
 
+    @Column("is_agreed")
+    private boolean agreed;
+
     @Transient
-    private Set<Expertise> expertises;
+    private Set<Expertise> expertises = new HashSet<>();
 }
 

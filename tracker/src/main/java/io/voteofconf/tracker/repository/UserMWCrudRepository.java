@@ -1,23 +1,16 @@
 package io.voteofconf.tracker.repository;
 
-import io.voteofconf.tracker.exception.R2dbcException;
 import io.voteofconf.tracker.model.Expertise;
 import io.voteofconf.tracker.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.data.r2dbc.query.Criteria;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.ReactiveTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.r2dbc.query.Criteria.where;
 
@@ -25,11 +18,14 @@ import static org.springframework.data.r2dbc.query.Criteria.where;
 public class UserMWCrudRepository {
 
     private DatabaseClient databaseClient;
-    private ReactiveTransactionManager reactiveTransactionManager;
 
-    public UserMWCrudRepository(DatabaseClient databaseClient, ReactiveTransactionManager reactiveTransactionManager) {
+    private ExpertiseMWRepository expertiseMWRepository;
+    private M2MMappingMWRepository m2MMappingMWRepository;
+
+    public UserMWCrudRepository(DatabaseClient databaseClient, ExpertiseMWRepository expertiseMWRepository, M2MMappingMWRepository m2MMappingMWRepository) {
         this.databaseClient = databaseClient;
-        this.reactiveTransactionManager = reactiveTransactionManager;
+        this.expertiseMWRepository = expertiseMWRepository;
+        this.m2MMappingMWRepository = m2MMappingMWRepository;
     }
 
     public Flux<User> findAllCandidatesByExpertise(Set<String> keywords) {
@@ -40,6 +36,7 @@ public class UserMWCrudRepository {
         return findAllUsersByExpertise(keywords, User.ClientType.EXPERT);
     }
 
+    @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
     private Flux<User> findAllUsersByExpertise(Set<String> keywords, User.ClientType clientType) {
         StringBuilder query = new StringBuilder("select u.id, u.first_name, u.second_name, u.sur_name, u.email_addr, ct.type as client_type, \n" +
                 "\t\tact.id  as \"accountType_id\", act.name  as \"accountType_name\", act.cost as \"accountType_cost\", act.description  as \"accountType_description\", act.period  as \"accountType_period\"\n" +
@@ -47,32 +44,48 @@ public class UserMWCrudRepository {
                 "\tJOIN client_types ct \n" +
                 "\t\tON u.client_type_id = ct.id\n" +
                 "\tJOIN account_types act \n" +
-                "\t\tON u.account_type_id = act.id\t\t\n" +
+                "\t\tON u.account_type_id = act.id\t\n" +
                 "\tjoin user_expertise ue\n" +
-                "\t\ton u.id = ue.user_id\n" +
-                "\tjoin expertise e\n" +
-                "\t\ton ue.expertise_id = e.id\n" +
-                "\t\twhere ct.type = '" + clientType.name() + "'\n");
+                "\t\ton ue.user_id = u.id \n" +
+                "\twhere ue.expertise_id in (:expertiseIds)" +
+                "\t\tand ct.type = :clientType\n" +
+                "\tgroup by 1,2,3,4,5,6,7,8,9,10");
 
-        DatabaseClient.TypedSelectSpec<Expertise> tss = databaseClient.select().from(Expertise.class);
-        String clause = " and (e.keywords like";
-        for (String keyword : keywords) {
-            query.append(String.format(" %s '%%%s%%' ", clause, keyword));
-            clause = "or e.keywords like";
-        }
 
-        if (keywords.size() > 0) query.append(")");
-
-        return databaseClient.execute(query.toString())
-                .as(User.class)
-                .fetch()
-                .all()
-                .flatMap(user -> getExpertiseByUser(user)
-                        .collect(HashSet<Expertise>::new, Set::add)
-                        .doOnNext(user::setExpertises)
-                        .then(Mono.just(user)));
-
+        return expertiseMWRepository.getExpertisesByKeywords(keywords)
+                .collectList()
+                .flatMap(expertise -> {
+                    List<Long> expertiseIds = expertise.stream()
+                            .map(Expertise::getId)
+                            .collect(Collectors.toList());
+                    Map<Long, Expertise> expMap = expertise.stream()
+                            .collect(Collectors.toMap(Expertise::getId, e -> e));
+                    return databaseClient.execute(query.toString())
+                            .bind("expertiseIds", expertiseIds)
+                            .bind("clientType", clientType.name())
+                            .as(User.class)
+                            .fetch()
+                            .all()
+                            .collectList()
+                            .flatMap(users -> {
+                                Map<Long, User> uMap = users.stream()
+                                        .collect(Collectors.toMap(User::getId, e -> e));
+                                return m2MMappingMWRepository.mergeM2MRelation(
+                                        expMap,
+                                        uMap,
+                                        User::getExpertises,
+                                        M2MMappingMWRepository.UserExpertise::getExpertiseId,
+                                        M2MMappingMWRepository.UserExpertise::getUserId,
+                                        M2MMappingMWRepository.UserExpertise.class,
+                                        "expertiseId",
+                                        expertiseIds);
+//                                return expertiseMWRepository.mergeUserExpertise(uMap, expMap, expertiseIds);
+                            });
+                })
+                .flatMapMany(Flux::fromIterable);
     }
+
+
 
     @Transactional("reactiveTransactionManager")
     public Mono<Integer> createOrUpdateUser(User user) {
@@ -127,18 +140,7 @@ public class UserMWCrudRepository {
                 .single();
     }
 
-    private Flux<Expertise> getExpertiseByUser(User user) {
-        return databaseClient.execute("select e.* from expertise e " +
-                "join user_expertise ue " +
-                "   on e.id = ue.expertise_id " +
-                "join user u " +
-                "   on ue.user_id = u.id " +
-                "where u.id = :userId")
-                .bind("userId", user.getId())
-                .as(Expertise.class)
-                .fetch()
-                .all();
-    }
+
 
     @Transactional("reactiveTransactionManager")
     private Mono<Integer> addUserExpertise(User user) {
