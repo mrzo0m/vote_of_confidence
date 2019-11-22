@@ -1,25 +1,27 @@
 package io.voteofconf.tracker.controller;
 
-import io.voteofconf.tracker.model.Expertise;
+import io.voteofconf.tracker.model.Company;
 import io.voteofconf.tracker.model.User;
+import io.voteofconf.tracker.repository.CompanyMWRepository;
 import io.voteofconf.tracker.repository.UserAGCrudRepository;
-import io.voteofconf.tracker.repository.UserMWCrudRepository;
+import io.voteofconf.tracker.repository.UserMWRepository;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
 public class CommonController {
 
     private UserAGCrudRepository userAGRepository;
-    private UserMWCrudRepository userMWRepository;
+    private UserMWRepository userMWRepository;
+    private CompanyMWRepository companyMWRepository;
 
-    public CommonController(UserAGCrudRepository userAGRepository, UserMWCrudRepository userMWRepository) {
+    public CommonController(UserAGCrudRepository userAGRepository, UserMWRepository userMWRepository, CompanyMWRepository companyMWRepository) {
         this.userAGRepository = userAGRepository;
         this.userMWRepository = userMWRepository;
+        this.companyMWRepository = companyMWRepository;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getUserByEmailAddr")
@@ -52,9 +54,9 @@ public class CommonController {
         return userMWRepository.createOrUpdateUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/deleteUser")
-    public Mono<Integer> deleteUser(@RequestBody User user) {
-        return userMWRepository.deleteUser(user);
+    @RequestMapping(method = RequestMethod.GET, path = "/getCompanyByName")
+    public Mono<Company> getCompanyByName(@RequestParam String name) {
+        return companyMWRepository.getCompanyByName(name);
     }
 
 }

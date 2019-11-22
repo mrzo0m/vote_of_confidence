@@ -5,18 +5,24 @@ import io.voteofconf.tracker.model.User;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.springframework.data.r2dbc.query.Criteria.where;
 
 @Repository
 public class ExpertiseMWRepository {
 
     private DatabaseClient databaseClient;
-    private M2MMappingMWRepository expertiseMWRepository;
+    private M2MMappingMWRepository m2MMappingMWRepository;
 
-    public ExpertiseMWRepository(DatabaseClient databaseClient, M2MMappingMWRepository expertiseMWRepository) {
+    public ExpertiseMWRepository(DatabaseClient databaseClient, M2MMappingMWRepository m2MMappingMWRepository) {
         this.databaseClient = databaseClient;
-        this.expertiseMWRepository = expertiseMWRepository;
+        this.m2MMappingMWRepository = m2MMappingMWRepository;
     }
 
     Flux<Expertise> getExpertisesByKeywords(Set<String> keywords) {
@@ -48,5 +54,31 @@ public class ExpertiseMWRepository {
                 .as(Expertise.class)
                 .fetch()
                 .all();
+    }
+
+    Mono<List<User>> addExpertisesToUsers(List<User> users) {
+        Map<Long, User> uMap = users.stream()
+                .collect(Collectors.toMap(User::getId, e -> e));
+
+        return m2MMappingMWRepository.mergeM2MRelation(
+                (eueMap, expertiseIds) -> databaseClient.select()
+                        .from(Expertise.class)
+                        .matching(where("id").in(expertiseIds))
+                        .fetch()
+                        .all()
+                        .doOnNext(expertise -> eueMap.get(expertise.getId()).stream()
+                                .filter(ue -> uMap.get(ue.getUserId()) != null)
+                                .forEach(ue -> uMap.get(ue.getUserId())
+                                .getExpertises()
+                                .add(expertise)))
+                        .collectList()
+                        .then(Mono.just(users))
+                        .flatMapMany(Flux::fromIterable),
+                M2MMappingMWRepository.UserExpertise::getExpertiseId,
+                M2MMappingMWRepository.UserExpertise.class,
+                "userId",
+                users.stream()
+                        .map(User::getId)
+                        .collect(Collectors.toList())).collectList();
     }
 }

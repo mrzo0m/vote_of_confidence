@@ -18,12 +18,12 @@ public class Company extends Entity {
     @Id
     private Long id;
 
-    private String namr;
+    private String name;
     private String description;
 
     @Transient
     private Set<User> users = new HashSet<>();
 
     @Transient
-    Set<Vacancy> vacancies;
+    Set<Vacancy> vacancies = new HashSet<>();
 }
