@@ -77,38 +77,6 @@ public class UserMWRepository {
                 });
     }
 
-//    @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
-//    private Flux<User> findAllUsersWithExpertise(List<Long> userIds) {
-//        String querySource = queryCachingSupport.getQuerySource("selectUsersWithExpertisesByClientType");
-//
-//        return expertiseMWRepository.getExpertisesByKeywords(keywords)
-//                .collectList()
-//                .flatMapMany(expertise -> {
-//                    List<Long> expertiseIds = expertise.stream()
-//                            .map(Expertise::getId)
-//                            .collect(Collectors.toList());
-//                    Map<Long, Expertise> expMap = expertise.stream()
-//                            .collect(Collectors.toMap(Expertise::getId, e -> e));
-//
-//                    return  m2MMappingMWRepository.mergeM2MRelation(
-//                            (uueMap, userIds) -> databaseClient.execute(querySource)
-//                                    .bind("userIds", userIds)
-//                                    .as(User.class)
-//                                    .fetch()
-//                                    .all()
-//                                    .doOnNext(user -> {
-//                                        uueMap.get(user.getId()).stream()
-//                                                .filter(ue -> expMap.get(ue.getExpertiseId()) != null)
-//                                                .forEach(userExpertise -> user.getExpertises()
-//                                                        .add(expMap.get(userExpertise.getExpertiseId())));
-//                                    }),
-//                            M2MMappingMWRepository.UserExpertise::getUserId,
-//                            M2MMappingMWRepository.UserExpertise.class,
-//                            "expertiseId",
-//                            expertiseIds);
-//                });
-//    }
-
     Mono<List<Vacancy>> addUsersToVacancies(List<Vacancy> vacancies) {
         String querySource = queryCachingSupport.getQuerySource("selectUsersWithExpertises");
         Map<Long, Vacancy> vacMap = vacancies.stream()
@@ -152,7 +120,6 @@ public class UserMWRepository {
                         .doOnNext(users -> company.getUsers().addAll(users))
                         .then(Mono.just(company))
                         .flux(),
-//                        .doOnNext(vacancy -> company.getVacancies().add(vacancy)),
                 M2MMappingMWRepository.CompanyUser::getUserId,
                 M2MMappingMWRepository.CompanyUser.class,
                 "companyId",
