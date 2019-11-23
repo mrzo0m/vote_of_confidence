@@ -14,7 +14,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<state.machine.version>3.0.0.M1</state.machine.version>
+		<state.machine.version>3.0.0.M2</state.machine.version>
 	</properties>
 
 	<dependencies>
