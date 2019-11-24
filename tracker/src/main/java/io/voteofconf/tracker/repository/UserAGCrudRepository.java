@@ -10,11 +10,24 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.r2dbc.query.Criteria.where;
 
 public interface UserAGCrudRepository extends ReactiveCrudRepository<User, Long> {
+
+//    User save(User entity);
+//
+//    Optional<User> findById(Long id);
+//
+//    Iterable<User> findAll();
+//
+//    long count();
+//
+//    void delete(User entity);
+//
+//    boolean existsById(Long id);
 
     @Query("SELECT u.id, u.first_name, u.second_name, u.sur_name, u.email_addr, t.type ad clientType " +
             "   FROM user u" +
@@ -46,6 +59,7 @@ public interface UserAGCrudRepository extends ReactiveCrudRepository<User, Long>
             "\t\ton c.id = v.company_id\n" +
             "\twhere ct.type = 'CANDIDATE' and c.name = :companyName")
     Flux<User> findCandidatesByCompanyName(String companyName);
+
 
 
 

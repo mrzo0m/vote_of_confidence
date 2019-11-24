@@ -26,13 +26,14 @@ public class UserMWRepository {
 
     private QueryCachingSupport queryCachingSupport;
     private ExpertiseMWRepository expertiseMWRepository;
+    private UserAGCrudRepository userAGCrudRepository;
     private M2MMappingMWRepository m2MMappingMWRepository;
 
-
-    public UserMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, ExpertiseMWRepository expertiseMWRepository, M2MMappingMWRepository m2MMappingMWRepository) {
+    public UserMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, ExpertiseMWRepository expertiseMWRepository, UserAGCrudRepository userAGCrudRepository, M2MMappingMWRepository m2MMappingMWRepository) {
         this.databaseClient = databaseClient;
         this.queryCachingSupport = queryCachingSupport;
         this.expertiseMWRepository = expertiseMWRepository;
+        this.userAGCrudRepository = userAGCrudRepository;
         this.m2MMappingMWRepository = m2MMappingMWRepository;
     }
 
@@ -127,47 +128,47 @@ public class UserMWRepository {
     }
 
     @Transactional("reactiveTransactionManager")
-    public Mono<Integer> createOrUpdateUser(User user) {
+    public Mono<User> createOrUpdateUser(User user) {
 //        TransactionalOperator operator = TransactionalOperator.create(reactiveTransactionManager);
 
-        if (user.getId() != null) {
-            return databaseClient.select()
-                    .from(User.class)
-                    .matching(where("id").is(user.getId()))
-                    .fetch()
-                    .all()
-                    .count()
-                    .flatMap(count -> {
-                        if (count == 0) {
-                            return databaseClient.insert()
-                                    .into(User.class)
-                                    .using(user)
-                                    .fetch()
-                                    .rowsUpdated()
-                                    .concatWith(addUserExpertise(user))
-                                    .reduce(Integer::sum)
-                                    .single();
-                        } else {
-                            return databaseClient.update()
-                                    .table(User.class)
-                                    .using(user)
-                                    .fetch()
-                                    .rowsUpdated()
-                                    .concatWith(addUserExpertise(user))
-                                    .reduce(Integer::sum)
-                                    .single();
-                        }
-                    });
-        } else {
-            return databaseClient.insert()
-                    .into(User.class)
-                    .using(user)
-                    .fetch()
-                    .rowsUpdated()
-                    .concatWith(addUserExpertise(user))
-                    .reduce(Integer::sum)
-                    .single();
-        }
+        return userAGCrudRepository.save(user);
+//        if (user.getId() != null) {
+//            return databaseClient.execute("select count(&) from user")
+//                    .bind("id", user.getId())
+//                    .as(Integer.class)
+//                    .fetch()
+//                    .one()
+//                    .flatMap(count -> {
+//                        if (count == 0) {
+//                            return databaseClient.insert()
+//                                    .into(User.class)
+//                                    .using(user)
+//                                    .fetch()
+//                                    .rowsUpdated()
+//                                    .concatWith(addUserExpertise(user))
+//                                    .reduce(Integer::sum)
+//                                    .single();
+//                        } else {
+//                            return databaseClient.update()
+//                                    .table(User.class)
+//                                    .using(user)
+//                                    .fetch()
+//                                    .rowsUpdated()
+//                                    .concatWith(addUserExpertise(user))
+//                                    .reduce(Integer::sum)
+//                                    .single();
+//                        }
+//                    });
+//        } else {
+//            return databaseClient.insert()
+//                    .into(User.class)
+//                    .using(user)
+//                    .fetch()
+//                    .rowsUpdated()
+//                    .concatWith(addUserExpertise(user))
+//                    .reduce(Integer::sum)
+//                    .single();
+//        }
     }
 
     public Mono<Integer> deleteUser(User user) {

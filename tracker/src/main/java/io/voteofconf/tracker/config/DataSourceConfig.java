@@ -5,6 +5,7 @@ import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.ConnectionFactoryOptions;
 import io.voteofconf.tracker.converter.ExpertiseReadConverter;
 import io.voteofconf.tracker.converter.ExpertiseWriteConverter;
+import io.voteofconf.tracker.converter.UserWriteConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.core.convert.converter.Converter;
@@ -62,6 +63,7 @@ public class DataSourceConfig extends AbstractR2dbcConfiguration {
         List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
         converterList.add(new ExpertiseReadConverter());
         converterList.add(new ExpertiseWriteConverter());
+        converterList.add(new UserWriteConverter());
         return new R2dbcCustomConversions(getStoreConversions(), converterList);
     }
 

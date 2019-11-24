@@ -28,6 +28,10 @@ public class User extends Entity {
             this.id = id;
         }
 
+        public int getId() {
+            return id;
+        }
+
         public static ClientType valueOf(Integer val) {
             if (val == null) return null;
 
@@ -42,6 +46,7 @@ public class User extends Entity {
     @Id
     private Long id;
 
+    @Column("client_type_id")
     private ClientType clientType;
 
     // TODO write question on StackOverflow how to change default column name prefix at MappingR2dbcConverter:204
@@ -54,7 +59,7 @@ public class User extends Entity {
     private String emailAddr;
 
     @Column("is_agreed")
-    private boolean agreed;
+    private Boolean agreed;
 
     @Transient
     private Set<Expertise> expertises = new HashSet<>();

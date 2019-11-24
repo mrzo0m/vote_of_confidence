@@ -50,7 +50,7 @@ public class CommonController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/createOrUpdateUser")
-    public Mono<Integer> createOrUpdateUser(@RequestBody User user) {
+    public Mono<User> createOrUpdateUser(@RequestBody User user) {
         return userMWRepository.createOrUpdateUser(user);
     }
 
