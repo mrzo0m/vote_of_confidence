@@ -49,9 +49,14 @@ public class CommonController {
         return userMWRepository.findAllExpertsByExpertise(keywords);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/createOrUpdateUser")
+    @RequestMapping(method = RequestMethod.POST, path = "/saveUser")
     public Mono<User> createOrUpdateUser(@RequestBody User user) {
-        return userMWRepository.createOrUpdateUser(user);
+        return userMWRepository.saveUser(user);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/deleteUser")
+    public Mono<Void> deleteUser(@RequestBody User user) {
+        return userMWRepository.deleteUser(user);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getCompanyByName")

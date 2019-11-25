@@ -1,16 +1,11 @@
 package io.voteofconf.tracker.repository;
 
 import io.voteofconf.tracker.model.Company;
-import io.voteofconf.tracker.model.User;
+import io.voteofconf.tracker.repository.support.M2MMappingMWRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.springframework.data.r2dbc.query.Criteria.where;
 

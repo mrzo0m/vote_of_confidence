@@ -1,14 +1,13 @@
-package io.voteofconf.tracker.repository;
+package io.voteofconf.tracker.repository.support;
 
-import io.voteofconf.tracker.model.Company;
-import io.voteofconf.tracker.model.Expertise;
-import io.voteofconf.tracker.model.User;
-import io.voteofconf.tracker.model.Vacancy;
+import io.voteofconf.tracker.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,8 +30,15 @@ public class M2MMappingMWRepository {
     @AllArgsConstructor
     @Table("user_expertise")
     public static class UserExpertise {
-        private long userId;
-        private long expertiseId;
+        @Id
+        private Long id;
+        private Long userId;
+        private Long expertiseId;
+
+        public UserExpertise(Long userId, Long expertiseId) {
+            this.userId = userId;
+            this.expertiseId = expertiseId;
+        }
     };
 
     @Data
@@ -40,8 +46,8 @@ public class M2MMappingMWRepository {
     @AllArgsConstructor
     @Table("company_users")
     public static class CompanyUser {
-        private long userId;
-        private long companyId;
+        private Long userId;
+        private Long companyId;
     };
 
     @Data
@@ -49,8 +55,8 @@ public class M2MMappingMWRepository {
     @AllArgsConstructor
     @Table("user_vacancies")
     public static class UserVacancy {
-        private long userId;
-        private long vacancyId;
+        private Long userId;
+        private Long vacancyId;
     };
 
     @Data
@@ -58,10 +64,19 @@ public class M2MMappingMWRepository {
     @AllArgsConstructor
     @Table("company_vacancies")
     public static class CompanyVacancy {
-        private long companyId;
-        private long vacancyId;
+        private Long companyId;
+        private Long vacancyId;
     };
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Table("client_agreements")
+    public static class ClientAgreements {
+        @Id
+        private Long userId;
+        private Boolean agreed;
+    }
 
     private DatabaseClient databaseClient;
 
@@ -96,7 +111,7 @@ public class M2MMappingMWRepository {
                 });
     }
 
-    <T, R, TR> Flux<R> mergeM2MRelation(
+    public <R, TR> Flux<R> mergeM2MRelation(
             BiFunction<Map<Long, List<TR>>, Set<Long>, Flux<R>> extractR,
             Function<TR, Long> compositeExtractor,
             Class<TR> compositeClass,
