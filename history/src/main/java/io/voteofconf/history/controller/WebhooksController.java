@@ -1,31 +1,57 @@
 package io.voteofconf.history.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import io.voteofconf.history.controller.dto.WebhookSubscription;
-import lombok.extern.java.Log;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.voteofconf.history.dao.Backlog;
+import io.voteofconf.history.dao.BacklogRebository;
+import io.voteofconf.history.dao.WebhookRepository;
+import io.voteofconf.history.service.CalendlyWebhookService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.WebSession;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Log
+@Slf4j
 @RestController
 @RequestMapping("webhooks")
 public class WebhooksController {
 
+    @Autowired
+    CalendlyWebhookService service;
+
+    @Autowired
+    BacklogRebository backlogRebository;
 
     @ApiOperation(value = "Post to invitee_created")
     @PostMapping("/invitee_created")
-    public Mono<Void> inviteeCreated(@RequestBody WebhookSubscription invitee) {
-        log.info("webhooks event while invitee_created");
-        return Mono.empty();
+    @ResponseStatus(HttpStatus.OK)
+    public void inviteeCreated(@RequestBody WebhookSubscription invitee) {
+        log.info("webhooks event while invitee_created, palyload is: {}", invitee.toString());
+        service.inviteeCreated(invitee);
     }
 
     @ApiOperation(value = "Post to invitee_canceled")
     @PostMapping("/invitee_canceled")
+    @ResponseStatus(HttpStatus.OK)
     public Mono<Void> inviteeCanceled(@RequestBody WebhookSubscription invitee) {
         log.info("webhooks event while invitee_canceled");
         return Mono.empty();
+    }
+
+    @ApiOperation(value = "All task at backlog")
+    @GetMapping("/backlog")
+    @ResponseStatus(HttpStatus.OK)
+    public Flux<Backlog> getBacklog() {
+        return backlogRebository.findAll();
+    }
+
+    @GetMapping("/websession")
+    public Mono<String> getSession(WebSession session) {
+        session.getAttributes().putIfAbsent("note", "Howdy Cosmic Spheroid!");
+        return Mono.just((String) session.getAttributes().get("note"));
     }
 }

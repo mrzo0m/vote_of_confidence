@@ -31,7 +31,7 @@ public class HistoryApplicationTests {
     private static final int PORT = 9142;
     private static final String KEYSPACE = "voc_test_keyspace"; // this is a fixed value
     private Cluster cluster;
-    private Session session;
+    protected Session session;
 
     @Before
     public void init() {

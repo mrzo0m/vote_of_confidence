@@ -5,12 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractReactiveCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
-import org.springframework.data.cassandra.core.cql.keyspace.DropKeyspaceSpecification;
 import org.springframework.data.cassandra.core.cql.keyspace.KeyspaceOption;
 import org.springframework.data.cassandra.repository.config.EnableReactiveCassandraRepositories;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -26,21 +25,21 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
     }
 
     @Override
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 500000)
     protected String getKeyspaceName() {
         System.out.println("The keyspace is: " + cassandraKubeConfig.getKeyspace());
         return cassandraKubeConfig.getKeyspace();
     }
 
     @Override
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 500000)
     protected String getContactPoints() {
         System.out.println("The cassandra host is: " + cassandraKubeConfig.getContactPoints());
         return cassandraKubeConfig.getContactPoints();
     }
 
     @Override
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 500000)
     protected int getPort() {
         System.out.println("The cassandra port is: " + cassandraKubeConfig.getPort());
         return cassandraKubeConfig.getPort();
@@ -65,11 +64,8 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
                         .ifNotExists()
                         .with(KeyspaceOption.DURABLE_WRITES, true)
                         .withSimpleReplication();
-        return Arrays.asList(specification);
+        return Collections.singletonList(specification);
     }
 
-    @Override
-    protected List<DropKeyspaceSpecification> getKeyspaceDrops() {
-        return Arrays.asList(DropKeyspaceSpecification.dropKeyspace(cassandraKubeConfig.getKeyspace()));
-    }
+
 }

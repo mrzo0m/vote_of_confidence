@@ -257,3 +257,4 @@ $RECYCLE.BIN/
 #Custom ignore
 /frontend/workspace/ext
 /frontend/src/main/resources/static
+/.idea/codeStyles/codeStyleConfig.xml

@@ -38,6 +38,7 @@ public class ClaimController {
 
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Flux<Claim> getAll() {
         log.info("Getting all claims");
         return claimRepository.findAll();
@@ -46,6 +47,7 @@ public class ClaimController {
 
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Mono<Claim> get(@PathVariable(value = "id") UUID id) {
         log.info("Getting claim " + id.toString());
         return claimRepository.findOneByKeyId(id);
@@ -53,6 +55,7 @@ public class ClaimController {
 
 
     @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     public Mono<Void> put() {
         log.info("Generate stub for claims");
         claimRepository.saveAll(Arrays.asList(
@@ -68,6 +71,7 @@ public class ClaimController {
 
     @ApiOperation(value = "Post to save claim")
     @PostMapping
+    @ResponseStatus(HttpStatus.OK)
     public Mono<ResponseEntity<Claim>> save(@RequestBody Claim claim) {
         log.info("Saving some claim");
         return this.claimRepository.save(claim)
