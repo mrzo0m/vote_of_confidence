@@ -19,9 +19,6 @@ public class Vacancy extends Entity {
     @Id
     private Long id;
 
-    @Transient
-    private Company company;
-
     private String title;
 
     @Transient

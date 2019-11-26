@@ -109,7 +109,8 @@ public class M2MMappingMWRepository {
             Function<TR, Long> compositeExtractor,
             Class<TR> compositeClass,
             String compositeIdentifier, List<Long> identifiers) {
-        return databaseClient.select()
+        return identifiers.isEmpty() ?
+                Flux.empty() : databaseClient.select()
                 .from(compositeClass)
                 .matching(where(compositeIdentifier).in(identifiers))
                 .fetch()

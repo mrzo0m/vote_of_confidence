@@ -1,28 +1,21 @@
 package io.voteofconf.tracker.repository;
 
-import com.github.jasync.r2dbc.mysql.JasyncConnectionFactory;
-import io.r2dbc.spi.Batch;
-import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.ConnectionFactory;
-import io.r2dbc.spi.Statement;
-import io.voteofconf.tracker.model.*;
+import io.voteofconf.tracker.model.Company;
+import io.voteofconf.tracker.model.Expertise;
+import io.voteofconf.tracker.model.User;
+import io.voteofconf.tracker.model.Vacancy;
 import io.voteofconf.tracker.repository.support.ClientAgreementsAGRepository;
 import io.voteofconf.tracker.repository.support.M2MMappingMWRepository;
 import io.voteofconf.tracker.repository.support.UserExpertiseAGRepository;
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscription;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.data.r2dbc.query.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -218,7 +211,8 @@ public class UserMWRepository {
     }
 
     public Mono<Void> deleteUser(User user) {
-        return Flux.fromIterable(user.getExpertises())
+        return user.getId() == null ?
+                Mono.empty() : Flux.fromIterable(user.getExpertises())
                 .flatMap(expertise -> databaseClient
                         .delete()
                         .from(M2MMappingMWRepository.UserExpertise.class)
@@ -230,13 +224,6 @@ public class UserMWRepository {
                 .then(clientAgreementsAGRepository
                         .delete(new M2MMappingMWRepository.ClientAgreements(user.getId(), user.getAgreed())))
                 .then(userAGCrudRepository.delete(user));
-
-//        return databaseClient.delete()
-//                .from(User.class)
-//                .matching(where("id").is(user.getId()))
-//                .fetch()
-//                .rowsUpdated()
-//                .single();
     }
 
 
