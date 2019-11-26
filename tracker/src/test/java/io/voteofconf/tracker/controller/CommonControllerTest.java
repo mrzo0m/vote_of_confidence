@@ -10,11 +10,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.ExecutionException;
 
-@RunWith(SpringRunner.class)
-@WebFluxTest(controllers = CommonController.class, excludeAutoConfiguration = { ReactiveSecurityAutoConfiguration.class, ReactiveUserDetailsServiceAutoConfiguration.class }
-)
-@ActiveProfiles("test")
-@Slf4j
+//@RunWith(SpringRunner.class)
+//@WebFluxTest(controllers = CommonController.class, excludeAutoConfiguration = { ReactiveSecurityAutoConfiguration.class, ReactiveUserDetailsServiceAutoConfiguration.class }
+//)
+//@ActiveProfiles("test")
+//@Slf4j
 public class CommonControllerTest {
 
 //    @Autowired

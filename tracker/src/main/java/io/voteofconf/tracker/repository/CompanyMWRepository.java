@@ -3,7 +3,6 @@ package io.voteofconf.tracker.repository;
 import io.voteofconf.common.model.Company;
 import io.voteofconf.common.model.User;
 import io.voteofconf.common.model.Vacancy;
-import io.voteofconf.tracker.repository.support.M2MMappingMWRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

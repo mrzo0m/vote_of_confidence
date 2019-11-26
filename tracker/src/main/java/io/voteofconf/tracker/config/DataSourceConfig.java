@@ -23,7 +23,9 @@ import java.util.List;
 import static io.r2dbc.spi.ConnectionFactoryOptions.*;
 
 @Profile("native")
-@EnableR2dbcRepositories(basePackages = "io.voteofconf.tracker.repository")
+@EnableR2dbcRepositories(
+        basePackages = "io.voteofconf.tracker.repository",
+        considerNestedRepositories = true)
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:mysql.yml")

@@ -77,12 +77,6 @@ insert into company_users(user_id, company_id) values(
 	(select id from user where email_addr = 'monkey@bangalore.in'),
 	(select id from company where name = 'Vector-2 Limited'));
 
-create table company_users(  					-- пользователи компании
-	user_id int REFERENCES user(id),
-	company_id int REFERENCES company(id),
-	unique(user_id, company_id)
-);
-
 create table expertise(		-- что за эксперт - область, уровень
 	id serial primary key,
 	name varchar(32),

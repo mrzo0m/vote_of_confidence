@@ -5,9 +5,6 @@ import io.voteofconf.common.model.Company;
 import io.voteofconf.common.model.Expertise;
 import io.voteofconf.common.model.User;
 import io.voteofconf.common.model.Vacancy;
-import io.voteofconf.tracker.repository.support.ClientAgreementsAGRepository;
-import io.voteofconf.tracker.repository.support.M2MMappingMWRepository;
-import io.voteofconf.tracker.repository.support.UserExpertiseAGRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +24,13 @@ public class UserMWRepository {
     private QueryCachingSupport queryCachingSupport;
     private ExpertiseMWRepository expertiseMWRepository;
     private ExpertiseAGRepository expertiseAGRepository;
-    private UserExpertiseAGRepository userExpertiseAGRepository;
+    private M2MMappingMWRepository.UserExpertiseAGRepository userExpertiseAGRepository;
     private UserAGCrudRepository userAGCrudRepository;
     private M2MMappingMWRepository m2MMappingMWRepository;
-    private ClientAgreementsAGRepository clientAgreementsAGRepository;
+    private M2MMappingMWRepository.ClientAgreementsAGRepository clientAgreementsAGRepository;
     private ConnectionFactory connectionFactory;
 
-    public UserMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, ExpertiseMWRepository expertiseMWRepository, ExpertiseAGRepository expertiseAGRepository, UserExpertiseAGRepository userExpertiseAGRepository, UserAGCrudRepository userAGCrudRepository, M2MMappingMWRepository m2MMappingMWRepository, ClientAgreementsAGRepository clientAgreementsAGRepository) {
+    public UserMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, ExpertiseMWRepository expertiseMWRepository, ExpertiseAGRepository expertiseAGRepository, M2MMappingMWRepository.UserExpertiseAGRepository userExpertiseAGRepository, UserAGCrudRepository userAGCrudRepository, M2MMappingMWRepository m2MMappingMWRepository, M2MMappingMWRepository.ClientAgreementsAGRepository clientAgreementsAGRepository, ConnectionFactory connectionFactory) {
         this.databaseClient = databaseClient;
         this.queryCachingSupport = queryCachingSupport;
         this.expertiseMWRepository = expertiseMWRepository;
@@ -42,6 +39,7 @@ public class UserMWRepository {
         this.userAGCrudRepository = userAGCrudRepository;
         this.m2MMappingMWRepository = m2MMappingMWRepository;
         this.clientAgreementsAGRepository = clientAgreementsAGRepository;
+        this.connectionFactory = connectionFactory;
     }
 
     public Flux<User> findAllCandidatesByExpertise(Set<String> keywords) {

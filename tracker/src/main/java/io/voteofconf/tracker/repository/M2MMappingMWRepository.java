@@ -1,14 +1,14 @@
-package io.voteofconf.tracker.repository.support;
+package io.voteofconf.tracker.repository;
 
 import io.voteofconf.common.model.Expertise;
 import io.voteofconf.common.model.User;
-import io.voteofconf.tracker.repository.QueryCachingSupport;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -70,6 +70,22 @@ public class M2MMappingMWRepository {
         private Long userId;
         private Boolean agreed;
     }
+
+    public interface ClientAgreementsAGRepository extends ReactiveCrudRepository<M2MMappingMWRepository.ClientAgreements, Long> {
+    }
+
+    public interface CompanyVacancyAGRepository extends ReactiveCrudRepository<CompanyVacancy, Long> {
+    }
+
+    public interface CompanyUserAGRepository extends ReactiveCrudRepository<M2MMappingMWRepository.CompanyUser, Long> {
+    }
+
+    public interface UserExpertiseAGRepository extends ReactiveCrudRepository<M2MMappingMWRepository.UserExpertise, Long> {
+    }
+
+    public interface UserVacancyAGRepository extends ReactiveCrudRepository<M2MMappingMWRepository.UserVacancy, Long> {
+    }
+
 
     private DatabaseClient databaseClient;
 
