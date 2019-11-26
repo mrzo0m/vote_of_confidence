@@ -1,12 +1,10 @@
 package io.voteofconf.tracker.repository;
 
-import io.voteofconf.tracker.model.Entity;
-import io.voteofconf.tracker.model.Vacancy;
+import io.voteofconf.common.model.Entity;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class RepositorySupport {
 

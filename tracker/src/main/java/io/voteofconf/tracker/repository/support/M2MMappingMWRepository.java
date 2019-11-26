@@ -1,6 +1,7 @@
 package io.voteofconf.tracker.repository.support;
 
-import io.voteofconf.tracker.model.*;
+import io.voteofconf.common.model.Expertise;
+import io.voteofconf.common.model.User;
 import io.voteofconf.tracker.repository.QueryCachingSupport;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

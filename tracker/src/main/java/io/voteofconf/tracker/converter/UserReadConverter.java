@@ -1,10 +1,9 @@
 package io.voteofconf.tracker.converter;
 
 import io.r2dbc.spi.Row;
-import io.voteofconf.tracker.model.AccountType;
-import io.voteofconf.tracker.model.User;
+import io.voteofconf.common.model.AccountType;
+import io.voteofconf.common.model.User;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.relational.core.sql.In;
 
 import java.math.BigDecimal;
 import java.util.HashSet;

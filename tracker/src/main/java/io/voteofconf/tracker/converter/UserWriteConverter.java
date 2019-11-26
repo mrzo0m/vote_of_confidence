@@ -1,6 +1,6 @@
 package io.voteofconf.tracker.converter;
 
-import io.voteofconf.tracker.model.User;
+import io.voteofconf.common.model.User;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.r2dbc.mapping.OutboundRow;

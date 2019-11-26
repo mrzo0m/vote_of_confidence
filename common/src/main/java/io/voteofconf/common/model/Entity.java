@@ -1,4 +1,4 @@
-package io.voteofconf.tracker.model;
+package io.voteofconf.common.model;
 
 public abstract class Entity {
 

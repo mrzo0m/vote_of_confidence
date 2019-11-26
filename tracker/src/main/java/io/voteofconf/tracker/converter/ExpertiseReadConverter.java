@@ -1,7 +1,7 @@
 package io.voteofconf.tracker.converter;
 
 import io.r2dbc.spi.Row;
-import io.voteofconf.tracker.model.Expertise;
+import io.voteofconf.common.model.Expertise;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 

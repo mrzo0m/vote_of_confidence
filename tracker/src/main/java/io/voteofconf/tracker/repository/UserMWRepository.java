@@ -1,10 +1,10 @@
 package io.voteofconf.tracker.repository;
 
 import io.r2dbc.spi.ConnectionFactory;
-import io.voteofconf.tracker.model.Company;
-import io.voteofconf.tracker.model.Expertise;
-import io.voteofconf.tracker.model.User;
-import io.voteofconf.tracker.model.Vacancy;
+import io.voteofconf.common.model.Company;
+import io.voteofconf.common.model.Expertise;
+import io.voteofconf.common.model.User;
+import io.voteofconf.common.model.Vacancy;
 import io.voteofconf.tracker.repository.support.ClientAgreementsAGRepository;
 import io.voteofconf.tracker.repository.support.M2MMappingMWRepository;
 import io.voteofconf.tracker.repository.support.UserExpertiseAGRepository;

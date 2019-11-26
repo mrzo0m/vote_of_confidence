@@ -1,8 +1,7 @@
 package io.voteofconf.tracker.repository;
 
-import io.voteofconf.tracker.model.Query;
+import io.voteofconf.common.model.Query;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 

@@ -1,19 +1,10 @@
 package io.voteofconf.tracker.repository;
 
-import io.voteofconf.tracker.model.Expertise;
-import io.voteofconf.tracker.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.r2dbc.core.DatabaseClient;
-import org.springframework.data.r2dbc.query.Criteria;
+import io.voteofconf.common.model.Expertise;
+import io.voteofconf.common.model.User;
 import org.springframework.data.r2dbc.repository.query.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.springframework.data.r2dbc.query.Criteria.where;
 
 public interface UserAGCrudRepository extends ReactiveCrudRepository<User, Long> {
 

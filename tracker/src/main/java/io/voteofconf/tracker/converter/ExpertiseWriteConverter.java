@@ -1,12 +1,10 @@
 package io.voteofconf.tracker.converter;
 
-import io.voteofconf.tracker.model.Expertise;
+import io.voteofconf.common.model.Expertise;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.r2dbc.mapping.OutboundRow;
 import org.springframework.data.r2dbc.mapping.SettableValue;
-
-import java.util.stream.Collectors;
 
 @WritingConverter
 public class ExpertiseWriteConverter implements Converter<Expertise, OutboundRow> {

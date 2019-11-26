@@ -1,4 +1,4 @@
-package io.voteofconf.tracker.model;
+package io.voteofconf.common.model;
 
 import lombok.*;
 import org.joda.time.DateTime;

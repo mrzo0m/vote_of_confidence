@@ -1,7 +1,7 @@
 package io.voteofconf.tracker.controller;
 
-import io.voteofconf.tracker.model.Company;
-import io.voteofconf.tracker.model.User;
+import io.voteofconf.common.model.Company;
+import io.voteofconf.common.model.User;
 import io.voteofconf.tracker.repository.CompanyMWRepository;
 import io.voteofconf.tracker.repository.UserAGCrudRepository;
 import io.voteofconf.tracker.repository.UserMWRepository;

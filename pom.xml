@@ -26,6 +26,7 @@
         <module>scheduling</module>
         <module>tracker</module>
         <module>trace</module>
+        <module>common</module>
     </modules>
 
     <properties>

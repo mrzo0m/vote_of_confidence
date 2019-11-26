@@ -1,6 +1,6 @@
 package io.voteofconf.tracker.repository;
 
-import io.voteofconf.tracker.model.Query;
+import io.voteofconf.common.model.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
