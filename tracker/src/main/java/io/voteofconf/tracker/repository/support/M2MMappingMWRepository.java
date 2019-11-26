@@ -30,15 +30,8 @@ public class M2MMappingMWRepository {
     @AllArgsConstructor
     @Table("user_expertise")
     public static class UserExpertise {
-        @Id
-        private Long id;
         private Long userId;
         private Long expertiseId;
-
-        public UserExpertise(Long userId, Long expertiseId) {
-            this.userId = userId;
-            this.expertiseId = expertiseId;
-        }
     };
 
     @Data

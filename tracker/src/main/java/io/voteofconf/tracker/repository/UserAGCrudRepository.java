@@ -29,10 +29,13 @@ public interface UserAGCrudRepository extends ReactiveCrudRepository<User, Long>
 //
 //    boolean existsById(Long id);
 
-    @Query("SELECT u.id, u.first_name, u.second_name, u.sur_name, u.email_addr, t.type ad clientType " +
-            "   FROM user u" +
-            "   JOIN client_types t " +
-            "   ON u.client_type_id = t.id " +
+    @Query("SELECT u.id, u.first_name, u.second_name, u.sur_name, u.email_addr, ct.type as client_type, \n" +
+            "\t\tact.id  as \"accountType_id\", act.name  as \"accountType_name\", act.cost as \"accountType_cost\", act.description  as \"accountType_description\", act.period  as \"accountType_period\"\n" +
+            "\tFROM user u \n" +
+            "\tJOIN client_types ct \n" +
+            "\t\tON u.client_type_id = ct.id\n" +
+            "\tJOIN account_types act \n" +
+            "\t\tON u.account_type_id = act.id\t\t\n" +
             "WHERE email_addr = :emailAddr")
     Flux<User> findByEmailAddr(String emailAddr);
 

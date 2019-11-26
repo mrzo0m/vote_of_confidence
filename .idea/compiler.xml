@@ -16,7 +16,6 @@
         <module name="scheduling" />
         <module name="trace" />
         <module name="tracker" />
-        <module name="voc" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -32,6 +31,7 @@
       <module name="scheduling" target="1.8" />
       <module name="trace" target="1.8" />
       <module name="tracker" target="1.8" />
+      <module name="voc" target="1.8" />
       <module name="vote_of_confidence" target="1.8" />
     </bytecodeTargetLevel>
   </component>

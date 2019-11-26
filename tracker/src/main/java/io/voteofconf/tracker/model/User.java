@@ -50,7 +50,8 @@ public class User extends Entity {
     private ClientType clientType;
 
     // TODO write question on StackOverflow how to change default column name prefix at MappingR2dbcConverter:204
-//    @Column("account_type")
+//    @Column("account_type_id")
+    @Transient
     private AccountType accountType;
 
     private String firstName;
@@ -58,7 +59,7 @@ public class User extends Entity {
     private String surName;
     private String emailAddr;
 
-    @Column("is_agreed")
+    @Transient
     private Boolean agreed;
 
     @Transient

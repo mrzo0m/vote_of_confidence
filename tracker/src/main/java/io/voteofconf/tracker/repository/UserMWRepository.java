@@ -150,55 +150,22 @@ public class UserMWRepository {
 
         Set<Expertise> expertises = user.getExpertises();
         Boolean agreed = user.getAgreed();
-        Set<M2MMappingMWRepository.UserExpertise> userExpertises = expertises.stream()
-                .map(expertise -> new M2MMappingMWRepository.UserExpertise(user.getId(), expertise.getId()))
-                .collect(Collectors.toSet());
 
-        return userAGCrudRepository.save(user)
-                .flatMap(usr -> createOrUpdateUserExpertise(userExpertises)
-                        .then(Mono.just(usr)))
-                .flatMap(usr -> createOrUpdateClientAgreements(new M2MMappingMWRepository.ClientAgreements(user.getId(), agreed))
-                        .then(Mono.just(usr)))
-                .doOnNext(usr -> usr.setExpertises(expertises))
-                .doOnNext(usr -> usr.setAgreed(agreed));
+        Mono<User> start = Mono.just(user);
 
-//        if (user.getId() != null) {
-//            return databaseClient.execute("select count(&) from user")
-//                    .bind("id", user.getId())
-//                    .as(Integer.class)
-//                    .fetch()
-//                    .one()
-//                    .flatMap(count -> {
-//                        if (count == 0) {
-//                            return databaseClient.insert()
-//                                    .into(User.class)
-//                                    .using(user)
-//                                    .fetch()
-//                                    .rowsUpdated()
-//                                    .concatWith(addUserExpertise(user))
-//                                    .reduce(Integer::sum)
-//                                    .single();
-//                        } else {
-//                            return databaseClient.update()
-//                                    .table(User.class)
-//                                    .using(user)
-//                                    .fetch()
-//                                    .rowsUpdated()
-//                                    .concatWith(addUserExpertise(user))
-//                                    .reduce(Integer::sum)
-//                                    .single();
-//                        }
-//                    });
-//        } else {
-//            return databaseClient.insert()
-//                    .into(User.class)
-//                    .using(user)
-//                    .fetch()
-//                    .rowsUpdated()
-//                    .concatWith(addUserExpertise(user))
-//                    .reduce(Integer::sum)
-//                    .single();
-//        }
+        if (user.getId() != null)
+            start = userAGCrudRepository.findById(user.getId());
+
+        return start.flatMap(arg ->
+                userAGCrudRepository.save(user)
+                        .flatMap(usr -> createOrUpdateUserExpertise(expertises.stream()
+                                .map(expertise -> new M2MMappingMWRepository.UserExpertise(usr.getId(), expertise.getId()))
+                                .collect(Collectors.toSet()))
+                                .then(Mono.just(usr)))
+                        .flatMap(usr -> createOrUpdateClientAgreements(new M2MMappingMWRepository.ClientAgreements(user.getId(), agreed))
+                                .then(Mono.just(usr)))
+                        .doOnNext(usr -> usr.setExpertises(expertises))
+                        .doOnNext(usr -> usr.setAgreed(agreed)));
     }
 
     private Mono<Void> createOrUpdateUserExpertise(Set<M2MMappingMWRepository.UserExpertise> userExpertises) {
@@ -252,11 +219,17 @@ public class UserMWRepository {
 
     public Mono<Void> deleteUser(User user) {
         return Flux.fromIterable(user.getExpertises())
-                .flatMap(expertise -> userExpertiseAGRepository.delete(
-                        new M2MMappingMWRepository.UserExpertise(user.getId(), expertise.getId())))
+                .flatMap(expertise -> databaseClient
+                        .delete()
+                        .from(M2MMappingMWRepository.UserExpertise.class)
+                        .matching(where("user_id").is(user.getId())
+                                .and("expertise_id").is(expertise.getId()))
+                        .then())
+//                        userExpertiseAGRepository.delete(
+//                        new M2MMappingMWRepository.UserExpertise(user.getId(), expertise.getId())))
                 .then(clientAgreementsAGRepository
                         .delete(new M2MMappingMWRepository.ClientAgreements(user.getId(), user.getAgreed())))
-        .then(userAGCrudRepository.delete(user));
+                .then(userAGCrudRepository.delete(user));
 
 //        return databaseClient.delete()
 //                .from(User.class)
