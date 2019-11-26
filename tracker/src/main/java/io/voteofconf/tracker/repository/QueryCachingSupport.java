@@ -20,20 +20,17 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Slf4j
 public class QueryCachingSupport {
 
-    private DatabaseClient databaseClient;
-
     private SupportAGRepository supportAGRepository;
 
     private Map<String, String> queryMap = new ConcurrentHashMap<>();
 
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    public QueryCachingSupport(DatabaseClient databaseClient, SupportAGRepository supportAGRepository) {
-        this.databaseClient = databaseClient;
+    public QueryCachingSupport(SupportAGRepository supportAGRepository) {
         this.supportAGRepository = supportAGRepository;
     }
 
-    String getQuerySource(String name) {
+    public String getQuerySource(String name) {
         try {
             if (queryMap.isEmpty()) {
                 initQueryCache();

@@ -51,12 +51,12 @@ public class CommonController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/saveUser")
     public Mono<User> createOrUpdateUser(@RequestBody User user) {
-        return userMWRepository.saveUser(user);
+        return userMWRepository.save(user);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/deleteUser")
-    public Mono<Void> deleteUser(@RequestBody User user) {
-        return userMWRepository.deleteUser(user);
+    @RequestMapping(method = RequestMethod.DELETE, path = "/deleteUser")
+    public Mono<Void> deleteUser(@RequestBody Long userId) {
+        return userMWRepository.delete(userId);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getCompanyByName")

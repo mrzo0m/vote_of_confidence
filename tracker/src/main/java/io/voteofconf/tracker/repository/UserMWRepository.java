@@ -9,15 +9,12 @@ import io.voteofconf.tracker.repository.support.ClientAgreementsAGRepository;
 import io.voteofconf.tracker.repository.support.M2MMappingMWRepository;
 import io.voteofconf.tracker.repository.support.UserExpertiseAGRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
-import org.springframework.data.r2dbc.query.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.r2dbc.query.Criteria.where;
@@ -138,61 +135,65 @@ public class UserMWRepository {
     }
 
     @Transactional("reactiveTransactionManager")
-    public Mono<User> saveUser(User user) {
-//        TransactionalOperator operator = TransactionalOperator.create(reactiveTransactionManager);
-
+    public Mono<User> save(User user) {
         Set<Expertise> expertises = user.getExpertises();
         Boolean agreed = user.getAgreed();
 
-        Mono<User> start = Mono.just(user);
-
-        if (user.getId() != null)
-            start = userAGCrudRepository.findById(user.getId());
-
-        return start.flatMap(arg ->
-                userAGCrudRepository.save(user)
-                        .flatMap(usr -> createOrUpdateUserExpertise(expertises.stream()
-                                .map(expertise -> new M2MMappingMWRepository.UserExpertise(usr.getId(), expertise.getId()))
-                                .collect(Collectors.toSet()))
-                                .then(Mono.just(usr)))
+        return RepositorySupport.emptyOrSave(
+                userAGCrudRepository,
+                user,
+                (arg) -> userAGCrudRepository.save(user)
+                        .flatMap(usr -> {
+                            Set<M2MMappingMWRepository.UserExpertise> set = expertises.stream()
+                                    .map(expertise -> new M2MMappingMWRepository.UserExpertise(usr.getId(), expertise.getId()))
+                                    .collect(Collectors.toSet());
+                            return m2MMappingMWRepository.createOrUpdateM2MRelation(
+                                    set,
+                                    M2MMappingMWRepository.UserExpertise::getUserId,
+                                    M2MMappingMWRepository.UserExpertise::getExpertiseId,
+                                    M2MMappingMWRepository.UserExpertise.class
+                            ).then(Mono.just(usr));
+                        })
                         .flatMap(usr -> createOrUpdateClientAgreements(new M2MMappingMWRepository.ClientAgreements(user.getId(), agreed))
                                 .then(Mono.just(usr)))
                         .doOnNext(usr -> usr.setExpertises(expertises))
                         .doOnNext(usr -> usr.setAgreed(agreed)));
     }
 
-    private Mono<Void> createOrUpdateUserExpertise(Set<M2MMappingMWRepository.UserExpertise> userExpertises) {
-        List<Object[]> tuples = userExpertises.stream()
-                .map(userExpertise -> new Object[]{userExpertise.getUserId(), userExpertise.getExpertiseId()})
-                .collect(Collectors.toList());
-
-        return databaseClient.execute("select * from user_expertise where (user_id, expertise_id) in (:tuples)")
-                .bind("tuples", tuples)
-                .as(M2MMappingMWRepository.UserExpertise.class)
-                .fetch()
-                .all()
-                .collectList()
-                .flatMap(fщundUserExpertises -> {
-                    Set<M2MMappingMWRepository.UserExpertise> set =  new HashSet<>(userExpertises);
-                    set.removeAll(fщundUserExpertises);
-
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-                    for (M2MMappingMWRepository.UserExpertise ue : set) {
-                        executorService.execute(() -> {
-                            databaseClient.insert()
-                                    .into(M2MMappingMWRepository.UserExpertise.class)
-                                    .using(ue)
-                                    .then()
-                                    .block();
-                        });
-                    }
-                    executorService.shutdown();;
-
-                    return Mono.empty();
-                });
-
-    }
+//    private Mono<Void> createOrUpdateUserExpertise(Set<M2MMappingMWRepository.UserExpertise> userExpertises) {
+//        String querySource = queryCachingSupport.getQuerySource("userExpertiseTupleQuery");
+//
+//        List<Object[]> tuples = userExpertises.stream()
+//                .map(userExpertise -> new Object[]{userExpertise.getUserId(), userExpertise.getExpertiseId()})
+//                .collect(Collectors.toList());
+//
+//        return databaseClient.execute(querySource)
+//                .bind("tuples", tuples)
+//                .as(M2MMappingMWRepository.UserExpertise.class)
+//                .fetch()
+//                .all()
+//                .collectList()
+//                .flatMap(fщundUserExpertises -> {
+//                    Set<M2MMappingMWRepository.UserExpertise> set =  new HashSet<>(userExpertises);
+//                    set.removeAll(fщundUserExpertises);
+//
+//                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+//
+//                    for (M2MMappingMWRepository.UserExpertise ue : set) {
+//                        executorService.execute(() -> {
+//                            databaseClient.insert()
+//                                    .into(M2MMappingMWRepository.UserExpertise.class)
+//                                    .using(ue)
+//                                    .then()
+//                                    .block();
+//                        });
+//                    }
+//                    executorService.shutdown();;
+//
+//                    return Mono.empty();
+//                });
+//
+//    }
 
     private Mono<M2MMappingMWRepository.ClientAgreements> createOrUpdateClientAgreements(M2MMappingMWRepository.ClientAgreements clientAgreements) {
         return databaseClient.select()
@@ -210,53 +211,19 @@ public class UserMWRepository {
 
     }
 
-    public Mono<Void> deleteUser(User user) {
-        return user.getId() == null ?
-                Mono.empty() : Flux.fromIterable(user.getExpertises())
-                .flatMap(expertise -> databaseClient
-                        .delete()
-                        .from(M2MMappingMWRepository.UserExpertise.class)
-                        .matching(where("user_id").is(user.getId())
-                                .and("expertise_id").is(expertise.getId()))
-                        .then())
-//                        userExpertiseAGRepository.delete(
-//                        new M2MMappingMWRepository.UserExpertise(user.getId(), expertise.getId())))
-                .then(clientAgreementsAGRepository
-                        .delete(new M2MMappingMWRepository.ClientAgreements(user.getId(), user.getAgreed())))
-                .then(userAGCrudRepository.delete(user));
-    }
-
-
-
-    @Transactional("reactiveTransactionManager")
-    private Mono<Integer> addUserExpertise(User user) {
-
-        if (user.getExpertises().isEmpty()) {
-            return Mono.just(0);
-        }
-
-        Criteria.CriteriaStep criteriaStep = where("id");
-        Criteria criteria = null;
-
-        for (Expertise expertise : user.getExpertises()) {
-            criteria = criteriaStep.is(expertise.getId());
-            criteriaStep = criteria.or("id");
-        }
-
-        return databaseClient.select()
-                .from(Expertise.class)
-                .matching(criteria)
-                .fetch()
-                .all()
-                .flatMap(expertise -> databaseClient
-                        .insert()
-                        .into("user_expertise")
-                        .value("expertise_id", expertise.getId())
-                        .value("user_id", user.getId())
-                        .fetch()
-                        .rowsUpdated()
-                        .switchIfEmpty(Mono.just(0)))
-                .reduce(Integer::sum)
-                .single();
+    public Mono<Void> delete(Long userId) {
+        return RepositorySupport.emptyOrDelete(
+                userAGCrudRepository,
+                userId,
+                (user) -> Flux.fromIterable(user.getExpertises())
+                        .flatMap(expertise -> m2MMappingMWRepository.deleteM2MRelation(
+                                M2MMappingMWRepository.UserExpertise.class,
+                                "user_id", user.getId(),
+                                "expertise_id", expertise.getId()
+                        ))
+                        .then(clientAgreementsAGRepository
+                                .delete(new M2MMappingMWRepository.ClientAgreements(user.getId(), user.getAgreed())))
+                        .then(userAGCrudRepository.delete(user))
+        );
     }
 }

@@ -19,12 +19,16 @@ import static org.springframework.data.r2dbc.query.Criteria.where;
 public class ExpertiseMWRepository {
 
     private DatabaseClient databaseClient;
+    private ExpertiseAGRepository expertiseAGRepository;
     private M2MMappingMWRepository m2MMappingMWRepository;
 
-    public ExpertiseMWRepository(DatabaseClient databaseClient, M2MMappingMWRepository m2MMappingMWRepository) {
+
+    public ExpertiseMWRepository(DatabaseClient databaseClient, ExpertiseAGRepository expertiseAGRepository, M2MMappingMWRepository m2MMappingMWRepository) {
         this.databaseClient = databaseClient;
+        this.expertiseAGRepository = expertiseAGRepository;
         this.m2MMappingMWRepository = m2MMappingMWRepository;
     }
+
 
     Flux<Expertise> getExpertisesByKeywords(Set<String> keywords) {
         StringBuilder query = new StringBuilder("select *\n" +
@@ -81,5 +85,18 @@ public class ExpertiseMWRepository {
                 users.stream()
                         .map(User::getId)
                         .collect(Collectors.toList())).collectList();
+    }
+
+    public Mono<Expertise> save(Expertise expertise) {
+        return RepositorySupport.emptyOrSave(
+                expertiseAGRepository,
+                expertise,
+                expertiseAGRepository::save);
+    }
+    public Mono<Void> delete(Long vacancyId) {
+        return RepositorySupport.emptyOrDelete(
+                expertiseAGRepository,
+                vacancyId,
+                expertiseAGRepository::delete);
     }
 }

@@ -1,6 +1,7 @@
 package io.voteofconf.tracker.repository.support;
 
 import io.voteofconf.tracker.model.*;
+import io.voteofconf.tracker.repository.QueryCachingSupport;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,9 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -73,8 +73,12 @@ public class M2MMappingMWRepository {
 
     private DatabaseClient databaseClient;
 
-    public M2MMappingMWRepository(DatabaseClient databaseClient) {
+    private QueryCachingSupport queryCachingSupport;
+
+
+    public M2MMappingMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport) {
         this.databaseClient = databaseClient;
+        this.queryCachingSupport = queryCachingSupport;
     }
 
     Mono<Collection<User>> mergeUserExpertise(Map<Long, User> uMap, Map<Long, Expertise> expMap, List<Long> expertiseIds) {
@@ -124,5 +128,55 @@ public class M2MMappingMWRepository {
                             .collect(Collectors.toSet());
                     return extractR.apply(mtrMap, userIds);
                 });
+    }
+
+    public <TR> Mono<Void> createOrUpdateM2MRelation(Set<TR> compositeEntities,
+                                                     Function<TR, Long> leftCompositeExtractor,
+                                                     Function<TR, Long> rightCompositeExtractor,
+                                                     Class<TR> compositeClass) {
+        if (compositeEntities.isEmpty()) return Mono.empty();
+
+        String querySource = queryCachingSupport.getQuerySource("userExpertiseTupleQuery");
+
+        List<Object[]> tuples = compositeEntities.stream()
+                .map(ce -> new Object[]{leftCompositeExtractor.apply(ce), rightCompositeExtractor.apply(ce)})
+                .collect(Collectors.toList());
+
+        return databaseClient.execute(querySource)
+                .bind("tuples", tuples)
+                .as(compositeClass)
+                .fetch()
+                .all()
+                .collectList()
+                .flatMap(foundUserExpertises -> {
+                    Set<TR> set =  new HashSet<>(compositeEntities);
+                    set.removeAll(foundUserExpertises);
+
+                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+                    for (TR ce : set) {
+                        executorService.execute(() -> {
+                            databaseClient.insert()
+                                    .into(compositeClass)
+                                    .using(ce)
+                                    .then()
+                                    .block();
+                        });
+                    }
+                    executorService.shutdown();;
+
+                    return Mono.empty();
+                });
+    }
+
+    public <TR> Mono<Void> deleteM2MRelation(Class<TR> compositeClass,
+                                             String leftCompositeName, Long leftCompositeId,
+                                             String rightCompositeName, Long rightCompositeId) {
+        return databaseClient
+                .delete()
+                .from(compositeClass)
+                .matching(where(leftCompositeName).is(leftCompositeId)
+                        .and(rightCompositeName).is(rightCompositeId))
+                .then();
     }
 }
