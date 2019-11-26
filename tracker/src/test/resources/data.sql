@@ -29,10 +29,10 @@ create table user(
 	account_type_id int REFERENCES account_types(id)
 );
 
-insert into user(first_name, second_name, sur_name, email_addr, client_type_id, account_type_id) values('Hanumantarao', 'Mulpuru', 'Ganesh', 'monkey@bangalore.in',
+insert into user(first_name, second_name, sur_name, email_addr, client_type_id, account_type_id) values('ASfddwe', 'FDCsdafwef', 'dsdsd', 'abcd@asdasd.in',
 	(select id from client_types where type = 'EXPERT'),
 	(select id from account_types where name = 'For free'));
-insert into user(first_name, second_name, sur_name, email_addr, client_type_id, account_type_id) values('Bhanagavan', 'Puuri', null, 'monkey2@bangalore.in',
+insert into user(first_name, second_name, sur_name, email_addr, client_type_id, account_type_id) values('ASDsad', 'SDAasd', null, 'abcd2@asdasd.in',
 	(select id from client_types where type = 'CANDIDATE'),
 	(select id from account_types where name = 'For free'));
 
@@ -43,7 +43,7 @@ create table client_agreements(			-- коньдидат (и не только) �
 );
 
 insert into client_agreements(user_id, agreed) values(
-	(select id from user where email_addr = 'monkey@bangalore.in'),
+	(select id from user where email_addr = 'abcd@bangalore.in'),
 	true);
 
 create table company(  					-- компания - обладатель api для добавления информации о кандидате
@@ -52,7 +52,7 @@ create table company(  					-- компания - обладатель api дл�
 	description varchar(512)
 );
 
-insert into company(name, description) values('Vector-2 Limited', 'Crime entities');
+insert into company(name, description) values('Vector-2 Limited', 'sdasd entities');
 
 create table vacancy(
 	user_id int REFERENCES user(id),
@@ -62,7 +62,7 @@ create table vacancy(
 );
 
 insert into vacancy(user_id, company_id, title, vacancy_id) values(
-	(select id from user where email_addr = 'monkey@bangalore.in'),
+	(select id from user where email_addr = 'abcd@bangalore.in'),
 	(select id from company where name = 'Vector-2 Limited'),
 	'Java Rocket Developer',
 	42);
@@ -74,7 +74,7 @@ create table company_users(  					-- пользователи компании
 );
 
 insert into company_users(user_id, company_id) values(
-	(select id from user where email_addr = 'monkey@bangalore.in'),
+	(select id from user where email_addr = 'abcd@asdasd.in'),
 	(select id from company where name = 'Vector-2 Limited'));
 
 create table expertise(		-- что за эксперт - область, уровень
@@ -94,7 +94,7 @@ create table user_expertise(  					-- эксперты и кандидаты
 );
 
 insert into user_expertise(user_id, expertise_id) values(
-	(select id from user where email_addr = 'monkey@bangalore.in'),
+	(select id from user where email_addr = 'abcd@bangalore.in'),
 	(select id from expertise where name = 'Java Core'));
 
 create table interview_application(  					-- заявка на интервью между коньдидатом и икспертом
@@ -110,8 +110,8 @@ create table interview_application(  					-- заявка на интервью 
 );
 
 insert into interview_application(candidate_id, expert_id, discipline_id, calendly_link) values(
-	(select id from user where email_addr = 'monkey2@bangalore.in'),
-	(select id from user where email_addr = 'monkey@bangalore.in'),
+	(select id from user where email_addr = 'abcd2@asdasd.in'),
+	(select id from user where email_addr = 'abcd@asdasd.in'),
 	(select id from expertise where name = 'Java Core'),
 	'http:calendly.com/path/to'
 );
@@ -134,8 +134,8 @@ create table apllication_solution(
 );
 
 insert into apllication_solution(interview_application_id, resolution_id, report_id, certificate_id) values(
-	(select id from interview_application where candidate_id = (select id from user where email_addr = 'monkey2@bangalore.in') and expert_id = (select id from user where email_addr = 'monkey@bangalore.in')),
-	(select id from resolution_types where name = 'FALI'),
+	(select id from interview_application where candidate_id = (select id from user where email_addr = 'abcd2@asdasd.in') and expert_id = (select id from user where email_addr = 'abcd@bangalore.in')),
+	(select id from resolution_types where name = 'FAIL'),
 	1,
 	1
 );
