@@ -10,10 +10,11 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
 @EnableWebFluxSecurity
+@Profile(value = {"!dev"})
 @EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
-    @Profile("!dev")
+
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
@@ -28,18 +29,4 @@ public class SecurityConfiguration {
                 .anyExchange().permitAll().and().build();
     }
 
-    @Profile("dev")
-    @Bean
-    public SecurityWebFilterChain securityDevWebFilterChain(ServerHttpSecurity http) {
-        return http
-                .csrf().disable()
-                .cors().disable()
-//                .authorizeExchange()
-//                .anyExchange().authenticated()
-//                .and()
-//                .oauth2ResourceServer()
-//                .jwt().and()
-                .authorizeExchange()
-                .anyExchange().permitAll().and().build();
-    }
 }
