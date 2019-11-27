@@ -80,8 +80,8 @@ create table interview_application(  					-- заявка на интервью 
 	date_time timestamp not null,
 	date_of_interview timestamp not null,
 	calendly_link varchar(256) not null,
-	unique(candidate_id, expert_id)--,
-	--index disc (discipline_id)
+	unique(candidate_id, expert_id),
+	index disc (discipline_id)
 );
 
 insert into interview_application(candidate_id, expert_id, discipline_id, date_time, date_of_interview, calendly_link) values(
@@ -116,8 +116,8 @@ create table apllication_solution(
 	interview_application_id int REFERENCES interview_application(id),
 	resolution_id int references resolution_types(id),
 	report_id int not null,
-	certificate_id int not null--,
-	--INDEX ap_sol (interview_application_id, resolution_id)
+	certificate_id int not null,
+	INDEX ap_sol (interview_application_id, resolution_id)
 );
 
 create table queries(

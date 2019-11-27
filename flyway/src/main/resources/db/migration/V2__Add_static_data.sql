@@ -2,7 +2,7 @@ insert into client_types(id, type) values(1, 'CANDIDATE');
 insert into client_types(id, type) values(2, 'COMPANY');
 insert into client_types(id, type) values(3, 'EXPERT');
 
-insert into account_types(name, description, period, cost) values('For free', 'Try Trial)', 30, 0);
+insert into account_types(name, description, period, cost) values('For free', 'Try Trial', 30, 0);
 
 insert into queries(name, source) values('selectUsersWithExpertisesByClientType', 'select u.id, u.first_name, u.second_name, u.sur_name, u.email_addr, ct.type as client_type,
 		act.id  as "accountType_id", act.name  as "accountType_name", act.cost as "accountType_cost", act.description  as "accountType_description", act.period  as "accountType_period"
