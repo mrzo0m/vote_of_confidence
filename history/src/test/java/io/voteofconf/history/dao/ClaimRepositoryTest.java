@@ -1,30 +1,42 @@
 package io.voteofconf.history.dao;
 
-import org.cassandraunit.spring.CassandraDataSet;
-import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
-import org.cassandraunit.spring.EmbeddedCassandra;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.data.cassandra.repository.config.EnableReactiveCassandraRepositories;
-import org.springframework.test.context.TestExecutionListeners;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
+
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@TestExecutionListeners({CassandraUnitTestExecutionListener.class})
-@CassandraDataSet(value = "cql/dataset.cql", keyspace = "voc_test_keyspace")
-@EmbeddedCassandra
-@WebFluxTest
-@EnableReactiveCassandraRepositories
 public class ClaimRepositoryTest {
 
-    @Autowired
+
+    @MockBean
     ClaimRepository claimRepository;
 
     @Test
     public void persist() throws Exception {
+        Mockito.when(this.claimRepository.findAll())
+                .thenReturn(
+                        Flux.just(
+                                new Claim(
+                                        new ClaimKey("Company" + UUID.randomUUID(),
+                                                UUID.randomUUID()),
+                                        "info: " + System.nanoTime())
+                        )
+                );
 
+
+        StepVerifier
+                .create(this.claimRepository.findAll())
+                .expectNextMatches(
+                        claim ->
+                                claim.getKey().getId() != null
+                                        && claim.getKey().getCompanyName().contains("Company")
+                ).verifyComplete();
     }
 
 }
