@@ -142,7 +142,8 @@ public class M2MMappingMWRepository {
                     Set<Long> userIds = composites.stream()
                             .map(compositeExtractor)
                             .collect(Collectors.toSet());
-                    return extractR.apply(mtrMap, userIds);
+                    return userIds.isEmpty() ?
+                            Flux.empty() : extractR.apply(mtrMap, userIds);
                 });
     }
 

@@ -1,8 +1,10 @@
 package io.voteofconf.tracker.controller;
 
 import io.voteofconf.common.model.Company;
+import io.voteofconf.common.model.Interview;
 import io.voteofconf.common.model.User;
 import io.voteofconf.tracker.repository.CompanyMWRepository;
+import io.voteofconf.tracker.repository.InterviewMWRepository;
 import io.voteofconf.tracker.repository.UserAGCrudRepository;
 import io.voteofconf.tracker.repository.UserMWRepository;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,14 @@ public class CommonController {
     private UserAGCrudRepository userAGRepository;
     private UserMWRepository userMWRepository;
     private CompanyMWRepository companyMWRepository;
+    private InterviewMWRepository interviewMWRepository;
 
-    public CommonController(UserAGCrudRepository userAGRepository, UserMWRepository userMWRepository, CompanyMWRepository companyMWRepository) {
+
+    public CommonController(UserAGCrudRepository userAGRepository, UserMWRepository userMWRepository, CompanyMWRepository companyMWRepository, InterviewMWRepository interviewMWRepository) {
         this.userAGRepository = userAGRepository;
         this.userMWRepository = userMWRepository;
         this.companyMWRepository = companyMWRepository;
+        this.interviewMWRepository = interviewMWRepository;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getUserByEmailAddr")
@@ -64,4 +69,8 @@ public class CommonController {
         return companyMWRepository.getCompanyByName(name);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/getInterview")
+    public Mono<Interview> getCompanyByName(@RequestParam Long interviewId) {
+        return interviewMWRepository.findById(interviewId);
+    }
 }

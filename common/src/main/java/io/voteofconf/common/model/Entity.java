@@ -1,6 +1,7 @@
 package io.voteofconf.common.model;
 
-public abstract class Entity {
+import org.springframework.data.annotation.Id;
 
+public abstract class Entity {
     public abstract Long getId();
 }

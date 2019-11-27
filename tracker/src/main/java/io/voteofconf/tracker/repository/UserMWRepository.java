@@ -11,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.r2dbc.query.Criteria.where;
@@ -40,6 +43,20 @@ public class UserMWRepository {
         this.m2MMappingMWRepository = m2MMappingMWRepository;
         this.clientAgreementsAGRepository = clientAgreementsAGRepository;
         this.connectionFactory = connectionFactory;
+    }
+
+    @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
+    public Mono<User> findById(Long userid) {
+        String querySource = queryCachingSupport.getQuerySource("selectUserById");
+
+        return databaseClient.execute(querySource)
+                .bind("userId", userid)
+                .as(User.class)
+                .fetch()
+                .one()
+                .flatMap(user -> expertiseMWRepository
+                        .addExpertisesToUsers(Collections.singletonList(user))
+                        .then(Mono.just(user)));
     }
 
     public Flux<User> findAllCandidatesByExpertise(Set<String> keywords) {
