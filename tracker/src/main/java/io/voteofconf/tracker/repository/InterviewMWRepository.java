@@ -53,10 +53,10 @@ public class InterviewMWRepository {
                 interviewAGRepository::save);
     }
 
-    public Mono<Void> delete(Long vacancyId) {
+    public Mono<Void> delete(Long interviewId) {
         return RepositorySupport.emptyOrDelete(
                 interviewAGRepository,
-                vacancyId,
+                interviewId,
                 interviewAGRepository::delete);
     }
 }

@@ -99,6 +99,19 @@ create table resolution_types(
 	description varchar(512) not null
 );
 
+create table certificate(
+	id serial primary key,
+	name nvarchar(128) not null,
+	description nvarchar(512) not null
+);
+
+
+create table report(
+	id serial primary key,
+	name nvarchar(128) not null,
+	body nvarchar(512) not null
+);
+
 create table apllication_solution(
 	interview_application_id int REFERENCES interview_application(id),
 	resolution_id int references resolution_types(id),

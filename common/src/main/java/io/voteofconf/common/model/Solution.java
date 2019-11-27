@@ -1,7 +1,9 @@
 package io.voteofconf.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -23,6 +25,10 @@ public class Solution extends Entity {
             this.id = id;
         }
 
+        public int getId() {
+            return id;
+        }
+
         public static Solution.ResolutionType valueOf(Integer val) {
             if (val == null) return null;
 
@@ -40,6 +46,27 @@ public class Solution extends Entity {
     @Column("resolution_id")
     private ResolutionType resolutionType;
 
+    @JsonIgnore
+    private Long interviewApplicationId;
+    @Transient
+    private Interview interview;
+
+    @JsonIgnore
     private Long reportId;
+    @Transient
+    private Report report;
+
+    @JsonIgnore
     private Long certificateId;
+    @Transient
+    private Certificate certificate;
+
+
+    public Solution(Long id, ResolutionType resolutionType, Long interviewApplicationId, Long reportId, Long certificateId) {
+        this.id = id;
+        this.resolutionType = resolutionType;
+        this.interviewApplicationId = interviewApplicationId;
+        this.reportId = reportId;
+        this.certificateId = certificateId;
+    }
 }

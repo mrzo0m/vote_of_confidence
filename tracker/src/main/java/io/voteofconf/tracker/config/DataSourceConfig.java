@@ -65,6 +65,8 @@ public class DataSourceConfig extends AbstractR2dbcConfiguration {
         converterList.add(new ExpertiseWriteConverter());
 //        converterList.add(new InterviewReadConverter());
         converterList.add(new InterviewWriteConverter());
+        converterList.add(new SolutionReadConverter());
+        converterList.add(new SolutionWriteConverter());
         converterList.add(new UserReadConverter());
         converterList.add(new UserWriteConverter());
         return new R2dbcCustomConversions(getStoreConversions(), converterList);

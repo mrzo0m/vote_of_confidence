@@ -2,11 +2,9 @@ package io.voteofconf.tracker.controller;
 
 import io.voteofconf.common.model.Company;
 import io.voteofconf.common.model.Interview;
+import io.voteofconf.common.model.Solution;
 import io.voteofconf.common.model.User;
-import io.voteofconf.tracker.repository.CompanyMWRepository;
-import io.voteofconf.tracker.repository.InterviewMWRepository;
-import io.voteofconf.tracker.repository.UserAGCrudRepository;
-import io.voteofconf.tracker.repository.UserMWRepository;
+import io.voteofconf.tracker.repository.*;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,13 +18,15 @@ public class CommonController {
     private UserMWRepository userMWRepository;
     private CompanyMWRepository companyMWRepository;
     private InterviewMWRepository interviewMWRepository;
+    private SolutionMWRepository solutionMWRepository;
 
 
-    public CommonController(UserAGCrudRepository userAGRepository, UserMWRepository userMWRepository, CompanyMWRepository companyMWRepository, InterviewMWRepository interviewMWRepository) {
+    public CommonController(UserAGCrudRepository userAGRepository, UserMWRepository userMWRepository, CompanyMWRepository companyMWRepository, InterviewMWRepository interviewMWRepository, SolutionMWRepository solutionMWRepository) {
         this.userAGRepository = userAGRepository;
         this.userMWRepository = userMWRepository;
         this.companyMWRepository = companyMWRepository;
         this.interviewMWRepository = interviewMWRepository;
+        this.solutionMWRepository = solutionMWRepository;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getUserByEmailAddr")
@@ -70,7 +70,12 @@ public class CommonController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getInterview")
-    public Mono<Interview> getCompanyByName(@RequestParam Long interviewId) {
+    public Mono<Interview> getInterview(@RequestParam Long interviewId) {
         return interviewMWRepository.findById(interviewId);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getSolution")
+    public Mono<Solution> getSolution(@RequestParam Long solutionId) {
+        return solutionMWRepository.findById(solutionId);
     }
 }
