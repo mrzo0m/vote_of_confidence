@@ -43,7 +43,7 @@ create table client_agreements(			-- коньдидат (и не только) �
 );
 
 insert into client_agreements(user_id, agreed) values(
-	(select id from user where email_addr = 'abcd@bangalore.in'),
+	(select id from user where email_addr = 'abcd2@asdasd.in'),
 	true);
 
 create table company(  					-- компания - обладатель api для добавления информации о кандидате
@@ -62,7 +62,7 @@ create table vacancy(
 );
 
 insert into vacancy(user_id, company_id, title, vacancy_id) values(
-	(select id from user where email_addr = 'abcd@bangalore.in'),
+	(select id from user where email_addr = 'abcd2@asdasd.in'),
 	(select id from company where name = 'Vector-2 Limited'),
 	'Java Rocket Developer',
 	42);
