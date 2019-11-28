@@ -9,7 +9,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class TrackerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TrackerApplication.class, args);
+		SpringApplication
+				.run(TrackerApplication.class, args);
 	}
 
 }

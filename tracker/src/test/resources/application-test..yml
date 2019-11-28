@@ -16,14 +16,12 @@
 spring:
   application:
     name: tracker
-  profiles:
-    active: native
 
 server:
   port: 8000
 
 logging:
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p } %m%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
     ROOT: info
