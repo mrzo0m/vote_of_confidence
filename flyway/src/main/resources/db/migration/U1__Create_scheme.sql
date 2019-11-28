@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS application_solution;
+DROP TABLE IF EXISTS resolution_types;
+DROP TABLE IF EXISTS interview_application;
+DROP TABLE IF EXISTS expert_users;
+DROP TABLE IF EXISTS expertise;
+DROP TABLE IF EXISTS company_users;
+DROP TABLE IF EXISTS vacancy;
+DROP TABLE IF EXISTS company;
+DROP TABLE IF EXISTS client_agreements;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS account_types;
+DROP TABLE IF EXISTS client_types;
+DROP TABLE IF EXISTS certificate;
+DROP TABLE IF EXISTS report;
