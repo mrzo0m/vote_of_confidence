@@ -5,10 +5,12 @@ import io.voteofconf.common.model.Interview;
 import io.voteofconf.common.model.Solution;
 import io.voteofconf.common.model.User;
 import io.voteofconf.tracker.repository.*;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.awt.*;
 import java.util.Set;
 
 @RestController
@@ -55,12 +57,12 @@ public class CommonController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/saveUser")
-    public Mono<User> createOrUpdateUser(@RequestBody User user) {
+    public Mono<User> saveUser(@RequestBody User user) {
         return userMWRepository.save(user);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/deleteUser")
-    public Mono<Void> deleteUser(@RequestBody Long userId) {
+    public Mono<Void> deleteUser(@RequestParam Long userId) {
         return userMWRepository.delete(userId);
     }
 
