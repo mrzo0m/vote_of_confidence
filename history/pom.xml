@@ -159,6 +159,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-contract-verifier</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -228,6 +233,16 @@
 	</profiles>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-contract-maven-plugin</artifactId>
+				<version>2.1.4.RELEASE</version>
+				<extensions>true</extensions>
+				<configuration>
+					<baseClassForTests>io.voteofconf.history.BaseTest</baseClassForTests>
+					<testMode>EXPLICIT</testMode>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

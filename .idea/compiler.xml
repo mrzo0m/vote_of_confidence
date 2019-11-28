@@ -8,16 +8,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="gateway" />
-        <module name="notifications" />
         <module name="reporting" />
+        <module name="tracker" />
         <module name="payments" />
         <module name="scheduling" />
         <module name="frontend" />
-        <module name="tracker" />
+        <module name="notifications" />
         <module name="communications" />
-        <module name="history" />
-        <module name="trace" />
         <module name="voc" />
+        <module name="trace" />
+        <module name="history" />
       </profile>
     </annotationProcessing>
   </component>

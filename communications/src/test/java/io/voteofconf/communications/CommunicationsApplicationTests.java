@@ -41,7 +41,8 @@ public class CommunicationsApplicationTests {
 
         StepVerifier
                 .create(this.backlogClient.getAllBacklog())
-                .expectNextMatches(backlog -> backlog != null)
+                .expectNextMatches(backlog -> backlog != null
+                && backlog.getInviteName().equalsIgnoreCase("Oleg"))
                 .verifyComplete();
     }
 
