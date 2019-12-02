@@ -82,7 +82,7 @@ public class InterviewMWRepository {
 
         if (unionExpr.isEmpty()) return Flux.empty();
 
-        String querySource = queryCachingSupport.getQuerySource("selectgetAvailableTimesForInterview");
+        String querySource = queryCachingSupport.getQuerySource("selectAvailableTimesForInterview");
 
         String query = String.format(querySource, unionExpr);
 

@@ -32,6 +32,11 @@ insert into queries(name, source) values('selectUserById', '  select u.id, u.fir
 		ON u.id = ca.user_id
 	where u.id = :userId');
 
+insert into queries(name, source) values('selectAvailableTimesForInterview', 'select t.date_time from interview_application ia
+	join (%s) t
+	on ia.date_of_interview != t.date_time
+	where ia.expert_id = :userId;');
+
 insert into queries(name, source) values('userExpertiseTupleQuery', 'select * from user_expertise where (user_id, expertise_id) in (:tuples)');
 
 insert into resolution_types(id, name, description) values(1, 'SUCCESS', 'Candidate has passed');
