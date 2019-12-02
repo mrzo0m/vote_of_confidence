@@ -168,21 +168,12 @@ public class M2MMappingMWRepository {
                 .flatMap(foundUserExpertises -> {
                     Set<TR> set =  new HashSet<>(compositeEntities);
                     set.removeAll(foundUserExpertises);
-
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-                    for (TR ce : set) {
-                        executorService.execute(() -> {
-                            databaseClient.insert()
+                    return Flux.fromIterable(set)
+                            .concatMap(tr -> databaseClient.insert()
                                     .into(compositeClass)
-                                    .using(ce)
-                                    .then()
-                                    .block();
-                        });
-                    }
-                    executorService.shutdown();;
-
-                    return Mono.empty();
+                                    .using(tr)
+                                    .then())
+                            .then();
                 });
     }
 
