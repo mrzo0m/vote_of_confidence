@@ -2,6 +2,7 @@ package io.voteofconf.tracker.repository;
 
 import io.voteofconf.common.model.Interview;
 import io.voteofconf.tracker.dto.ExpertTimes;
+import io.voteofconf.tracker.repository.api.InterviewMWRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
@@ -10,23 +11,22 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Repository
 @Slf4j
-public class InterviewMWRepository {
+public class InterviewMWRepositoryImpl implements InterviewMWRepository {
 
     private DatabaseClient databaseClient;
     private InterviewAGRepository interviewAGRepository;
     private M2MMappingMWRepository m2MMappingMWRepository;
-    private UserMWRepository userMWRepository;
+    private UserMWRepositoryImpl userMWRepository;
     private ExpertiseAGRepository expertiseAGRepository;
     private QueryCachingSupport queryCachingSupport;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
 
-    public InterviewMWRepository(DatabaseClient databaseClient, InterviewAGRepository interviewAGRepository, M2MMappingMWRepository m2MMappingMWRepository, UserMWRepository userMWRepository, ExpertiseAGRepository expertiseAGRepository, QueryCachingSupport queryCachingSupport) {
+    public InterviewMWRepositoryImpl(DatabaseClient databaseClient, InterviewAGRepository interviewAGRepository, M2MMappingMWRepository m2MMappingMWRepository, UserMWRepositoryImpl userMWRepository, ExpertiseAGRepository expertiseAGRepository, QueryCachingSupport queryCachingSupport) {
         this.databaseClient = databaseClient;
         this.interviewAGRepository = interviewAGRepository;
         this.m2MMappingMWRepository = m2MMappingMWRepository;
@@ -35,6 +35,8 @@ public class InterviewMWRepository {
         this.queryCachingSupport = queryCachingSupport;
     }
 
+
+    @Override
     public Mono<Interview> findById(Long interviewId) {
         return interviewAGRepository
                 .findById(interviewId)
@@ -58,6 +60,7 @@ public class InterviewMWRepository {
                         }));
     }
 
+    @Override
     public Mono<Interview> save(Interview interview) {
         return RepositorySupport.emptyOrSave(
                 interviewAGRepository,
@@ -65,6 +68,7 @@ public class InterviewMWRepository {
                 interviewAGRepository::save);
     }
 
+    @Override
     public Mono<Void> delete(Long interviewId) {
         return RepositorySupport.emptyOrDelete(
                 interviewAGRepository,
@@ -72,6 +76,7 @@ public class InterviewMWRepository {
                 interviewAGRepository::delete);
     }
 
+    @Override
     public Flux<LocalDateTime> getAvailableTimes(ExpertTimes expertTimes) {
         final String selectUnionPattern = " select '%s' as date_time ";
 

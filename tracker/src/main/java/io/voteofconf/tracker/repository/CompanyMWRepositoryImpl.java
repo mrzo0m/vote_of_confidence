@@ -3,6 +3,7 @@ package io.voteofconf.tracker.repository;
 import io.voteofconf.common.model.Company;
 import io.voteofconf.common.model.User;
 import io.voteofconf.common.model.Vacancy;
+import io.voteofconf.tracker.repository.api.CompanyMWRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,18 +16,18 @@ import java.util.stream.Collectors;
 import static org.springframework.data.r2dbc.query.Criteria.where;
 
 @Repository
-public class CompanyMWRepository {
+public class CompanyMWRepositoryImpl implements CompanyMWRepository {
 
     private DatabaseClient databaseClient;
 
     private QueryCachingSupport queryCachingSupport;
-    private UserMWRepository userMWRepository;
+    private UserMWRepositoryImpl userMWRepository;
     private M2MMappingMWRepository m2MMappingMWRepository;
     private VacancyMWRepository vacancyMWRepository;
     private CompanyAGRepository companyAGRepository;
 
 
-    public CompanyMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, UserMWRepository userMWRepository, M2MMappingMWRepository m2MMappingMWRepository, VacancyMWRepository vacancyMWRepository, CompanyAGRepository companyAGRepository) {
+    public CompanyMWRepositoryImpl(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, UserMWRepositoryImpl userMWRepository, M2MMappingMWRepository m2MMappingMWRepository, VacancyMWRepository vacancyMWRepository, CompanyAGRepository companyAGRepository) {
         this.databaseClient = databaseClient;
         this.queryCachingSupport = queryCachingSupport;
         this.userMWRepository = userMWRepository;
@@ -35,6 +36,7 @@ public class CompanyMWRepository {
         this.companyAGRepository = companyAGRepository;
     }
 
+    @Override
     @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
     public Mono<Company> getCompanyByName(String name) {
         return databaseClient.select()
@@ -47,6 +49,7 @@ public class CompanyMWRepository {
 
     }
 
+    @Override
     @Transactional("reactiveTransactionManager")
     public Mono<Company> save(Company company) {
         Set<User> users = company.getUsers();
@@ -83,6 +86,7 @@ public class CompanyMWRepository {
     }
 
 
+    @Override
     public Mono<Void> delete(Long userId) {
         return RepositorySupport.emptyOrDelete(
                 companyAGRepository,

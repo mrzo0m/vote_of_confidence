@@ -5,6 +5,7 @@ import io.voteofconf.common.model.Company;
 import io.voteofconf.common.model.Expertise;
 import io.voteofconf.common.model.User;
 import io.voteofconf.common.model.Vacancy;
+import io.voteofconf.tracker.repository.api.UserMWRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +21,12 @@ import java.util.stream.Collectors;
 import static org.springframework.data.r2dbc.query.Criteria.where;
 
 @Repository
-public class UserMWRepository {
+public class UserMWRepositoryImpl implements UserMWRepository {
 
     private DatabaseClient databaseClient;
 
     private QueryCachingSupport queryCachingSupport;
-    private ExpertiseMWRepository expertiseMWRepository;
+    private ExpertiseMWRepositoryImpl expertiseMWRepository;
     private ExpertiseAGRepository expertiseAGRepository;
     private M2MMappingMWRepository.UserExpertiseAGRepository userExpertiseAGRepository;
     private UserAGCrudRepository userAGCrudRepository;
@@ -33,7 +34,7 @@ public class UserMWRepository {
     private M2MMappingMWRepository.ClientAgreementsAGRepository clientAgreementsAGRepository;
     private ConnectionFactory connectionFactory;
 
-    public UserMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, ExpertiseMWRepository expertiseMWRepository, ExpertiseAGRepository expertiseAGRepository, M2MMappingMWRepository.UserExpertiseAGRepository userExpertiseAGRepository, UserAGCrudRepository userAGCrudRepository, M2MMappingMWRepository m2MMappingMWRepository, M2MMappingMWRepository.ClientAgreementsAGRepository clientAgreementsAGRepository, ConnectionFactory connectionFactory) {
+    public UserMWRepositoryImpl(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, ExpertiseMWRepositoryImpl expertiseMWRepository, ExpertiseAGRepository expertiseAGRepository, M2MMappingMWRepository.UserExpertiseAGRepository userExpertiseAGRepository, UserAGCrudRepository userAGCrudRepository, M2MMappingMWRepository m2MMappingMWRepository, M2MMappingMWRepository.ClientAgreementsAGRepository clientAgreementsAGRepository, ConnectionFactory connectionFactory) {
         this.databaseClient = databaseClient;
         this.queryCachingSupport = queryCachingSupport;
         this.expertiseMWRepository = expertiseMWRepository;
@@ -59,16 +60,19 @@ public class UserMWRepository {
                         .then(Mono.just(user)));
     }
 
+    @Override
     public Flux<User> findAllCandidatesByExpertise(Set<String> keywords) {
         return findAllUsersByExpertise(keywords, User.ClientType.CANDIDATE);
     }
 
+    @Override
     public Flux<User> findAllExpertsByExpertise(Set<String> keywords) {
         return findAllUsersByExpertise(keywords, User.ClientType.EXPERT);
     }
 
+    @Override
     @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
-    private Flux<User> findAllUsersByExpertise(Set<String> keywords, User.ClientType clientType) {
+    public Flux<User> findAllUsersByExpertise(Set<String> keywords, User.ClientType clientType) {
         String querySource = queryCachingSupport.getQuerySource("selectUsersWithExpertisesByClientType");
 
         return expertiseMWRepository.getExpertisesByKeywords(keywords)
@@ -149,6 +153,7 @@ public class UserMWRepository {
                 Collections.singletonList(company.getId())).single();
     }
 
+    @Override
     @Transactional("reactiveTransactionManager")
     public Mono<User> save(User user) {
         Set<Expertise> expertises = user.getExpertises();
@@ -226,6 +231,7 @@ public class UserMWRepository {
 
     }
 
+    @Override
     public Mono<Void> delete(Long userId) {
         return RepositorySupport.emptyOrDelete(
                 userAGCrudRepository,

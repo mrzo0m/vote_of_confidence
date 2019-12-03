@@ -15,10 +15,12 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>${spring-cloud.version}</spring-cloud.version>
 		<r2dbc.version>0.8.0.RC2</r2dbc.version>
 		<jasync.version>1.0.11</jasync.version>
 		<spring.data.r2db.version>1.0.0.RC1</spring.data.r2db.version>
+		<!-- example of using 4.x version of rest assured -->
+		<rest-assured.version>4.0.0</rest-assured.version>
+<!--		<spring-cloud-contract.version>2.2.0.RELEASE</spring-cloud-contract.version>-->
 	</properties>
 
 	<dependencies>
@@ -29,20 +31,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka-streams</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -55,10 +49,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-zipkin</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
 		</dependency>
 
 		<dependency>
@@ -79,11 +69,6 @@
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -162,6 +147,28 @@
 			<version>3.1.0</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Spring Cloud Contrcat dependencies -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>spring-web-test-client</artifactId>
+			<version>${rest-assured.version}</version>
+			<scope>test</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-contract-verifier</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.restdocs</groupId>-->
+<!--			<artifactId>spring-restdocs-webtestclient</artifactId>-->
+<!--			<version>2.0.4.RELEASE</version>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<dependencyManagement>
@@ -175,6 +182,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	<profiles>
 		<profile>
 			<id>containerizing-gcr</id>
@@ -241,10 +249,85 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<failIfNoTests>true</failIfNoTests>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-contract-maven-plugin</artifactId>
+<!--				<version>${spring-cloud-contract.version}</version>-->
+				<extensions>true</extensions>
+				<configuration>
+					<packageWithBaseClasses>io.voteofconf.tracker.contract</packageWithBaseClasses>
+					<testMode>WEBTESTCLIENT</testMode>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>1.5.8</version>
+				<executions>
+					<execution>
+						<id>generate-docs</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<backend>html</backend>
+							<doctype>book</doctype>
+							<logHandler>
+								<outputToConsole>true</outputToConsole>
+								<failIf>
+									<severity>DEBUG</severity> (2)
+								</failIf>
+							</logHandler>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.restdocs</groupId>
+						<artifactId>spring-restdocs-asciidoctor</artifactId>
+						<version>2.0.4.RELEASE</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+<!--			<plugin>-->
+<!--				<artifactId>maven-resources-plugin</artifactId>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>copy-resources</id>-->
+<!--						<phase>prepare-package</phase>-->
+<!--						<goals>-->
+<!--							<goal>copy-resources</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>-->
+<!--							<resources>-->
+<!--								<resource>-->
+<!--									<directory>${project.build.directory}/generated-docs</directory>-->
+<!--								</resource>-->
+<!--							</resources>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 
 	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
@@ -264,7 +347,6 @@
 		<id>jcenter</id>
 		<url>https://jcenter.bintray.com/</url>
 	</repository>
-
 	</repositories>
 
 </project>

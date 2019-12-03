@@ -20,12 +20,12 @@ public class VacancyMWRepository {
     private DatabaseClient databaseClient;
 
     private QueryCachingSupport queryCachingSupport;
-    private UserMWRepository userMWRepository;
+    private UserMWRepositoryImpl userMWRepository;
     private M2MMappingMWRepository m2MMappingMWRepository;
     private VacancyAGCrudRepository vacancyAGCrudRepository;
 
 
-    public VacancyMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, UserMWRepository userMWRepository, M2MMappingMWRepository m2MMappingMWRepository, VacancyAGCrudRepository vacancyAGCrudRepository) {
+    public VacancyMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, UserMWRepositoryImpl userMWRepository, M2MMappingMWRepository m2MMappingMWRepository, VacancyAGCrudRepository vacancyAGCrudRepository) {
         this.databaseClient = databaseClient;
         this.queryCachingSupport = queryCachingSupport;
         this.userMWRepository = userMWRepository;

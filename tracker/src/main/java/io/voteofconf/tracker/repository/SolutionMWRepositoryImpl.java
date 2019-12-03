@@ -1,23 +1,23 @@
 package io.voteofconf.tracker.repository;
 
-import io.voteofconf.common.model.Interview;
 import io.voteofconf.common.model.Solution;
+import io.voteofconf.tracker.repository.api.SolutionMWRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 @Repository
-public class SolutionMWRepository {
+public class SolutionMWRepositoryImpl implements SolutionMWRepository {
 
     private DatabaseClient databaseClient;
 
-    private InterviewMWRepository interviewMWRepository;
+    private InterviewMWRepositoryImpl interviewMWRepository;
     private SolutionAGRepository solutionAGRepository;
     private CertificateAGRepository certificateAGRepository;
     private ReportAGRepository reportAGRepository;
 
 
-    public SolutionMWRepository(DatabaseClient databaseClient, InterviewMWRepository interviewMWRepository, SolutionAGRepository solutionAGRepository, CertificateAGRepository certificateAGRepository, ReportAGRepository reportAGRepository) {
+    public SolutionMWRepositoryImpl(DatabaseClient databaseClient, InterviewMWRepositoryImpl interviewMWRepository, SolutionAGRepository solutionAGRepository, CertificateAGRepository certificateAGRepository, ReportAGRepository reportAGRepository) {
         this.databaseClient = databaseClient;
         this.interviewMWRepository = interviewMWRepository;
         this.solutionAGRepository = solutionAGRepository;
@@ -25,6 +25,7 @@ public class SolutionMWRepository {
         this.reportAGRepository = reportAGRepository;
     }
 
+    @Override
     public Mono<Solution> findById(Long solutionId) {
         return solutionAGRepository
                 .findById(solutionId)
@@ -48,6 +49,7 @@ public class SolutionMWRepository {
                         }));
     }
 
+    @Override
     public Mono<Solution> save(Solution solution) {
         return RepositorySupport.emptyOrSave(
                 solutionAGRepository,
@@ -55,6 +57,7 @@ public class SolutionMWRepository {
                 solutionAGRepository::save);
     }
 
+    @Override
     public Mono<Void> delete(Long solutionId) {
         return RepositorySupport.emptyOrDelete(
                 solutionAGRepository,

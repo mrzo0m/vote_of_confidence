@@ -3,7 +3,6 @@ package io.voteofconf.tracker.controller;
 import io.voteofconf.common.model.*;
 import io.voteofconf.tracker.repository.*;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,14 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+//import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest(controllers = CommonController.class, excludeAutoConfiguration = { ReactiveSecurityAutoConfiguration.class, ReactiveUserDetailsServiceAutoConfiguration.class })
 @ActiveProfiles("test")
+//@AutoConfigureRestDocs(outputDir = "target/snippets")
+//@AutoConfigureWebTestClient
 @Slf4j
 public class CommonControllerTest {
 
@@ -72,19 +75,19 @@ public class CommonControllerTest {
     private WebTestClient webTestClient;
 
     @MockBean
-    private UserMWRepository userMWRepository;
+    private UserMWRepositoryImpl userMWRepository;
 
     @MockBean
     private UserAGCrudRepository userAGRepository;
 
     @MockBean
-    private CompanyMWRepository companyMWRepository;
+    private CompanyMWRepositoryImpl companyMWRepository;
 
     @MockBean
-    private InterviewMWRepository interviewMWRepository;
+    private InterviewMWRepositoryImpl interviewMWRepository;
 
     @MockBean
-    private SolutionMWRepository solutionMWRepository;
+    private SolutionMWRepositoryImpl solutionMWRepository;
 
 
     @Test
@@ -103,7 +106,8 @@ public class CommonControllerTest {
                 .expectStatus()
                 .isOk()
                 .expectBodyList(User.class)
-                .isEqualTo(Collections.singletonList(USER));
+                .isEqualTo(Collections.singletonList(USER))
+                .consumeWith(userEntityExchangeResult -> document("getUserByEmailAddr"));;
     }
 
     @Test

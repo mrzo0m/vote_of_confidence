@@ -2,13 +2,13 @@ package io.voteofconf.tracker.controller;
 
 import io.voteofconf.common.model.Interview;
 import io.voteofconf.tracker.dto.ExpertTimes;
-import io.voteofconf.tracker.repository.InterviewMWRepository;
+import io.voteofconf.tracker.repository.api.InterviewMWRepository;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController("/interview")
 public class InterviewController {
@@ -20,7 +20,14 @@ public class InterviewController {
         this.interviewMWRepository = interviewMWRepository;
     }
 
-    @PostMapping("/registerInterview")
+    @GetMapping ("/getInterview/{interviewId}")
+    public Mono<Interview> getInterview(@PathVariable Long  interviewId) {
+        return interviewMWRepository.findById(interviewId);
+    }
+
+    @PostMapping(value = "/registerInterview",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Interview> registerInterview(@RequestBody Interview interview) {
         return interviewMWRepository.save(interview);
     }

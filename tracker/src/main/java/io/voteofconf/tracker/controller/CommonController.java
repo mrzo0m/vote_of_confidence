@@ -5,12 +5,14 @@ import io.voteofconf.common.model.Interview;
 import io.voteofconf.common.model.Solution;
 import io.voteofconf.common.model.User;
 import io.voteofconf.tracker.repository.*;
-import org.springframework.http.MediaType;
+import io.voteofconf.tracker.repository.api.CompanyMWRepository;
+import io.voteofconf.tracker.repository.api.InterviewMWRepository;
+import io.voteofconf.tracker.repository.api.SolutionMWRepository;
+import io.voteofconf.tracker.repository.api.UserMWRepository;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.awt.*;
 import java.util.Set;
 
 @RestController
@@ -23,12 +25,17 @@ public class CommonController {
     private SolutionMWRepository solutionMWRepository;
 
 
-    public CommonController(UserAGCrudRepository userAGRepository, UserMWRepository userMWRepository, CompanyMWRepository companyMWRepository, InterviewMWRepository interviewMWRepository, SolutionMWRepository solutionMWRepository) {
+    public CommonController(UserAGCrudRepository userAGRepository, UserMWRepositoryImpl userMWRepository, CompanyMWRepositoryImpl companyMWRepository, InterviewMWRepositoryImpl interviewMWRepository, SolutionMWRepositoryImpl solutionMWRepository) {
         this.userAGRepository = userAGRepository;
         this.userMWRepository = userMWRepository;
         this.companyMWRepository = companyMWRepository;
         this.interviewMWRepository = interviewMWRepository;
         this.solutionMWRepository = solutionMWRepository;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getUserById")
+    public Mono<User> getUserByEmailAddr(@RequestParam Long userId) {
+        return userAGRepository.findById(userId);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getUserByEmailAddr")

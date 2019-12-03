@@ -2,7 +2,7 @@ package io.voteofconf.tracker.converter;
 
 import io.r2dbc.spi.Row;
 import io.voteofconf.common.model.Interview;
-import io.voteofconf.tracker.repository.UserMWRepository;
+import io.voteofconf.tracker.repository.UserMWRepositoryImpl;
 import org.joda.time.DateTime;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
@@ -15,7 +15,7 @@ import java.util.Objects;
 public class InterviewReadConverter implements Converter<Row, Interview>  {
 
 
-    private UserMWRepository userMWRepository;
+    private UserMWRepositoryImpl userMWRepository;
 
     @Override
     public Interview convert(Row source) {
