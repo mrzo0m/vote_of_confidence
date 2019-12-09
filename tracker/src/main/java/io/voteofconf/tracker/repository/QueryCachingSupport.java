@@ -1,6 +1,7 @@
 package io.voteofconf.tracker.repository;
 
 import io.voteofconf.common.model.Query;
+import io.voteofconf.tracker.repository.generated.SupportAGRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 

@@ -3,6 +3,8 @@ package io.voteofconf.tracker.repository;
 import io.voteofconf.common.model.Interview;
 import io.voteofconf.tracker.dto.ExpertTimes;
 import io.voteofconf.tracker.repository.api.InterviewMWRepository;
+import io.voteofconf.tracker.repository.generated.ExpertiseAGRepository;
+import io.voteofconf.tracker.repository.generated.InterviewAGRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;

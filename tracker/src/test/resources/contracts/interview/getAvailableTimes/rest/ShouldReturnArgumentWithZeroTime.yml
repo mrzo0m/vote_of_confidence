@@ -1,0 +1,22 @@
+request:
+  method: POST
+  url: /interview/getAvailableTimes
+  headers:
+    Content-Type: application/json
+  body: |
+    {
+      "expertId": 1,
+      "times": [ "2019-12-01T01:00:00" ]
+    }
+response:
+  status: 200
+  headers:
+    Content-Type: application/json
+  body: |
+    [
+      [2019,12,1,1,0]
+    ]
+  matchers:
+    headers:
+      - key: Content-Type
+        regex: "application/json.*"

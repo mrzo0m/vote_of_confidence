@@ -1,6 +1,6 @@
 package io.voteofconf.tracker;
 
-import io.voteofconf.tracker.repository.UserAGCrudRepository;
+import io.voteofconf.tracker.repository.generated.UserAGCrudRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

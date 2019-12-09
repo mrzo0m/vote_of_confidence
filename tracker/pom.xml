@@ -261,41 +261,41 @@
 <!--				<version>${spring-cloud-contract.version}</version>-->
 				<extensions>true</extensions>
 				<configuration>
-					<packageWithBaseClasses>io.voteofconf.tracker.contract</packageWithBaseClasses>
+					<baseClassForTests>io.voteofconf.tracker.contract.InterviewRestBase</baseClassForTests>
 					<testMode>WEBTESTCLIENT</testMode>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.asciidoctor</groupId>
-				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>1.5.8</version>
-				<executions>
-					<execution>
-						<id>generate-docs</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>process-asciidoc</goal>
-						</goals>
-						<configuration>
-							<backend>html</backend>
-							<doctype>book</doctype>
-							<logHandler>
-								<outputToConsole>true</outputToConsole>
-								<failIf>
-									<severity>DEBUG</severity> (2)
-								</failIf>
-							</logHandler>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.springframework.restdocs</groupId>
-						<artifactId>spring-restdocs-asciidoctor</artifactId>
-						<version>2.0.4.RELEASE</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.asciidoctor</groupId>-->
+<!--				<artifactId>asciidoctor-maven-plugin</artifactId>-->
+<!--				<version>1.5.8</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>generate-docs</id>-->
+<!--						<phase>prepare-package</phase>-->
+<!--						<goals>-->
+<!--							<goal>process-asciidoc</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<backend>html</backend>-->
+<!--							<doctype>book</doctype>-->
+<!--							<logHandler>-->
+<!--								<outputToConsole>true</outputToConsole>-->
+<!--								<failIf>-->
+<!--									<severity>DEBUG</severity> (2)-->
+<!--								</failIf>-->
+<!--							</logHandler>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--				<dependencies>-->
+<!--					<dependency>-->
+<!--						<groupId>org.springframework.restdocs</groupId>-->
+<!--						<artifactId>spring-restdocs-asciidoctor</artifactId>-->
+<!--						<version>2.0.4.RELEASE</version>-->
+<!--					</dependency>-->
+<!--				</dependencies>-->
+<!--			</plugin>-->
 <!--			<plugin>-->
 <!--				<artifactId>maven-resources-plugin</artifactId>-->
 <!--				<executions>-->

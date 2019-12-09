@@ -6,6 +6,8 @@ import io.voteofconf.common.model.Expertise;
 import io.voteofconf.common.model.User;
 import io.voteofconf.common.model.Vacancy;
 import io.voteofconf.tracker.repository.api.UserMWRepository;
+import io.voteofconf.tracker.repository.generated.ExpertiseAGRepository;
+import io.voteofconf.tracker.repository.generated.UserAGCrudRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,7 @@ public class UserMWRepositoryImpl implements UserMWRepository {
     }
 
     @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
+    @Override
     public Mono<User> findById(Long userid) {
         String querySource = queryCachingSupport.getQuerySource("selectUserById");
 

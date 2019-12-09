@@ -2,6 +2,9 @@ package io.voteofconf.tracker.repository;
 
 import io.voteofconf.common.model.Solution;
 import io.voteofconf.tracker.repository.api.SolutionMWRepository;
+import io.voteofconf.tracker.repository.generated.CertificateAGRepository;
+import io.voteofconf.tracker.repository.generated.ReportAGRepository;
+import io.voteofconf.tracker.repository.generated.SolutionAGRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;

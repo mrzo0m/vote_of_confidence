@@ -4,6 +4,7 @@ import io.voteofconf.common.model.Company;
 import io.voteofconf.common.model.User;
 import io.voteofconf.common.model.Vacancy;
 import io.voteofconf.tracker.repository.api.CompanyMWRepository;
+import io.voteofconf.tracker.repository.generated.CompanyAGRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,17 +24,30 @@ public class CompanyMWRepositoryImpl implements CompanyMWRepository {
     private QueryCachingSupport queryCachingSupport;
     private UserMWRepositoryImpl userMWRepository;
     private M2MMappingMWRepository m2MMappingMWRepository;
-    private VacancyMWRepository vacancyMWRepository;
+    private VacancyMWRepositoryImpl vacancyMWRepository;
     private CompanyAGRepository companyAGRepository;
 
 
-    public CompanyMWRepositoryImpl(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, UserMWRepositoryImpl userMWRepository, M2MMappingMWRepository m2MMappingMWRepository, VacancyMWRepository vacancyMWRepository, CompanyAGRepository companyAGRepository) {
+    public CompanyMWRepositoryImpl(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, UserMWRepositoryImpl userMWRepository, M2MMappingMWRepository m2MMappingMWRepository, VacancyMWRepositoryImpl vacancyMWRepository, CompanyAGRepository companyAGRepository) {
         this.databaseClient = databaseClient;
         this.queryCachingSupport = queryCachingSupport;
         this.userMWRepository = userMWRepository;
         this.m2MMappingMWRepository = m2MMappingMWRepository;
         this.vacancyMWRepository = vacancyMWRepository;
         this.companyAGRepository = companyAGRepository;
+    }
+
+    @Override
+    @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
+    public Mono<Company> findById(Long id) {
+        return databaseClient.select()
+                .from(Company.class)
+                .matching(where("id").is(id))
+                .fetch()
+                .one()
+                .flatMap(company -> vacancyMWRepository.getVacanciesByCompany(company))
+                .flatMap(company -> userMWRepository.addUsersToCompany(company));
+
     }
 
     @Override

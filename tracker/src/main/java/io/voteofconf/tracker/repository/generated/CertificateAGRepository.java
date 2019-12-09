@@ -1,4 +1,4 @@
-package io.voteofconf.tracker.repository;
+package io.voteofconf.tracker.repository.generated;
 
 import io.voteofconf.common.model.Certificate;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;

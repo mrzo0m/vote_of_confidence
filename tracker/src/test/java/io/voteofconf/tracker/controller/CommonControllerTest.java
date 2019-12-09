@@ -2,7 +2,9 @@ package io.voteofconf.tracker.controller;
 
 import io.voteofconf.common.model.*;
 import io.voteofconf.tracker.repository.*;
+import io.voteofconf.tracker.repository.generated.UserAGCrudRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 //@AutoConfigureRestDocs(outputDir = "target/snippets")
 //@AutoConfigureWebTestClient
 @Slf4j
+@Ignore
 public class CommonControllerTest {
 
     private static final User USER = new User(

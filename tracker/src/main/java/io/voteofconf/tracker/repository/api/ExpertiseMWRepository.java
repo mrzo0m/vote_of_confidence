@@ -8,7 +8,8 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Set;
 
-public interface ExpertiseMWRepository {
+public interface ExpertiseMWRepository extends Repository<Expertise> {
+
     Flux<Expertise> getExpertisesByKeywords(Set<String> keywords);
 
     Flux<Expertise> getExpertiseByUser(User user);

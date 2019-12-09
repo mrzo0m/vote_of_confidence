@@ -1,0 +1,15 @@
+request:
+  method: PUT
+  url: /interview/updateInterview/1
+  headers:
+    Content-Type: application/json
+  bodyFromFile: input.json
+response:
+  status: 200
+  headers:
+    Content-Type: application/json
+  bodyFromFile: output.json
+  matchers:
+    headers:
+      - key: Content-Type
+        regex: "application/json.*"

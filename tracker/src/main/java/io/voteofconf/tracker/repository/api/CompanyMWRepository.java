@@ -4,7 +4,11 @@ import io.voteofconf.common.model.Company;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
-public interface CompanyMWRepository {
+public interface CompanyMWRepository extends Repository<Company> {
+
+    @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
+    Mono<Company> findById(Long id);
+
     @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
     Mono<Company> getCompanyByName(String name);
 

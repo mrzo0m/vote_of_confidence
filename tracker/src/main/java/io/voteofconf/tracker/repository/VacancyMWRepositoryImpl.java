@@ -3,6 +3,8 @@ package io.voteofconf.tracker.repository;
 import io.voteofconf.common.model.Company;
 import io.voteofconf.common.model.User;
 import io.voteofconf.common.model.Vacancy;
+import io.voteofconf.tracker.repository.api.VacancyMWRepository;
+import io.voteofconf.tracker.repository.generated.VacancyAGCrudRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
 import static org.springframework.data.r2dbc.query.Criteria.where;
 
 @Repository
-public class VacancyMWRepository {
+public class VacancyMWRepositoryImpl implements VacancyMWRepository {
 
     private DatabaseClient databaseClient;
 
@@ -25,12 +27,23 @@ public class VacancyMWRepository {
     private VacancyAGCrudRepository vacancyAGCrudRepository;
 
 
-    public VacancyMWRepository(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, UserMWRepositoryImpl userMWRepository, M2MMappingMWRepository m2MMappingMWRepository, VacancyAGCrudRepository vacancyAGCrudRepository) {
+    public VacancyMWRepositoryImpl(DatabaseClient databaseClient, QueryCachingSupport queryCachingSupport, UserMWRepositoryImpl userMWRepository, M2MMappingMWRepository m2MMappingMWRepository, VacancyAGCrudRepository vacancyAGCrudRepository) {
         this.databaseClient = databaseClient;
         this.queryCachingSupport = queryCachingSupport;
         this.userMWRepository = userMWRepository;
         this.m2MMappingMWRepository = m2MMappingMWRepository;
         this.vacancyAGCrudRepository = vacancyAGCrudRepository;
+    }
+
+    public Mono<Vacancy> findById(Long id) {
+        return databaseClient.select()
+                .from(Vacancy.class)
+                .matching(where("id").is(id))
+                .fetch()
+                .one()
+                .flatMap(vacancy -> userMWRepository
+                        .addUsersToVacancies(Collections.singletonList(vacancy))
+                        .map(vacancies -> vacancy));
     }
 
     public Mono<Company> getVacanciesByCompany(Company company) {

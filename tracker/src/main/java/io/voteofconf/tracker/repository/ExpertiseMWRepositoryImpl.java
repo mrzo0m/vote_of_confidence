@@ -3,11 +3,14 @@ package io.voteofconf.tracker.repository;
 import io.voteofconf.common.model.Expertise;
 import io.voteofconf.common.model.User;
 import io.voteofconf.tracker.repository.api.ExpertiseMWRepository;
+import io.voteofconf.tracker.repository.generated.ExpertiseAGRepository;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +32,15 @@ public class ExpertiseMWRepositoryImpl implements ExpertiseMWRepository {
         this.m2MMappingMWRepository = m2MMappingMWRepository;
     }
 
+
+    @Transactional(readOnly = true, transactionManager = "reactiveTransactionManager")
+    public Mono<Expertise> findById(Long expertiseId) {
+        return databaseClient.select()
+                .from(Expertise.class)
+                .matching(where("id").is(expertiseId))
+                .fetch()
+                .one();
+    }
 
     @Override
     public Flux<Expertise> getExpertisesByKeywords(Set<String> keywords) {

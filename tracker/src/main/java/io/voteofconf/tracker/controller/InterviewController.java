@@ -10,8 +10,9 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@RestController("/interview")
-public class InterviewController {
+@RestController
+@RequestMapping("/interview")
+public class InterviewController implements EntityController<Interview>  {
 
     private InterviewMWRepository interviewMWRepository;
 
@@ -21,30 +22,32 @@ public class InterviewController {
     }
 
     @GetMapping ("/getInterview/{interviewId}")
-    public Mono<Interview> getInterview(@PathVariable Long  interviewId) {
+    @Override
+    public Mono<Interview> get(@PathVariable Long interviewId) {
         return interviewMWRepository.findById(interviewId);
     }
 
-    @PostMapping(value = "/registerInterview",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Interview> registerInterview(@RequestBody Interview interview) {
+    @PostMapping("/createInterview")
+    @Override
+    public Mono<Interview> create(@RequestBody Interview interview) {
         return interviewMWRepository.save(interview);
     }
 
-    @PostMapping("/getAvailableTimes")
-    public Flux<LocalDateTime> getAvailableTimes(@RequestBody ExpertTimes expertTimes) {
-        return interviewMWRepository.getAvailableTimes(expertTimes);
-    }
-
     @PutMapping("/updateInterview/{interviewId}")
-    public Mono<Interview> registerInterview(@PathVariable Long interviewId, @RequestBody Interview interview) {
+    @Override
+    public Mono<Interview> update(@PathVariable Long interviewId, @RequestBody Interview interview) {
         interview.setId(interviewId);
         return interviewMWRepository.save(interview);
     }
 
     @DeleteMapping("/deleteInterview/{interviewId}")
-    public Mono<Void> deleteInterview(@PathVariable Long interviewId) {
+    @Override
+    public Mono<Void> delete(@PathVariable Long interviewId) {
         return interviewMWRepository.delete(interviewId);
+    }
+
+    @PostMapping("/getAvailableTimes")
+    public Flux<LocalDateTime> getAvailableTimes(@RequestBody ExpertTimes expertTimes) {
+        return interviewMWRepository.getAvailableTimes(expertTimes);
     }
 }
