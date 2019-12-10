@@ -34,12 +34,10 @@ public class SecurityConfiguration {
         return http
                 .csrf().disable()
                 .cors().disable()
-//                .authorizeExchange()
-//                .anyExchange().authenticated()
-//                .and()
-//                .oauth2ResourceServer()
-//                .jwt().and()
                 .authorizeExchange()
-                .anyExchange().permitAll().and().build();
+                .anyExchange().authenticated()
+                .and()
+                .oauth2ResourceServer()
+                .jwt().and().and().build();
     }
 }

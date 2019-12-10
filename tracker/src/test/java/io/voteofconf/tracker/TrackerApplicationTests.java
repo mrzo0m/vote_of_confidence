@@ -17,7 +17,6 @@ import java.sql.SQLException;
 @SpringBootTest
 @ActiveProfiles("test")
 @Slf4j
-@Ignore
 public class TrackerApplicationTests {
 
 

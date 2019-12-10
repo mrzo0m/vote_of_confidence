@@ -28,15 +28,19 @@ spring:
             issuer-uri: ${oidc.issuer-uri}
             access-token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
             user-authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
-        #            authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
-        #            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
-        #            user-info-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/userinfo
-        #            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
+            authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
+            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
+            user-info-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/userinfo
+            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
         registration:
           okta:
+            issuer: ${oidc.issuer-uri}
+            audience: frontend
             client-id: ${oidc.client-id}
             client-secret: ${oidc.client-secret}
             scope: openid, email, profile
+            scopeClaim: scp
+            rolesClaim: groups
       resourceserver:
         jwt:
           issuer-uri: ${oidc.issuer-uri}
@@ -61,5 +65,5 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    org.springframework.cloud.gateway: TRACE
-    org.springframework.cloud.loadbalancer: TRACE
+    org.springframework.cloud.gateway: INFO
+    org.springframework.cloud.loadbalancer: INFO

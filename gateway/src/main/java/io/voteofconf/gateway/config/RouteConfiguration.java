@@ -1,5 +1,6 @@
 package io.voteofconf.gateway.config;
 
+import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.ApplicationContext;
@@ -45,27 +46,22 @@ public class RouteConfiguration {
                                 )
                         )
                         .uri("http://history-microservice"))
+                .route("tracker-microservice", r -> r
+                        .path("/tracker-microservice/**")
+                        .filters(f -> f
+                                .rewritePath("/tracker-microservice/(?<path>.*)", "/$\\{path}")
+                                .hystrix(config ->
+                                        config
+                                                .setName("tracker-microservice")
+                                                .setFallbackUri("forward:/fallback/history")
+                                )
+                        )
+                        .uri("http://history-microservice"))
                 .route("frontend-microservice", r -> r
                         .path("/**")
                         .filters(f -> f
-                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
-                                        .map(SecurityContext::getAuthentication)
-                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
-                                        .map(oAuth2AuthenticationToken ->
-                                                clientService
-                                                        .loadAuthorizedClient(
-                                                                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
-                                                                oAuth2AuthenticationToken.getName())
-                                                        .subscribe(oAuth2AuthorizedClient ->
-                                                                exchange.getRequest()
-                                                                        .mutate()
-                                                                        .header("Authorization", "Bearer " +
-                                                                                oAuth2AuthorizedClient
-                                                                                        .getAccessToken()
-                                                                                        .getTokenValue())
-                                                                        .build()))
-                                        .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
-                                        .then(chain.filter(exchange)))
+                                .filter(getFilterSecurityFunction())
+                                .rewritePath("/tracker-microservice/(?<path>.*)", "/$\\{path}")
                                 .hystrix(config ->
                                         config
                                                 .setName("frontend-microservice")
@@ -75,5 +71,26 @@ public class RouteConfiguration {
                         .uri("http://frontend-microservice"))
 
                 .build();
+    }
+
+    private GatewayFilter getFilterSecurityFunction() {
+        return (exchange, chain) -> ReactiveSecurityContextHolder.getContext()
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> (OAuth2AuthenticationToken)authentication)
+                .map(oAuth2AuthenticationToken ->
+                        clientService
+                                .loadAuthorizedClient(
+                                        oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
+                                        oAuth2AuthenticationToken.getName())
+                                .subscribe(oAuth2AuthorizedClient ->
+                                        exchange.getRequest()
+                                                .mutate()
+                                                .header("Authorization", "Bearer " +
+                                                        oAuth2AuthorizedClient
+                                                                .getAccessToken()
+                                                                .getTokenValue())
+                                                .build()))
+                .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
+                .then(chain.filter(exchange));
     }
 }
