@@ -24,8 +24,8 @@ public class InterviewReadConverter implements Converter<Row, Interview>  {
                 source.get("candidate_id", Long.class),
                 source.get("expert_id", Long.class),
                 source.get("discipline_id", Long.class),
-                new DateTime(Objects.requireNonNull(source.get("date_time", LocalDateTime.class)).toEpochSecond(ZoneOffset.of("+03:00"))),
-                new DateTime(Objects.requireNonNull(source.get("date_time", LocalDateTime.class)).toEpochSecond(ZoneOffset.of("+03:00"))),
+                Objects.requireNonNull(source.get("date_time", LocalDateTime.class)),
+                Objects.requireNonNull(source.get("date_of_interview", LocalDateTime.class)),
                 source.get("calendly_link", String.class)
         );
     }

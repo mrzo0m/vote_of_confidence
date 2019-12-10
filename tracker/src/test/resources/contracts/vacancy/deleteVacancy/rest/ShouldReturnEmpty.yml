@@ -1,0 +1,8 @@
+request:
+  method: DELETE
+  url: /vacancy/deleteVacancy/1
+  headers:
+    Content-Type: application/json
+response:
+  status: 200
+

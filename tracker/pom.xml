@@ -163,6 +163,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.10.1</version>
+		</dependency>
+
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.restdocs</groupId>-->
 <!--			<artifactId>spring-restdocs-webtestclient</artifactId>-->
@@ -306,10 +312,10 @@
 <!--							<goal>copy-resources</goal>-->
 <!--						</goals>-->
 <!--						<configuration>-->
-<!--							<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>-->
+<!--							<outputDirectory>${project.basedir}/src/main/resources/contracts/*</outputDirectory>-->
 <!--							<resources>-->
 <!--								<resource>-->
-<!--									<directory>${project.build.directory}/generated-docs</directory>-->
+<!--									<directory>${project.build.outputDirectory}</directory>-->
 <!--								</resource>-->
 <!--							</resources>-->
 <!--						</configuration>-->

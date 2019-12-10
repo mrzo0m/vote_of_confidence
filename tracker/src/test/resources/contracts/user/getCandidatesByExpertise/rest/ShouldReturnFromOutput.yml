@@ -1,9 +1,8 @@
 request:
-  method: PUT
-  url: /interview/updateInterview/0
+  method: GET
+  url: /user/getCandidatesByExpertise?keywords=java
   headers:
     Content-Type: application/json
-  bodyFromFile: input.json
 response:
   status: 200
   headers:

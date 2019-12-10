@@ -1,0 +1,8 @@
+request:
+  method: DELETE
+  url: /company/deleteCompany/0
+  headers:
+    Content-Type: application/json
+response:
+  status: 200
+

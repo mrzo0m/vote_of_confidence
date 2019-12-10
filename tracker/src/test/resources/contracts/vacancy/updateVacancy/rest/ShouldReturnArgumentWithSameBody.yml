@@ -1,6 +1,6 @@
 request:
   method: PUT
-  url: /interview/updateInterview/0
+  url: /vacancy//updateVacancy/0
   headers:
     Content-Type: application/json
   bodyFromFile: input.json

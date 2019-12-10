@@ -2,6 +2,7 @@ package io.voteofconf.tracker.controller;
 
 import io.voteofconf.common.model.Vacancy;
 import io.voteofconf.tracker.repository.VacancyMWRepositoryImpl;
+import io.voteofconf.tracker.repository.api.VacancyMWRepository;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -9,10 +10,10 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/vacancy")
 public class VacancyController implements EntityController<Vacancy> {
 
-    private VacancyMWRepositoryImpl vacancyMWRepository;
+    private VacancyMWRepository vacancyMWRepository;
 
 
-    public VacancyController(VacancyMWRepositoryImpl vacancyMWRepository) {
+    public VacancyController(VacancyMWRepository vacancyMWRepository) {
         this.vacancyMWRepository = vacancyMWRepository;
     }
 
@@ -22,13 +23,13 @@ public class VacancyController implements EntityController<Vacancy> {
         return vacancyMWRepository.findById(vacancyId);
     }
 
-    @PostMapping("/postVacancy")
+    @PostMapping("/createVacancy")
     @Override
     public Mono<Vacancy> create(@RequestBody Vacancy vacancy) {
         return vacancyMWRepository.save(vacancy);
     }
 
-    @PutMapping("/putVacancy/{vacancyId}")
+    @PutMapping("/updateVacancy/{vacancyId}")
     @Override
     public Mono<Vacancy> update(@PathVariable Long vacancyId, @RequestBody Vacancy vacancy) {
         return vacancyMWRepository.save(vacancy);

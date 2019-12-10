@@ -1,0 +1,85 @@
+{
+  "resolutionType": "FAIL",
+  "interview": {
+    "id": 1,
+    "candidate": {
+      "id": 2,
+      "clientType": "CANDIDATE",
+      "accountType": {
+        "id": 1,
+        "name": "For free",
+        "description": "Try Trial)",
+        "period": 30,
+        "cost": 0
+      },
+      "firstName": "Bhanagavan",
+      "secondName": "Puuri",
+      "surName": null,
+      "emailAddr": "monkey2@bangalore.in",
+      "agreed": true,
+      "expertises": []
+    },
+    "expert": {
+      "id": 1,
+      "clientType": "EXPERT",
+      "accountType": {
+        "id": 1,
+        "name": "For free",
+        "description": "Try Trial)",
+        "period": 30,
+        "cost": 0
+      },
+      "firstName": "Hanumantarao",
+      "secondName": "Mulpuru",
+      "surName": "Ganesh",
+      "emailAddr": "monkey@bangalore.in",
+      "agreed": true,
+      "expertises": [
+        {
+          "id": 2,
+          "name": "Java EE",
+          "keywords": [
+            "j2e"
+          ],
+          "description": "Java development",
+          "level": "LEVEL_1"
+        },
+        {
+          "id": 1,
+          "name": "Java Core",
+          "keywords": [
+            "jvm",
+            "java",
+            "jcf"
+          ],
+          "description": "Java development",
+          "level": "LEVEL_1"
+        }
+      ]
+    },
+    "discipline": {
+      "id": 1,
+      "name": "Java Core",
+      "keywords": [
+        "jvm",
+        "java",
+        "jcf"
+      ],
+      "description": "Java development",
+      "level": "LEVEL_1"
+    },
+    "dateOfCreation": null,
+    "dateOfInterview": null,
+    "calendlyLink": "http:calendly.com/path/to"
+  },
+  "report": {
+    "id": 1,
+    "name": "name",
+    "body": "body"
+  },
+  "certificate": {
+    "id": 1,
+    "name": "name",
+    "description": "description"
+  }
+}

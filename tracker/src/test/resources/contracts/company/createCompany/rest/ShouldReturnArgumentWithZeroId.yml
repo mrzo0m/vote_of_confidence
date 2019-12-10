@@ -1,6 +1,6 @@
 request:
-  method: PUT
-  url: /interview/updateInterview/0
+  method: POST
+  url: /company/createCompany
   headers:
     Content-Type: application/json
   bodyFromFile: input.json

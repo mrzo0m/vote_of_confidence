@@ -18,7 +18,7 @@ public class UserController implements EntityController<User> {
     private UserMWRepository userMWRepository;
 
 
-    public UserController(UserAGCrudRepository userAGRepository, UserMWRepositoryImpl userMWRepository) {
+    public UserController(UserAGCrudRepository userAGRepository, UserMWRepository userMWRepository) {
         this.userAGRepository = userAGRepository;
         this.userMWRepository = userMWRepository;
     }

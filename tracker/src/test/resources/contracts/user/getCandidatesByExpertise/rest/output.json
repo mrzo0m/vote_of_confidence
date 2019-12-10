@@ -1,0 +1,40 @@
+[
+  {
+    "id": 0,
+    "clientType": "EXPERT",
+    "accountType": {
+      "id": 1,
+      "name": "For free",
+      "description": "Try Trial)",
+      "period": 30,
+      "cost": 0
+    },
+    "firstName": "Hanumantarao",
+    "secondName": "Mulpuru",
+    "surName": "Ganesh",
+    "emailAddr": "monkey@bangalore.in",
+    "agreed": true,
+    "expertises": [
+      {
+        "id": 2,
+        "name": "Java EE",
+        "keywords": [
+          "j2e"
+        ],
+        "description": "Java development",
+        "level": "LEVEL_1"
+      },
+      {
+        "id": 1,
+        "name": "Java Core",
+        "keywords": [
+          "jvm",
+          "java",
+          "jcf"
+        ],
+        "description": "Java development",
+        "level": "LEVEL_1"
+      }
+    ]
+  }
+]
