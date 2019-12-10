@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizationUri(okta.getProviderDetails().getAuthorizationUri().replace("default", "auskpi1fnzgPD6i6N0h7"))
                 .tokenUri(okta.getProviderDetails().getTokenUri().replace("default", "auskpi1fnzgPD6i6N0h7"))
                 .jwkSetUri(okta.getProviderDetails().getJwkSetUri().replace("default", "auskpi1fnzgPD6i6N0h7"))
-                .scope(Collections.singletonList("history"))
+                .scope(Collections.singletonList("payments"))
                 .redirectUriTemplate(okta.getRedirectUriTemplate())
                 .clientAuthenticationMethod(okta.getClientAuthenticationMethod())
                 .userInfoUri(okta.getProviderDetails().getUserInfoEndpoint().getUri().replace("default", "auskpi1fnzgPD6i6N0h7"))
@@ -73,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     WebClient webClient() {
-        ClientRegistration registration = oktaClientCredentialsRegistration();
+        ClientRegistration registration = clientRegistrationRepository.findByRegistrationId("okta2");//oktaClientCredentialsRegistration();
         ClientRegistrationRepository clientRegistrations = new InMemoryClientRegistrationRepository(registration);
         ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2 =
                 new ServletOAuth2AuthorizedClientExchangeFilterFunction(
@@ -86,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // (optional) set a default ClientRegistration.registrationId
         // oauth.setDefaultClientRegistrationId("client-registration-id");
         oauth2.setDefaultOAuth2AuthorizedClient(true);
-        oauth2.setDefaultClientRegistrationId("okta");
+        oauth2.setDefaultClientRegistrationId("okta2");
         return WebClient.builder()
                 .apply(oauth2.oauth2Configuration())
                 .build();

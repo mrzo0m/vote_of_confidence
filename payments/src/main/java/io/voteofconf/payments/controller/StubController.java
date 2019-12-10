@@ -19,7 +19,7 @@ public class StubController {
     }
 
     @RequestMapping(value = "/freeCharge", method = GET)
-    @PreAuthorize("hasAuthority('SCOPE_profile')")
+    @PreAuthorize("hasAuthority('SCOPE_payments')")
     public Mono<OAuth2AuthenticationToken> freeCharge(Mono<OAuth2AuthenticationToken> token) {
         return token;
     }

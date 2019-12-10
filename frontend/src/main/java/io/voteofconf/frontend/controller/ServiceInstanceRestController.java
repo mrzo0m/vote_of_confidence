@@ -19,7 +19,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-@RestController("/service")
+    @RestController
 public class ServiceInstanceRestController {
     @Autowired
     WebClient webClient;
@@ -37,17 +37,17 @@ public class ServiceInstanceRestController {
     }
 
     @GetMapping("/jwkme")
-    public String index(@AuthenticationPrincipal OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+    public String index(JwtAuthenticationToken authentication) {
 
         Object token = webClient
                 .get()
-                .uri("http://localhost:8080/payments/oldWay")
+                .uri("http://localhost:8080/payments/freeCharge")
                 .retrieve()
                 .bodyToMono(Object.class)
                 .block(Duration.ofSeconds(10L));
         return String.format("Hello, %s!", token);
 //
-//            ClientRegistration okta = clientRegistrationRepository.findByRegistrationId("okta");
+//            ClientRegi    stration okta = clientRegistrationRepository.findByRegistrationId("okta");
 //            ClientRegistration oktaCredentials = ClientRegistration
 //                    .withRegistrationId("okta2")
 //                    .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)

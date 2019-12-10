@@ -5,26 +5,64 @@ oidc:
   client-id: 0oajfcjaxs1OKu2kC0h7
   client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
 
-okta:
-  #  client:
-  #    orgUrl: https://dev-388275.oktapreview.com
-  oauth2:
-    audience: frontend
-    issuer: ${oidc.issuer-uri}
-    client-id: ${oidc.client-id}
-    client-secret: ${oidc.client-secret}
-    scope: openid, email, profile
-    scopeClaim: scp
-    rolesClaim: groups
+oidc2:
+  issuer-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7
+  jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7/v1/keys
+  client-id: 0oajfcjaxs1OKu2kC0h7
+  client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
+
+
 
 okta-api-token:
   type: SSWS
   value: 00zD5hEcy2ZIlMfNVxKE2EMif-VDYjGXjRyrwWz2oY
+
 spring:
   application:
     name: frontend
   profiles:
     active: spring.profiles.active
+  security:
+    oauth2:
+      client:
+        provider:
+          okta:
+            issuer-uri: ${oidc.issuer-uri}
+            access-token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
+            user-authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
+            authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
+            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
+            user-info-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/userinfo
+            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
+          okta2:
+            issuer-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7
+            access-token-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7/v1/token
+            user-authorization-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7/v1/authorize
+            authorization-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7/v1/authorize
+            token-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7/v1/token
+            user-info-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7/v1/userinfo
+            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/auskpi1fnzgPD6i6N0h7/v1/keys
+        registration:
+          okta:
+            audience: frontend
+            issuer: ${oidc.issuer-uri}
+            client-id: ${oidc.client-id}
+            client-secret: ${oidc.client-secret}
+            scope: openid, email, profile
+            scopeClaim: scp
+            rolesClaim: groups
+          okta2:
+            audience: robot
+            authorizationGrantType: client_credentials
+            issuer: ${oidc2.issuer-uri}
+            client-id: ${oidc2.client-id}
+            client-secret: ${oidc2.client-secret}
+            scope: payments
+      resourceserver:
+        jwt:
+          issuer-uri: ${oidc.issuer-uri}
+          jwk-set-uri: ${oidc.jwk-set-uri}
+
 
 server:
   port: 0
@@ -42,5 +80,5 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    ROOT: info
+    ROOT: debug
     org.springframework.web: trace

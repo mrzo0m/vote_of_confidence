@@ -37,7 +37,7 @@ public class RouteConfiguration {
                 .route("frontend", r -> r
                         .path("/frontend/**")
                         .filters(f -> f
-                                        .addRequestHeader("BASE_REDIRECT_URI", "http://frontend/localhost:8080")
+//                                        .addRequestHeader("BASE_REDIRECT_URI", "http://frontend/localhost:8080")
 //                                        .filter((exchange, chain) ->{
 //                                            ServerHttpRequest request = exchange.getRequest();
 //
@@ -75,35 +75,35 @@ public class RouteConfiguration {
 //                                )
                         )
                         .uri("lb://frontend"))
-//                .route("payments", r -> r
-//                        .path("/payments/**")
-////                        .filters(f -> f
-////                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
-////                                        .map(SecurityContext::getAuthentication)
-////                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
-////                                        .map(oAuth2AuthenticationToken ->
-////                                                clientService
-////                                                        .loadAuthorizedClient(
-////                                                                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
-////                                                                oAuth2AuthenticationToken.getName())
-////                                                        .subscribe(oAuth2AuthorizedClient ->
-////                                                                exchange.getRequest()
-////                                                                        .mutate()
-////                                                                        .header("Authorization", "Bearer " +
-////                                                                                oAuth2AuthorizedClient
-////                                                                                        .getAccessToken()
-////                                                                                        .getTokenValue())
-////                                                                        .build()))
-////                                        .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
-////                                        .then(chain.filter(exchange)))
-////                                .hystrix(config ->
-////                                        config
-////                                                .setName("frontend")
-////                                                .setFallbackUri("forward:/fallback/frontend")
-////                                )
-////                        )
-//                        .uri("lb://payments")
-//                )
+                .route("payments", r -> r
+                        .path("/payments/**")
+                        .filters(f -> f
+                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
+                                        .map(SecurityContext::getAuthentication)
+                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
+                                        .map(oAuth2AuthenticationToken ->
+                                                clientService
+                                                        .loadAuthorizedClient(
+                                                                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
+                                                                oAuth2AuthenticationToken.getName())
+                                                        .subscribe(oAuth2AuthorizedClient ->
+                                                                exchange.getRequest()
+                                                                        .mutate()
+                                                                        .header("Authorization", "Bearer " +
+                                                                                oAuth2AuthorizedClient
+                                                                                        .getAccessToken()
+                                                                                        .getTokenValue())
+                                                                        .build()))
+                                        .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
+                                        .then(chain.filter(exchange)))
+//                                .hystrix(config ->
+//                                        config
+//                                                .setName("frontend")
+//                                                .setFallbackUri("forward:/fallback/frontend")
+//                                )
+                        )
+                        .uri("lb://payments")
+                )
                 .build();
     }
 }

@@ -4,14 +4,6 @@ oidc:
   client-id: 0oajfcjaxs1OKu2kC0h7
   client-secret: bd5iKqHzaRc9Fv6lY_XyzEenpD4v9WT2k9XYdtF1
 
-okta:
-  oauth2:
-    issuer: ${oidc.issuer-uri}
-    audience: frontend-api
-    client-id: ${oidc.client-id}
-    client-secret: ${oidc.client-secret}
-    scope: openid, profile
-
 spring:
   application:
     name: gateway
@@ -25,15 +17,19 @@ spring:
             issuer-uri: ${oidc.issuer-uri}
             access-token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
             user-authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
-        #            authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
-        #            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
-        #            user-info-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/userinfo
-        #            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
+            authorization-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/authorize
+            token-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/token
+            user-info-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/userinfo
+            jwk-set-uri: https://dev-388275.oktapreview.com/oauth2/default/v1/keys
         registration:
           okta:
+            issuer: ${oidc.issuer-uri}
+            audience: frontend
             client-id: ${oidc.client-id}
             client-secret: ${oidc.client-secret}
-            scope: openid, profile
+            scope: openid, email, profile
+            scopeClaim: scp
+            rolesClaim: groups
       resourceserver:
         jwt:
           issuer-uri: ${oidc.issuer-uri}
@@ -62,6 +58,6 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
   level:
-    ROOT: trace
+    ROOT: debug
     org.springframework.web: trace
     reactor.core.publisher: trace
