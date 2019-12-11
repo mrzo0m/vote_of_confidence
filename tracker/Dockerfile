@@ -4,6 +4,8 @@ RUN git clone https://github.com/mrzo0m/vote_of_confidence.git
 
 FROM maven:3.5.2-jdk-8-alpine AS maven
 COPY --from=clone /app/vote_of_confidence/ /tmp/
+WORKDIR /tmp/flyway
+RUN mvn -T 1C flyway:migrate
 WORKDIR /tmp/
 RUN mvn -T 1C clean package -DskipTests=true -q -pl tracker -am
 RUN find /tmp/tracker/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
