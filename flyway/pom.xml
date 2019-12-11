@@ -36,7 +36,7 @@
         <artifactId>flyway-maven-plugin</artifactId>
         <version>6.1.0</version>
         <configuration>
-          <url>jdbc:mysql://127.0.0.1:3306/vocdb-flyway?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Moscow</url>
+          <url>jdbc:mysql://127.0.0.1:3306/vocdbflyway?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Moscow</url>
           <user>root</user>
           <password>root</password>
         </configuration>
