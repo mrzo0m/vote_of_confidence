@@ -7,6 +7,7 @@ COPY --from=clone /app/vote_of_confidence/ /tmp/
 WORKDIR /tmp/
 RUN mvn -T 1C clean package -DskipTests=true -q -pl tracker -am
 RUN find /tmp/tracker/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
+RUN chmod +x /tmp/tracker/scripts/entrypoint.sh
 VOLUME /tmp
 ENTRYPOINT ["/tmp/tracker/scripts/entrypoint.sh"]
 EXPOSE 8000
