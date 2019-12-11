@@ -26,7 +26,7 @@
         <module>tracker</module>
         <module>trace</module>
         <module>common</module>
-        <module>flyway</module>
+<!--        <module>flyway</module>-->
     </modules>
 
     <properties>
