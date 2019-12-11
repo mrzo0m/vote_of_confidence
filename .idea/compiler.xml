@@ -2,44 +2,38 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="communications" />
-        <module name="frontend" />
         <module name="gateway" />
-        <module name="history" />
+        <module name="flyway" />
         <module name="notifications" />
-        <module name="payments" />
         <module name="reporting" />
+        <module name="payments" />
         <module name="scheduling" />
-        <module name="trace" />
+        <module name="frontend" />
         <module name="tracker" />
+        <module name="communications" />
+        <module name="trace" />
+        <module name="history" />
+        <module name="common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="communications" target="1.8" />
       <module name="configuration" target="1.8" />
       <module name="discovery" target="1.8" />
-      <module name="frontend" target="1.8" />
-      <module name="gateway" target="1.8" />
-      <module name="history" target="1.8" />
-      <module name="notifications" target="1.8" />
-      <module name="payments" target="1.8" />
-      <module name="reporting" target="1.8" />
-      <module name="scheduling" target="1.8" />
-      <module name="trace" target="1.8" />
-      <module name="tracker" target="1.8" />
-      <module name="voc" target="1.8" />
       <module name="vote_of_confidence" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common" options="-parameters" />
       <module name="communications" options="-parameters" />
       <module name="configuration" options="-parameters" />
       <module name="discovery" options="-parameters" />
+      <module name="flyway" options="" />
       <module name="frontend" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="history" options="-parameters" />
