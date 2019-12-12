@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: mysql
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: voc-storageclass-mysql
+  resources:
+    requests:
+      storage: 2Gi
+---        
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,8 +18,6 @@ metadata:
   labels:
     app: mysql
 spec:
-  serviceName: mysql
-  replicas: 2
   selector:
     matchLabels:
       app: mysql
@@ -28,7 +39,7 @@ spec:
             - containerPort: 33060
               name: x-server
             - containerPort: 33061
-              name: replica-group-check
+              name: replica-check
             - containerPort: 22
               name: ssh
             - containerPort: 443
@@ -38,7 +49,7 @@ spec:
           resources:
             limits:
               cpu: "500m"
-              memory: 1Gi
+              memory: 2Gi
             requests:
               cpu: "500m"
               memory: 1Gi
@@ -46,41 +57,43 @@ spec:
             capabilities:
               add:
                 - IPC_LOCK
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                  - /bin/sh
-                  - -c
-                  - if [[ -f /usr/src/pre-stop.sh ]]; then /bin/sh -c /usr/src/pre-stop.sh; fi
+#          lifecycle:
+#            postStart:
+#              exec:
+#                command:
+#                  - mysqld 
+#                  - --initialize        
+#            preStop:
+#              exec:
+#                command:
+#                  - /bin/sh
+#                  - -c
+#                  - if [[ -f /usr/src/pre-stop.sh ]]; then /bin/sh -c /usr/src/pre-stop.sh; fi
           env:
             - name: MYSQL_ROOT_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: mysql-pass
-                    key: password
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-password
+                  key: password
             - name: MAX_HEAP_SIZE
-              value: 512M
-            - name: HEAP_NEWSIZE
-              value: 100M
-            - name: POD_IP
+              value: 1024m
+            - name: HEAP_NEWSIZE              
+              value: 200m
+            - name: DATADIR
+              value: /mysql_data  
+            - name: POD_IP  
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: 3306 
             initialDelaySeconds: 60
             periodSeconds: 10
           volumeMounts:
             - name: mysql-data
-              mountPath: /var/lib/mysql
-  volumeClaimTemplates:
-    - metadata:
-        name: mysql-data
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: voc-storageclass-mysql
-        resources:
-          requests:
-            storage: 1Gi
+              mountPath: /mysql_data
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim

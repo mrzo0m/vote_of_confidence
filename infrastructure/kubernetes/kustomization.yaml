@@ -1,0 +1,8 @@
+secretGenerator:
+- name: mysql-root-password
+  literals:
+  - password=root
+resources:
+  - mysql-service.yml
+  - ssd-storageclass-mysql.yml
+  - mysql-deployment.yml
