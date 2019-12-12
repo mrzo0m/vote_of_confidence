@@ -130,7 +130,7 @@ steps:
   #  #############################################
 
   - name: 'gcr.io/cloud-builders/docker'
-    id: build-history
+    id: build-tracker
     args:
       - 'build'
       - '--no-cache'
