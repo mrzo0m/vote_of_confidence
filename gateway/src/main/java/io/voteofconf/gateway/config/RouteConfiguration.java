@@ -16,20 +16,20 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class RouteConfiguration {
 
-    private ReactiveOAuth2AuthorizedClientService clientService;
-
-    private ApplicationContext applicationContext;
-
-    private ServerOAuth2AuthorizedClientRepository clientRepository;
-
-    private InMemoryReactiveClientRegistrationRepository registrationRepository;
-
-    public RouteConfiguration(ReactiveOAuth2AuthorizedClientService clientService, ApplicationContext applicationContext, ServerOAuth2AuthorizedClientRepository clientRepository, InMemoryReactiveClientRegistrationRepository registrationRepository) {
-        this.clientService = clientService;
-        this.applicationContext = applicationContext;
-        this.clientRepository = clientRepository;
-        this.registrationRepository = registrationRepository;
-    }
+//    private ReactiveOAuth2AuthorizedClientService clientService;
+//
+//    private ApplicationContext applicationContext;
+//
+//    private ServerOAuth2AuthorizedClientRepository clientRepository;
+//
+//    private InMemoryReactiveClientRegistrationRepository registrationRepository;
+//
+//    public RouteConfiguration(ReactiveOAuth2AuthorizedClientService clientService, ApplicationContext applicationContext, ServerOAuth2AuthorizedClientRepository clientRepository, InMemoryReactiveClientRegistrationRepository registrationRepository) {
+//        this.clientService = clientService;
+//        this.applicationContext = applicationContext;
+//        this.clientRepository = clientRepository;
+//        this.registrationRepository = registrationRepository;
+//    }
 
     @Bean
     public RouteLocator gatewayRouteLocator(RouteLocatorBuilder builder) {
@@ -58,31 +58,31 @@ public class RouteConfiguration {
                         .uri("http://tracker-microservice"))
                 .route("frontend-microservice", r -> r
                         .path("/**")
-                        .filters(f -> f
-                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
-                                        .map(SecurityContext::getAuthentication)
-                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
-                                        .map(oAuth2AuthenticationToken ->
-                                                clientService
-                                                        .loadAuthorizedClient(
-                                                                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
-                                                                oAuth2AuthenticationToken.getName())
-                                                        .subscribe(oAuth2AuthorizedClient ->
-                                                                exchange.getRequest()
-                                                                        .mutate()
-                                                                        .header("Authorization", "Bearer " +
-                                                                                oAuth2AuthorizedClient
-                                                                                        .getAccessToken()
-                                                                                        .getTokenValue())
-                                                                        .build()))
-                                        .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
-                                        .then(chain.filter(exchange)))
-                                .hystrix(config ->
-                                        config
-                                                .setName("frontend-microservice")
-                                                .setFallbackUri("forward:/fallback/frontend")
-                                )
-                        )
+//                        .filters(f -> f
+//                                .filter((exchange, chain) -> ReactiveSecurityContextHolder.getContext()
+//                                        .map(SecurityContext::getAuthentication)
+//                                        .map(authentication -> (OAuth2AuthenticationToken)authentication)
+//                                        .map(oAuth2AuthenticationToken ->
+//                                                clientService
+//                                                        .loadAuthorizedClient(
+//                                                                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(),
+//                                                                oAuth2AuthenticationToken.getName())
+//                                                        .subscribe(oAuth2AuthorizedClient ->
+//                                                                exchange.getRequest()
+//                                                                        .mutate()
+//                                                                        .header("Authorization", "Bearer " +
+//                                                                                oAuth2AuthorizedClient
+//                                                                                        .getAccessToken()
+//                                                                                        .getTokenValue())
+//                                                                        .build()))
+//                                        .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
+//                                        .then(chain.filter(exchange)))
+//                                .hystrix(config ->
+//                                        config
+//                                                .setName("frontend-microservice")
+//                                                .setFallbackUri("forward:/fallback/frontend")
+//                                )
+//                        )
                         .uri("http://frontend-microservice"))
 
                 .build();
