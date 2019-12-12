@@ -46,44 +46,44 @@ steps:
 #
 #  #############################################
 #
-#  - name: 'gcr.io/cloud-builders/docker'
-#    id: build-gateway
-#    args:
-#      - 'build'
-#      - '--no-cache'
-#      - '--file=gateway/Dockerfile'
-#      - '-t'
-#      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
-#      - '-t'
-#      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
-#      - '.'
-#    waitFor: ['-']
-#  # This step pushes the image to Container Registry
-#  # The PROJECT_ID and SHORT_SHA variables are automatically
-#  # replaced by Cloud Build.
-#  - name: 'gcr.io/cloud-builders/docker'
-#    id: push-gateway
-#    args:
-#      - 'push'
-#      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
-#    wait_for: ['build-gateway']
-#  - name: 'gcr.io/cloud-builders/docker'
-#    id: push-gateway-latest
-#    args:
-#      - 'push'
-#      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
-#    wait_for: ['build-gateway']
-#  - name: 'gcr.io/cloud-builders/kubectl'
-#    id: deploy-gateway-latest
-#    args:
-#      - 'set'
-#      - 'image'
-#      - 'deployment/gateway-deployment'
-#      - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
-#    env:
-#      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
-#      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-2'
-#    wait_for: ['push-gateway']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-gateway
+    args:
+      - 'build'
+      - '--no-cache'
+      - '--file=gateway/Dockerfile'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-gateway
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
+    wait_for: ['build-gateway']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-gateway-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+    wait_for: ['build-gateway']
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: deploy-gateway-latest
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/gateway-deployment'
+      - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-2'
+    wait_for: ['push-gateway']
 #
 #  #############################################
 
@@ -180,7 +180,7 @@ steps:
 
 images:
 #  - 'eu.gcr.io/$PROJECT_ID/voc-frontend:latest'
-#  - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
-  - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
+#  - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
   - 'eu.gcr.io/$PROJECT_ID/voc-tracker:latest'
 timeout: '1800s'
