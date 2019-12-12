@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracker-deployment
+  labels:
+    app: tracker-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracker-microservice
+  template:
+    metadata:
+      labels:
+        app: tracker-microservice
+    spec:
+      containers:
+        - name: tracker-microservice
+          image: eu.gcr.io/vote-of-confidence-233210/voc-tracker:latest
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 300m
