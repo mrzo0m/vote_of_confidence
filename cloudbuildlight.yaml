@@ -112,7 +112,8 @@ steps:
     id: push-history-latest
     args:
       - 'push'
-      - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+      - 'eu.gcr.io/$
+      PROJECT_ID/voc-history:latest'
     wait_for: ['build-history']
   - name: 'gcr.io/cloud-builders/kubectl'
     id: deploy-history-latest
@@ -125,6 +126,48 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-2'
     wait_for: ['push-history']
+
+  #  #############################################
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-history
+    args:
+      - 'build'
+      - '--no-cache'
+      - '--file=tracker/Dockerfile'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-tracker:$SHORT_SHA'
+      - '-t'
+      - 'eu.gcr.io/$PROJECT_ID/voc-tracker:latest'
+      - '.'
+    waitFor: ['-']
+  # This step pushes the image to Container Registry
+  # The PROJECT_ID and SHORT_SHA variables are automatically
+  # replaced by Cloud Build.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-tracker
+    args:
+      - 'push'
+      - 'eu.gcr.io/$PROJECT_ID/voc-tracker:$SHORT_SHA'
+    wait_for: ['build-tracker']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push-tracker-latest
+    args:
+      - 'push'
+      - 'eu.gcr.io/$
+      PROJECT_ID/voc-tracker:latest'
+    wait_for: ['build-tracker']
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: deploy-tracker-latest
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/tracker-deployment'
+      - 'tracker-microservice=eu.gcr.io/$PROJECT_ID/voc-tracker:$SHORT_SHA'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-2'
+    wait_for: ['push-tracker']
 
 
   ##########################################

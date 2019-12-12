@@ -1,6 +1,6 @@
 FROM alpine/git as clone
 WORKDIR /app
-RUN git clone https://github.com/mrzo0m/vote_of_confidence.git
+RUN git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
 
 FROM maven:3.5.2-jdk-8-alpine AS maven
 COPY --from=clone /app/vote_of_confidence/ /tmp/
