@@ -184,4 +184,5 @@ images:
 #  - 'eu.gcr.io/$PROJECT_ID/voc-frontend:latest'
 #  - 'eu.gcr.io/$PROJECT_ID/voc-gateway:latest'
   - 'eu.gcr.io/$PROJECT_ID/voc-history:latest'
+  - 'eu.gcr.io/$PROJECT_ID/voc-tracker:latest'
 timeout: '1800s'
