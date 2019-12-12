@@ -1,5 +1,5 @@
 mysql.host: mysql
 mysql.port: 3306
-mysql.database: vocdb
+mysql.database: vocdbflyway
 mysql.username: root
 mysql.password: root
