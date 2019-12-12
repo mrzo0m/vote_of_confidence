@@ -45,6 +45,17 @@ public class RouteConfiguration {
                                 )
                         )
                         .uri("http://history-microservice"))
+                .route("tracker-microservice", r -> r
+                        .path("/tracker-microservice/**")
+                        .filters(f -> f
+                                .rewritePath("/tracker-microservice/(?<path>.*)", "/$\\{path}")
+                                .hystrix(config ->
+                                        config
+                                                .setName("tracker-microservice")
+                                                .setFallbackUri("forward:/fallback/tracker")
+                                )
+                        )
+                        .uri("http://tracker-microservice"))
                 .route("frontend-microservice", r -> r
                         .path("/**")
                         .filters(f -> f
