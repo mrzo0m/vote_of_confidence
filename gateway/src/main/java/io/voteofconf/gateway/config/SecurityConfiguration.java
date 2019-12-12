@@ -12,7 +12,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 //@EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
-    @Bean
+//    @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
 //                .authorizeExchange()
