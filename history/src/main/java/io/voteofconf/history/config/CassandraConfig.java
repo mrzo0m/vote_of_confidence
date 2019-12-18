@@ -2,6 +2,7 @@ package io.voteofconf.history.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.cassandra.config.AbstractReactiveCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
+@Profile(value = "prod")
 @EnableReactiveCassandraRepositories
 public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
 

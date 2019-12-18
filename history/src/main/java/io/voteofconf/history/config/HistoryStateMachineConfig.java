@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
@@ -22,6 +23,7 @@ import org.springframework.statemachine.guard.Guard;
 
 @Slf4j
 @Configuration
+@Profile(value = "prod")
 public class HistoryStateMachineConfig {
     @Bean
     public StateMachineLogListener stateMachineLogListener() {
@@ -32,6 +34,7 @@ public class HistoryStateMachineConfig {
     @Configuration
     @EnableWithStateMachine
     @EnableStateMachineFactory
+    @Profile(value = "prod")
     public static class Config extends EnumStateMachineConfigurerAdapter<States, Events> {
         @Autowired
         private StateMachineLogListener stateMachineLogListener;

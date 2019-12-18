@@ -10,7 +10,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
 @EnableWebFluxSecurity
-@Profile(value = {"!dev"})
+@Profile(value = "prod")
 @EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
