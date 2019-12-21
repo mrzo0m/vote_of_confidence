@@ -196,6 +196,11 @@ public class InterviewRestBase {
                     }
 
                     @Override
+                    public Flux<User> findAllExperts() {
+                        return null;
+                    }
+
+                    @Override
                     public <S extends User> Mono<S> save(S entity) {
                         return null;
                     }

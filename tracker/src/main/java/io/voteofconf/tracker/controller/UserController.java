@@ -57,6 +57,12 @@ public class UserController implements EntityController<User> {
         return userAGRepository.findAllCandidates();
     }
 
+
+    @GetMapping("/getExperts")
+    public Flux<User> getExperts() {
+        return userAGRepository.findAllExperts();
+    }
+
     @GetMapping("/getCandidatesByExpertise")
     public Flux<User> getCandidatesByExpertise(@RequestParam Set<String> keywords) {
         return userMWRepository.findAllCandidatesByExpertise(keywords);

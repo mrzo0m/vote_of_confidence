@@ -40,6 +40,16 @@ public interface UserAGCrudRepository extends ReactiveCrudRepository<User, Long>
             "\tWHERE ct.type = 'CANDIDATE'")
     Flux<User> findAllCandidates();
 
+    @Query("SELECT u.id, u.first_name, u.second_name, u.sur_name, u.email_addr, ct.type as client_type, \n" +
+            "\t\tact.id  as \"accountType_id\", act.name  as \"accountType_name\", act.cost as \"accountType_cost\", act.description  as \"accountType_description\", act.period  as \"accountType_period\"\n" +
+            "\tFROM user u \n" +
+            "\tJOIN client_types ct \n" +
+            "\t\tON u.client_type_id = ct.id\n" +
+            "\tJOIN account_types act \n" +
+            "\t\tON u.account_type_id = act.id\t\t\n" +
+            "\tWHERE ct.type = 'EXPERT'")
+    Flux<User> findAllExperts();
+
     @Query("select u.first_name, u.second_name, u.sur_name, u.email_addr, ct.type as client_type, \n" +
             "\t\tact.id  as \"account_type.id\", act.name  as \"account_type.name\", act.cost as \"account_type.cost\", act.description  as \"account_type.description\", act.period  as \"account_type.period\"\n" +
             "\tfrom user u\n" +
