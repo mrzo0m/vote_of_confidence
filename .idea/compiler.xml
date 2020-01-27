@@ -8,13 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="gateway" />
-        <module name="flyway" />
-        <module name="notifications" />
         <module name="reporting" />
+        <module name="tracker" />
         <module name="payments" />
         <module name="scheduling" />
         <module name="frontend" />
-        <module name="tracker" />
+        <module name="notifications" />
         <module name="communications" />
         <module name="trace" />
         <module name="history" />
@@ -24,7 +23,6 @@
     <bytecodeTargetLevel>
       <module name="configuration" target="1.8" />
       <module name="discovery" target="1.8" />
-      <module name="vote_of_confidence" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
