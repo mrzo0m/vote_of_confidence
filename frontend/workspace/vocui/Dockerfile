@@ -1,13 +1,13 @@
-FROM node:lts-alpine as build-stage
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-
 FROM alpine/git as clone
 WORKDIR /app
 RUN git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
+
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY --from=clone /app/vote_of_confidence/frontend/workspace/vocui/package*.json ./
+RUN npm install
+COPY --from=clone /app/vote_of_confidence/frontend/workspace/vocui/. .
+RUN npm run build
 
 FROM maven:3.5.2-jdk-8-alpine AS maven
 WORKDIR /tmp/
