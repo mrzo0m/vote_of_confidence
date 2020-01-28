@@ -37,8 +37,8 @@ steps:
       - 'deployment/frontend-deployment'
       - 'frontend-microservice=eu.gcr.io/$PROJECT_ID/voc-frontend:$SHORT_SHA'
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-2'
+      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-c'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-1'
     wait_for: ['push-frontend']
 
   #############################################
@@ -81,8 +81,8 @@ steps:
       - 'deployment/gateway-deployment'
       - 'gateway-microservice=eu.gcr.io/$PROJECT_ID/voc-gateway:$SHORT_SHA'
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-2'
+      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-c'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-1'
     wait_for: ['push-gateway']
 #
 #  #############################################
@@ -122,8 +122,8 @@ steps:
 #      - 'deployment/history-deployment'
 #      - 'history-microservice=eu.gcr.io/$PROJECT_ID/voc-history:$SHORT_SHA'
 #    env:
-#      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
-#      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-2'
+#      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-c'
+#      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-1'
 #    wait_for: ['push-history']
 
   #  #############################################
@@ -163,8 +163,8 @@ steps:
 #      - 'deployment/tracker-deployment'
 #      - 'tracker-microservice=eu.gcr.io/$PROJECT_ID/voc-tracker:$SHORT_SHA'
 #    env:
-#      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
-#      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-2'
+#      - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-c'
+#      - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-1'
 #    wait_for: ['push-tracker']
 
 
