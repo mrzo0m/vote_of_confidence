@@ -88,8 +88,11 @@
                 <span class="hidden-sm-and-down">Вотум доверия</span>
             </v-toolbar-title>
             <v-spacer/>
-            <v-btn icon>
-                <v-icon>mdi-apps</v-icon>
+            <v-btn v-if='authenticated' v-on:click='logout' id='logout-button' icon>
+                Logout
+            </v-btn>
+            <v-btn v-else v-on:click='login' id='login-button' icon>
+                Login
             </v-btn>
             <v-btn icon>
                 <v-icon>mdi-bell</v-icon>
@@ -251,35 +254,63 @@
     </v-app>
 </template>
 <script lang="ts">
-        import Vue from 'vue';
-        import HelloWorld from './components/HelloWorld.vue';
+    import Vue from 'vue';
+    import HelloWorld from './components/HelloWorld.vue';
+    import Private from './components/Private.vue';
+    import Auth from '@okta/okta-vue'
+    const PATH_TO_PROTECTED_ROUTE = '/private'
+    export default Vue.extend({
+        name: 'App',
 
-        export default Vue.extend({
-            name: 'App',
+        components: {
+            HelloWorld,
+            Private
 
-            components: {
-                HelloWorld,
+        },
+        props: {
+            source: String,
+        },
+
+        data: () => ({
+            authenticated: false,
+            dialog: false,
+            drawer: null,
+            items: [
+                {icon: 'mdi-help-circle', text: 'О сообществе'},
+                {
+                    icon: 'mdi-chevron-up',
+                    'icon-alt': 'mdi-chevron-down',
+                    text: 'Горизонт',
+                    model: true,
+                    children: [
+                        {icon: 'mdi-contacts', text: 'Эксперт'},
+                        {icon: 'mdi-history', text: 'Кондидат'},
+                        {icon: 'mdi-content-copy', text: 'Компания заказчик'},
+                    ],
+                }
+            ],
+        }),
+        created () {
+            this.isAuthenticated()
+        },
+        watch: {
+            // Everytime the route changes, check for auth status
+            '$route': 'isAuthenticated'
+        },
+        methods: {
+            async isAuthenticated () {
+                this.authenticated = await this.$auth.isAuthenticated()
             },
-            props: {
-                source: String,
+            login () {
+                this.$auth.loginRedirect(PATH_TO_PROTECTED_ROUTE)
             },
-            data: () => ({
-                dialog: false,
-                drawer: null,
-                items: [
-                    {icon: 'mdi-help-circle', text: 'О сообществе'},
-                    {
-                        icon: 'mdi-chevron-up',
-                        'icon-alt': 'mdi-chevron-down',
-                        text: 'Горизонт',
-                        model: true,
-                        children: [
-                            {icon: 'mdi-contacts', text: 'Эксперт'},
-                            {icon: 'mdi-history', text: 'Кондидат'},
-                            {icon: 'mdi-content-copy', text: 'Компания заказчик'},
-                        ],
-                    }
-                ],
-            }),
-        });
+            async logout () {
+                await this.$auth.logout()
+                await this.isAuthenticated()
+
+                // Navigate back to home
+                this.$router.push({ path: '/' })
+            }
+        }
+    });
 </script>
