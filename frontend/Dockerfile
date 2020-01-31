@@ -1,29 +1,17 @@
-FROM eu.gcr.io/vote-of-confidence-233210/voc-frontend-source:latest as source
-WORKDIR /app
-
-FROM alpine/git as clone
+ROM alpine/git as clone
 WORKDIR /app
 RUN git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
 
-FROM poum/senchacmd as senchacmd
-WORKDIR /code
-COPY --from=clone /app/vote_of_confidence/frontend/workspace/ /code
-COPY --from=source /app/src/ext /code/ext
-RUN /opt/Sencha/sencha app build production
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY --from=clone /app/vote_of_confidence/frontend/vocui/package*.json ./
+RUN npm install
+COPY --from=clone /app/vote_of_confidence/frontend/vocui/. .
+RUN npm run build
 
-FROM maven:3.5.2-jdk-8-alpine AS maven
-WORKDIR /tmp/
-COPY --from=clone /app/vote_of_confidence/ /tmp/
-COPY --from=senchacmd /code/build/production/VocApp/ /tmp/invoke_static/
-RUN rm -rf /tmp/frontend/src/main/resources/static/
-RUN mkdir /tmp/frontend/src/main/resources/static
-RUN cp -rf /tmp/invoke_static/* /tmp/frontend/src/main/resources/static/
-RUN mvn -T 1C clean package -DskipTests=true -q -pl frontend -am
-RUN find /tmp/frontend/target/ -name '*jar' -exec bash -c 'mv $0 app.jar' {} \;
-ENTRYPOINT /tmp
 
-FROM openjdk:11-slim
-VOLUME /tmp
-COPY --from=maven /tmp/app.jar app.jar
-ENTRYPOINT ["java","-XX:+UnlockExperimentalVMOptions", "-XX:+UseJVMCICompiler","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+FROM nginx as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/dist /app
+COPY --from=clone /app/vote_of_confidence/frontend/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 8080
