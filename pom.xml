@@ -16,7 +16,6 @@
 
     <modules>
         <module>communications</module>
-        <module>frontend</module>
         <module>gateway</module>
         <module>history</module>
         <module>notifications</module>
