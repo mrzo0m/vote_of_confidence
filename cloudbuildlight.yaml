@@ -7,7 +7,7 @@ steps:
     args:
       - 'build'
       - '--no-cache'
-      - '--file=frontend/workspace/vocui/Dockerfile'
+      - '--file=frontend/vocui/Dockerfile'
       - '-t'
       - 'eu.gcr.io/$PROJECT_ID/voc-frontend:$SHORT_SHA'
       - '-t'
