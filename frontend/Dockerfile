@@ -1,4 +1,4 @@
-ROM alpine/git as clone
+FROM alpine/git as clone
 WORKDIR /app
 RUN git clone -b master https://github.com/mrzo0m/vote_of_confidence.git
 
