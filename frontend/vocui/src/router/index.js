@@ -8,8 +8,8 @@ const config = {
   issuer: 'https://dev-853004.okta.com/oauth2/default',
   clientId: '0oa15c29gsFacKKwr4x6',
   redirectUri: window.location.origin +  '/implicit/callback',
-  scopes: ['openid', 'profile', 'email'],
-  pkce: false //TODO should be true when SSL cert used
+  scopes: ['openid', 'profile', 'email']
+  // , pkce: true //TODO should be true when SSL cert used
 };
 
 Vue.use(Auth, {...config});
