@@ -7,7 +7,7 @@ const CALLBACK_PATH = '/implicit/callback';
 const config = {
   issuer: 'https://dev-853004.okta.com/oauth2/default',
   clientId: '0oa15c29gsFacKKwr4x6',
-  redirectUri: 'http://localhost:8080/implicit/callback',
+  redirectUri: window.location.origin +  '/implicit/callback',
   scopes: ['openid', 'profile', 'email'],
   pkce: true
 };
