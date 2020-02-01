@@ -9,7 +9,7 @@ const config = {
   clientId: '0oa15c29gsFacKKwr4x6',
   redirectUri: window.location.origin +  '/implicit/callback',
   scopes: ['openid', 'profile', 'email'],
-  pkce: true
+  pkce: false //TODO should be true when SSL cert used
 };
 
 Vue.use(Auth, {...config});
