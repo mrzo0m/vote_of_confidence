@@ -19,6 +19,14 @@ spec:
           image: eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - mountPath: "/etc/nginx/ssl"
+              name: nginx-ssl
+              readOnly: true
           resources:
             requests:
               cpu: 100m
+          volumes:
+            - name: nginx-ssl
+              secret:
+                secretName: votumdoveriya-rf-tls

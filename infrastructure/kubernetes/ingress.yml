@@ -1,0 +1,22 @@
+#apiVersion: networking.k8s.io/v1beta1
+#kind: Ingress
+#metadata:
+#  name: nginx-test
+#spec:
+#  tls:
+#    - hosts:
+#        - xn--b1aaffpuncuol5m.xn--p1ai
+#      # This assumes tls-secret exists and the SSL
+#      # certificate contains a CN for foo.bar.com
+#      secretName: votumdoveriya-rf-tls
+#  rules:
+#    - host: xn--b1aaffpuncuol5m.xn--p1ai
+#      http:
+#        paths:
+#          - path: /
+#            backend:
+#              # This assumes http-svc exists and routes to healthy endpoints
+#              serviceName: frontend-microservice
+#              servicePort: 80
+#
+# Strong cert required
