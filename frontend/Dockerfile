@@ -14,4 +14,4 @@ FROM nginx as production-stage
 RUN mkdir /app
 COPY --from=build-stage /app/dist /app
 COPY --from=clone /app/vote_of_confidence/frontend/nginx.conf /etc/nginx/nginx.conf
-EXPOSE 8080
+EXPOSE 443
