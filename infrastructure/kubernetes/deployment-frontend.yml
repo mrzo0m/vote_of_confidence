@@ -22,8 +22,10 @@ spec:
             - name: secret-volume
               mountPath: /etc/secret-volume
           ports:
-            - containerPort: 8080
-            - containerPort: 443
+            - name: nginx-http
+              containerPort: 80
+            - name: nginx-https
+              containerPort: 443
           resources:
             requests:
               cpu: 100m

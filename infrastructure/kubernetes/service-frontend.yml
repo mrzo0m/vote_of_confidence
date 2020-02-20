@@ -4,15 +4,14 @@ metadata:
   name: frontend-microservice
 spec:
   ports:
-    - port: 80
-      targetPort: 8080
-      name: http
-      nodePort: 30101
-    - port: 443
-      targetPort: 443
+    - name: https
+      port: 443
+      targetPort: nginx-https
       protocol: TCP
-      name: https
-      nodePort: 30104
+    - name: http
+      port: 80
+      targetPort: nginx-http
+      protocol: TCP
   selector:
     app: frontend-microservice
   type: NodePort

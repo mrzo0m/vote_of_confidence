@@ -7,6 +7,13 @@ spec:
   selector:
     app: gateway-microservice
   ports:
-    - protocol: TCP
+    - name: https
+      nodePort: 30476
+      port: 443
+      protocol: TCP
+      targetPort: nginx-https
+    - name: http
+      nodePort: 32761
       port: 80
-      targetPort: 8080
+      protocol: TCP
+      targetPort: nginx-http
