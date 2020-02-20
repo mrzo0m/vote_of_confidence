@@ -83,7 +83,7 @@ public class RouteConfiguration {
 //                                                .setFallbackUri("forward:/fallback/frontend")
 //                                )
 //                        )
-                        .uri("http://frontend-microservice"))
+                        .uri("https://frontend-microservice"))
 
                 .build();
     }
