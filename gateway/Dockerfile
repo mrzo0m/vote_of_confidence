@@ -13,4 +13,4 @@ FROM openjdk:11-slim
 VOLUME /tmp
 COPY --from=maven /tmp/app.jar app.jar
 ENTRYPOINT ["java","-XX:+UnlockExperimentalVMOptions", "-XX:+UseJVMCICompiler","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
-EXPOSE 8080
+EXPOSE 8443

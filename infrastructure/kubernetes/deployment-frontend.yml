@@ -17,10 +17,6 @@ spec:
       containers:
         - name: frontend-microservice
           image: eu.gcr.io/vote-of-confidence-233210/voc-frontend:latest
-          volumeMounts:
-            # name must match the volume name below
-            - name: secret-volume
-              mountPath: /etc/secret-volume
           ports:
             - name: nginx-http
               containerPort: 80
@@ -29,8 +25,3 @@ spec:
           resources:
             requests:
               cpu: 100m
-        # The secret data is exposed to Containers in the Pod through a Volume.
-      volumes:
-        - name: secret-volume
-          secret:
-            secretName: votumdoveriya-rf-tls

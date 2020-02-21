@@ -15,14 +15,7 @@ spring:
   profiles:
     active: native
 server:
-  port: 8443
-  ssl:
-    key-store-type: PKCS12
-    key-store: classpath:domain.p12
-    key-password: ${SSL_KEY_PASS}
-    key-store-password: ${SSL_STORE_PASS}
-    key-alias: www.xn--b1aaffpuncuol5m.xn--p1ai (globalsign rsa dv ssl ca 2018)
-    protocol: TLS
+  port: 0
 management:
   endpoints:
     web:
