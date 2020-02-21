@@ -6,7 +6,8 @@ spec:
   type: NodePort
   ports:
     - nodePort: 30100
-      port: 8080
-      targetPort: 8080
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
   selector:
     app: gateway-microservice

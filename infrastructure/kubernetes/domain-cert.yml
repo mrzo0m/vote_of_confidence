@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: domaincert
+type: Opaque
+data:
+  SSL_KEY_PASS: heresecret
+  SSL_STORE_PASS: heresecret

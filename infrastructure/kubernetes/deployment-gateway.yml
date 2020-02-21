@@ -17,16 +17,22 @@ spec:
       containers:
         - name: gateway-microservice
           image: eu.gcr.io/vote-of-confidence-233210/voc-gateway:latest
-          volumeMounts:
-            # name must match the volume name below
-            - name: secret-volume
-              mountPath: /etc/secret-volume
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SSL_KEY_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: domaincert
+                  key: SSL_KEY_PASS
+            - name: SSL_STORE_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: domaincert
+                  key: SSL_STORE_PASS
           ports:
-            - containerPort: 8080
+            - name: spring-boot
+              containerPort: 8443
           resources:
             requests:
-              cpu: 500m
-      volumes:
-        - name: secret-volume
-          secret:
-            secretName: votumdoveriya-rf-tls
+              cpu: 50m
