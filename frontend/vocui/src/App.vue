@@ -315,7 +315,7 @@
                     model: true,
                     children: [
                         {icon: 'mdi-contacts', text: 'Эксперт'},
-                        {icon: 'mdi-history', text: 'Кондидат'},
+                        {icon: 'mdi-history', text: 'Кандидат'},
                         {icon: 'mdi-content-copy', text: 'Компания заказчик'},
                     ],
                 }
