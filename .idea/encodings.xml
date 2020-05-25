@@ -3,16 +3,24 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/communications" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/communications/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flyway" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/frontend" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/history" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/history/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/notifications" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/notifications/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/payments" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payments/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/reporting" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reporting/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/scheduling" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/trace" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/scheduling/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tracker" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tracker/src/main/java" charset="UTF-8" />
   </component>
 </project>
