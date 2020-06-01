@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<r2dbc.version>0.8.0.RC2</r2dbc.version>
+		<r2dbc.version>1.0.0.BUILD-SNAPSHOT</r2dbc.version>
 		<jasync.version>1.0.12</jasync.version>
 		<spring.data.r2db.version>1.0.0.RC1</spring.data.r2db.version>
 		<!-- example of using 4.x version of rest assured -->
