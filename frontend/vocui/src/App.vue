@@ -97,20 +97,7 @@
             <v-btn icon>
                 <v-icon>mdi-bell</v-icon>
             </v-btn>
-            <v-btn
-                    icon
-                    large
-            >
-                <v-avatar
-                        item
-                        size="32px"
-                >
-                    <v-img
-                            alt="Vuetify"
-                            src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-                    />
-                </v-avatar>
-            </v-btn>
+            <v-img max-height="32px" max-width="32px" alt="voc logo"  src="./assets/voc_logo.png"></v-img>
         </v-app-bar>
         <v-content>
             <v-container>
