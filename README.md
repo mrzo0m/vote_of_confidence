@@ -1,5 +1,5 @@
 # Вотум доверия
-<img src="frontend/workspace/resources/images/voc_logo.jpg" width="360"></img>
+<img src="frontend/vocui/src/assets/voc_logo.png" width="360"></img>
 
 
 [![We recommend IntelliJ IDEA](http://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
