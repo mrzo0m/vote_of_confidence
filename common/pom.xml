@@ -15,7 +15,7 @@
         <java.version>1.8</java.version>
         <r2dbc.version>0.8.0.RC2</r2dbc.version>
         <jasync.version>1.0.11</jasync.version>
-        <spring.data.r2db.version>1.0.0.RC1</spring.data.r2db.version>
+        <spring.data.r2db.version>1.3.0-M5</spring.data.r2db.version>
     </properties>
 
     <dependencies>
